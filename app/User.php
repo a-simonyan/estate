@@ -8,12 +8,16 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use App\Notifications\VerifyEmail;
 use App\Notifications\ResetPassword;
+use App\Singleton\RestUrl;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, Notifiable;
+    /**
+     * Verify email url
+     *
+     */
     public $url="";
-    public $password_reset_url="";
 
     public $timestamps = false;
     /**
@@ -51,7 +55,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function sendPasswordResetNotification($token)
     {
-        $this->notify(new ResetPassword($token, $this->password_reset_url));
+        $this->notify(new ResetPassword($token));
     }
 
 

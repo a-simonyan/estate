@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use File;
+// use App\Singleton\RestUrl;
 
 class TestController extends Controller
 {
@@ -65,12 +66,9 @@ class TestController extends Controller
 
     public function json(){
 
-        $arr=[
-            ["type"=>"jpeg"]
-        ];
+        // $restUrl =RestUrl::getrestUrl();
+        app('RestUrl')->setUrl('my');
 
-
-
-        return json_encode($arr);
+        return  app('RestUrl')->restUrl;
     }
 }

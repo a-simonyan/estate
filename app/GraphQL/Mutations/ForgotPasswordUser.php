@@ -7,11 +7,15 @@ use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Support\Facades\Password;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use App\User;
+use App\Singleton\RestUrl;
 
 
 class ForgotPasswordUser
 {
     use SendsPasswordResetEmails;
+    public $restUrl;
+
+  
 
     /**
      * @param  null  $_
@@ -21,7 +25,9 @@ class ForgotPasswordUser
     {
         $model = app(config('auth.providers.users.model'));
         $model->password_reset_url=$args['password_reset_url'];
-       
+
+        app('RestUrl')->setPasswordResetUrl($args['password_reset_url']);
+
         $response = $this->broker()->sendResetLink(['email' => $args['email']]);
         if ($response == Password::RESET_LINK_SENT) {
             return [
