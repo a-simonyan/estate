@@ -19,8 +19,8 @@ class CreatePropertiesTable extends Migration
             $table->foreign('property_type_id')->references('id')->on('property_types')->onDelete('cascade');
             $table->foreignId('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreignId('deal_type_id');
-            $table->foreign('deal_type_id')->references('id')->on('deal_types')->onDelete('cascade');
+            // $table->foreignId('deal_type_id');
+            // $table->foreign('deal_type_id')->references('id')->on('deal_types')->onDelete('cascade');
             $table->bigInteger('property_number')->nullable();
             $table->foreignId('bulding_type_id');
             $table->foreign('bulding_type_id')->references('id')->on('bulding_types')->onDelete('cascade');
@@ -32,6 +32,7 @@ class CreatePropertiesTable extends Migration
             $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');
             $table->string('address');
             $table->string('postal_code')->nullable();
+            $table->enum('filter_type',['good','average','poor']);
             $table->timestamps();
         });
     }

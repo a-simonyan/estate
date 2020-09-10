@@ -7,6 +7,11 @@ use GraphQL\Type\Definition\ResolveInfo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Nuwave\Lighthouse\Exceptions\DefinitionException;
+use Illuminate\Http\Request;
+use Joselfonseca\LighthouseGraphQLPassport\Exceptions\AuthenticationException;
+use App;
+
+
 
 class LoginUser extends BaseAuthResolver
 {
@@ -16,14 +21,16 @@ class LoginUser extends BaseAuthResolver
      */
     public function __invoke($_, array $args)
     {
+        if(array_key_exists('language', $args)&&in_array($args['language'],Config('languages.languages'))){        
+             App::setLocale($args['language']);
+         }  
         $user = $this->findUser($args['username']);
         if($user&&$user->email_verified_at){
-       $credentials = $this->buildCredentials($args);
-       $response = $this->makeRequest($credentials);
-       
+         $credentials = $this->buildCredentials($args);
+         $response = $this->makeRequest($credentials);
 
        $this->validateUser($user);
-
+       
        return array_merge(
            $response,
            [
@@ -67,5 +74,18 @@ class LoginUser extends BaseAuthResolver
         }
 
         return $model->where(config('lighthouse-graphql-passport.username'), $username)->first();
+    }
+    public function makeRequest(array $credentials)
+    {
+        $request = Request::create('oauth/token', 'POST', $credentials, [], [], [
+            'HTTP_Accept' => 'application/json',
+        ]);
+        $response = app()->handle($request);
+        $decodedResponse = json_decode($response->getContent(), true);
+        if ($response->getStatusCode() != 200) {
+            throw new AuthenticationException( __('messages.Incorrect_username_or_password'), __('messages.Incorrect_username_or_password'));
+        }
+
+        return $decodedResponse;
     }
 }

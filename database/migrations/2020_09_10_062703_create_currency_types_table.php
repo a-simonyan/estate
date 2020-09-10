@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFiltersTable extends Migration
+class CreateCurrencyTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateFiltersTable extends Migration
      */
     public function up()
     {
-        Schema::create('filters', function (Blueprint $table) {
+        Schema::create('currency_types', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->enum('filter_type',['text', 'number', 'textarea','checkbox']);
+            $table->string('name');
+            $table->string('symbol');
+            $table->boolean('is_current');
+            $table->float('value');
         });
     }
 
@@ -27,6 +29,6 @@ class CreateFiltersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('filters');
+        Schema::dropIfExists('currency_types');
     }
 }

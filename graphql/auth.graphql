@@ -1,6 +1,7 @@
 input LoginInput {
     username: String!
     password: String!
+    language: String
 }
 
 input RefreshTokenInput {
@@ -61,7 +62,7 @@ input NewPasswordWithCodeInput {
 }
 
 input RegisterInput {
-    first_name: String! @rules(apply: ["required", "string"])
+    first_name: String! @rules(apply: ["required", "string"]) 
     last_name: String! @rules(apply: ["required", "string"])
     picture: String!
     picture_type:  String! @rules(apply: ["string","in:jpeg,jpg,png"])

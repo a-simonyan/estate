@@ -47,6 +47,9 @@ type Query {
     filters: [Filter!]! @paginate(defaultCount: 10)
     filter(id: ID @eq): Filter @find
 
+    propertyDeals: [PropertyDeal!]! @paginate(defaultCount: 10)
+    propertyDeal(id: ID @eq): PropertyDeal @find
+
 
 }
 
@@ -61,7 +64,7 @@ type Mutation {
     # verifyEmail(input: VerifyEmailInput! @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\VerifyEmail@resolve")
     # updatePassword(input: UpdatePassword! @spread): UpdatePasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\UpdatePassword@resolve") @guard(with: ["api"])
      
-    loginUser(input: LoginInput @spread): AuthPayload! 
+    loginUser(input: LoginInput @spread): AuthPayload! @LoginInputValidation
     registerUser(input: RegisterInput @spread): RegisterResponse! 
     verifyEmailUser(input: VerifyEmailInput! @spread): AuthPayload!
     forgotPasswordUser(input: ForgotPasswordInput! @spread): ForgotPasswordResponse!
@@ -106,16 +109,19 @@ type Mutation {
     updateFiltersValue( id: ID!,filter_id: Int, property_id: Int,value: String): FiltersValue! @update
     deleteFiltersValue(id:ID!): FiltersValue! @delete
 
-    createFilter(name: String!): Country! @create
-    updateFilter(id:ID!,name: String): Country! @update
+    createFilter(name: String!, filter_type:FiltersValuesEnum ): Country! @create
+    updateFilter(id:ID!,name: String, filter_type:FiltersValuesEnum): Country! @update
     deleteFilter(id:ID!): Country! @delete
 
 
-    createProperty(property_type_id: Int!,deal_type_id: Int!,property_number: Int!,bulding_type_id: Int!,latitude: Float!,longitude: Float!,country_id: Int!,city_id: Int!,address: String!,postal_code: String!, property_images:String!): Property  @middleware(checks: ["auth:api"])
+    createProperty(property_type_id: Int!,deal_type_ids: [Int!]!,property_number: Int!,bulding_type_id: Int!,latitude: Float!,longitude: Float!,country_id: Int!,city_id: Int!,address: String!,postal_code: String!, property_images:String!): Property  @middleware(checks: ["auth:api"])
     updateProperty( id: ID!,property_type_id: Int,deal_type_id: Int,property_number: Int,bulding_type_id: Int,latitude: Float,longitude: Float,country_id: Int,city_id: Int,address: String,postal_code: String,property_images:String): Property  @middleware(checks: ["auth:api"]) 
     deleteProperty(id:ID!): Property!  @middleware(checks: ["auth:api"]) 
     deletePropertyImages(images_ids:[Int!]!): String!  @middleware(checks: ["auth:api"]) 
 
+    createPropertyDeal( property_id: Int!, deal_type_id: Int!, price: Float!): Country! @create
+    updatePropertyDeal(id:ID!,property_id: Int!, deal_type_id: Int!, price: Float!): Country! @update
+    deletePropertyDeal(id:ID!): Country! @delete
 
 
 
@@ -176,6 +182,7 @@ type PropertyType{
     id: ID!
     name: String!
     properties: [Property!]!
+    filters: [Filter!]!
 }
 
 
@@ -183,6 +190,7 @@ type DealType{
     id: ID!
     name: String!
     properties: [Property!]!
+    property_deals: [PropertyDeal!]!
 }
 
 type BuldingType{
@@ -203,12 +211,20 @@ type City{
     parent_id: Int!
     properties: [Property!]!
 }
+type PropertyDeal{
+    id: ID!
+    property_id: Int!
+    deal_type_id: Int!
+    price: Float!
+}
+
 
 type Property{
     id: ID!
     property_type: PropertyType!
     user: User!
-    deal_type: DealType!
+    property_deals: [PropertyDeal!]!
+    deal_types: [DealType!]!
     property_number: Int!
     bulding_type: BuldingType!
     latitude: Float!
@@ -235,13 +251,18 @@ type FiltersValue{
     value: String!
 
 }
+type FilterPropertyType{
+    id: ID!
+    filter_id: Int!
+    property_type_id: Int!
+}
 
 type Filter{
     id: ID!
     name: String!
     filter_type: FiltersValuesEnum!
-    filters_values: FiltersValue!
-
+    filters_values: [FiltersValue!]!
+    property_types: [PropertyType!]!
 }
 
 
@@ -250,4 +271,5 @@ enum FiltersValuesEnum {
   text @enum(value: text)
   number @enum(value: number)
   textarea @enum(value: textarea)
+  checkbox @enum(value: checkbox)
 }

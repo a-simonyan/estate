@@ -14,6 +14,8 @@ class PropertyType extends Model
   public function properties(){
     return $this->hasMany('App\Property','property_type_id','id');
   }
-
+  public function filters(){
+    return $this->belongsToMany('App\Filter','filter_property_types','property_type_id','filter_id');
+  }
   
 }
