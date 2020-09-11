@@ -34,7 +34,7 @@ class RegisterUser extends BaseAuthResolver
 
             return [
                 'tokens' => [],
-                'status' => 'MUST_VERIFY_EMAIL',
+                'status' => __('messages.must_verify_email'),
             ];
         }
         $credentials = $this->buildCredentials([

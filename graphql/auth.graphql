@@ -50,28 +50,31 @@ enum RegisterStatuses {
 }
 
 input ForgotPasswordInput {
-    email: String! @rules(apply: ["required", "email"])
-    password_reset_url: String! @rules(apply: ["required"])
+    email: String! 
+    password_reset_url: String! 
+    language: String
 }
 
 input NewPasswordWithCodeInput {
-    email: String! @rules(apply: ["required", "email"])
-    token: String! @rules(apply: ["required", "string"])
-    password: String! @rules(apply: ["required", "confirmed", "min:8"])
+    email: String!
+    token: String! 
+    password: String! 
     password_confirmation: String!
+    language: String
 }
 
 input RegisterInput {
-    first_name: String! @rules(apply: ["required", "string"]) 
-    last_name: String! @rules(apply: ["required", "string"])
-    picture: String!
-    picture_type:  String! @rules(apply: ["string","in:jpeg,jpg,png"])
-    email: String! @rules(apply: ["required", "email", "unique:users,email"])
+    first_name: String! 
+    last_name: String!
+    picture: String
+    picture_type:  String 
+    email: String! 
     phones: [String!]!
     user_type_id: Int
-    password: String! @rules(apply: ["required", "confirmed", "min:8"])
+    password: String!
     password_confirmation: String!
     email_verification_url: String!
+    language: String
 }
 
 input SocialLoginInput {
@@ -81,6 +84,7 @@ input SocialLoginInput {
 
 input VerifyEmailInput {
     token: String!
+    language: String
 }
 
 input UpdatePassword {

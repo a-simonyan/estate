@@ -4,26 +4,27 @@ namespace App\GraphQL\Directives;
 
 use Illuminate\Validation\Rule;
 use Nuwave\Lighthouse\Schema\Directives\ValidationDirective;
-use App;
+use App\Http\Traits\ConfigTrait;
 
 class LoginInputValidationDirective extends ValidationDirective 
 {
+    use ConfigTrait;
+
     public function rules(): array
     {
+        $this->setLanguage($this->args);  
+        
         return [
             'username' => ['required'],
             'password' => ['required'],
         ];
     }
-    public function messages(): array
-    {   $args=$this->args;  
-        if(array_key_exists('language', $args)&&in_array($args['language'],Config('languages.languages'))){        
-            App::setLocale($args['language']);
-        }
-
-        return [
-            'username.required' =>  __('messages.required'),
-            'password.required' =>  __('messages.required'),
-        ];
-    }
+    // public function messages(): array
+    // {   
+    //     $this->setLanguage($this->args);  
+    //     return [
+    //         'username.required' =>  __('messages.validation_required'),
+    //         'password.required' =>  __('messages.validation_required'),
+    //     ];
+    // }
 }

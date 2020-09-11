@@ -9,7 +9,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 use Nuwave\Lighthouse\Exceptions\DefinitionException;
 use Illuminate\Http\Request;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\AuthenticationException;
-use App;
+use App\Exceptions\SendException;
 
 
 
@@ -21,11 +21,9 @@ class LoginUser extends BaseAuthResolver
      */
     public function __invoke($_, array $args)
     {
-        if(array_key_exists('language', $args)&&in_array($args['language'],Config('languages.languages'))){        
-             App::setLocale($args['language']);
-         }  
+       
         $user = $this->findUser($args['username']);
-        if($user&&$user->email_verified_at){
+     if($user&&$user->email_verified_at){
          $credentials = $this->buildCredentials($args);
          $response = $this->makeRequest($credentials);
 
@@ -37,9 +35,23 @@ class LoginUser extends BaseAuthResolver
                'user' => $user,
            ]
        );
-     } else{
-       return new DefinitionException("email no verification");
+     } else {
+    //    return new DefinitionException("email no verification");
+      if($user){
+       throw new SendException(
+         'error',
+         __('messages.error_email_verification')
+       );
+      } else {
+        throw new SendException(
+            'error',
+            __('messages.Incorrect_username_or_password')
+        );          
+  
+      }
+
      }
+
     }
     protected function validateUser($user)
     {
@@ -83,7 +95,11 @@ class LoginUser extends BaseAuthResolver
         $response = app()->handle($request);
         $decodedResponse = json_decode($response->getContent(), true);
         if ($response->getStatusCode() != 200) {
-            throw new AuthenticationException( __('messages.Incorrect_username_or_password'), __('messages.Incorrect_username_or_password'));
+            throw new SendException(
+                'error',
+                __('messages.Incorrect_username_or_password')
+            );
+        
         }
 
         return $decodedResponse;

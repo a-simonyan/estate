@@ -23,7 +23,7 @@ class VerifyEmailUser
         $email = decrypt($decodedToken->hash);
         if (Carbon::parse($expiration) < now()) {
             throw new ValidationException([
-                'token' => __('The token is invalid'),
+                'token' => __('messages.the_token_is_invalid'),
             ], 'Validation Error');
         }
         $model = app(config('auth.providers.users.model'));
@@ -39,7 +39,7 @@ class VerifyEmailUser
             return $tokens;
         } catch (ModelNotFoundException $e) {
             throw new ValidationException([
-                'token' => __('The token is invalid'),
+                'token' => __('messages.the_token_is_invalid'),
             ], 'Validation Error');
         }
     }
