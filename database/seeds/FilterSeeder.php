@@ -11,6 +11,8 @@ class FilterSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Filter::class, 10)->create();
+        factory(App\Filter::class, 10)->create()->each(function($u){
+            $u->filter_property_types()->saveMany(factory(App\FilterPropertyType::class,1)->make() );
+        });
     }
 }

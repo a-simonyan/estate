@@ -9,4 +9,6 @@ return [
     'email_sent'               => 'Նամակը ուղարկվել է',
     'email_not_sent'           => 'Նամակը չի ուղարկվել է',
     'the_token_is_invalid'     => 'Տոկենը անվավեր է',
+    'must_be_png_type'         => 'Պետք է լինի png ֆոռմատի',
+    'language_not_found'       => 'Լեզոն չի գտնվել',
 ];

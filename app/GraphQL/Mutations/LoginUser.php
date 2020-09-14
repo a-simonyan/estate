@@ -36,19 +36,18 @@ class LoginUser extends BaseAuthResolver
            ]
        );
      } else {
-    //    return new DefinitionException("email no verification");
-      if($user){
-       throw new SendException(
-         'error',
-         __('messages.error_email_verification')
-       );
-      } else {
-        throw new SendException(
-            'error',
-            __('messages.Incorrect_username_or_password')
-        );          
-  
-      }
+          if($user){
+           throw new SendException(
+             'error',
+             __('messages.error_email_verification')
+           );
+          } else {
+            throw new SendException(
+                'error',
+                __('messages.Incorrect_username_or_password')
+            );          
+      
+          }
 
      }
 

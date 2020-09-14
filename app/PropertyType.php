@@ -8,7 +8,7 @@ class PropertyType extends Model
 {
   public $timestamps = false;
   protected $table = "property_types";
-  protected $fillable = ['name'];
+  protected $fillable = ['name','icon_class'];
 
 
   public function properties(){

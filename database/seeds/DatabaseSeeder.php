@@ -25,13 +25,12 @@ class DatabaseSeeder extends Seeder
 
         $this->call(PropertySeeder::class);
 
+        $this->call(FilterGroupSeeder::class);
         $this->call(FilterSeeder::class);
 
         $this->call(FiltersValueSeeder::class);
 
         $this->call(PropertyImageSeeder::class);
-
-
 
         
     }

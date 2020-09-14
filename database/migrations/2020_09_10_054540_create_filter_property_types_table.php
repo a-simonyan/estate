@@ -20,6 +20,7 @@ class CreateFilterPropertyTypesTable extends Migration
             $table->foreignId('property_type_id');
             $table->foreign('property_type_id')->references('id')->on('property_types')->onDelete('cascade');
             
+            $table->unique(['filter_id', 'property_type_id']);
         });
     }
 

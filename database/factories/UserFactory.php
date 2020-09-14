@@ -14,6 +14,8 @@ use App\Property;
 use App\Filter;
 use App\FiltersValue;
 use App\PropertyImage;
+use App\FilterPropertyType;
+use App\PropertyDeal;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
@@ -65,6 +67,7 @@ $factory->define(Translation::class, function(Faker $faker){
 $factory->define(PropertyType::class, function(Faker $faker){
     return [
         'name' => $faker->unique()->word,
+        'icon_class' => 'fa fa-home'
     ];
 });
 
@@ -94,9 +97,8 @@ $factory->define(City::class, function(Faker $faker){
 
 $factory->define(Property::class, function(Faker $faker){
     return [
-        'property_type_id' => $faker->numberBetween($min = 1, $max = 10),
+        'property_type_id' => 1,
         'user_id' => $faker->numberBetween($min = 1, $max = 2),
-        'deal_type_id' => $faker->numberBetween($min = 1, $max = 10),
         'property_number' => $faker->buildingNumber,
         'bulding_type_id' => $faker->numberBetween($min = 1, $max = 10),
         'latitude' => $faker->unique()->latitude($min = -90, $max = 90),
@@ -104,15 +106,31 @@ $factory->define(Property::class, function(Faker $faker){
         'country_id' => $faker->numberBetween($min = 1, $max = 5),
         'city_id' => $faker->numberBetween($min = 1, $max = 50),
         'address' => $faker->address,
-        'postal_code' => $faker->postcode
+        'postal_code' => $faker->postcode,
+        'property_state' => $faker->randomElement(['good','average','poor']),
     ];
 });
+$factory->define(PropertyDeal::class, function(Faker $faker){
+    return [
+        'deal_type_id' => $faker->numberBetween($min = 1, $max = 10),
+        'price' => $faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = 1000)        
+    ];
+});
+
 
 $factory->define(Filter::class, function(Faker $faker){
     return [
         'name' => $faker->unique()->word,
-        'filter_type' => $faker->randomElement(['radio', 'text', 'number', 'textarea']),
+        'filter_type' => $faker->randomElement(['text','number','checkbox']),
+        'icon_class' => 'fa fa-home',
+        'filter_group_id' => $faker->randomElement([ null,1,2]),
 
+    ];
+});
+
+$factory->define(FilterPropertyType::class, function(Faker $faker){
+    return [
+        'property_type_id' => 1,
     ];
 });
 

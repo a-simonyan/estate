@@ -44,7 +44,7 @@ class Property extends Model
        return $this->hasMany('App\PropertyDeal','property_id','id'); 
    }
    public function deal_types(){
-    return $this->belongsToMany('App\DealType','property_deals','property_id','deal_type_id');
+       return $this->belongsToMany('App\DealType','property_deals','property_id','deal_type_id');
    }
 
 

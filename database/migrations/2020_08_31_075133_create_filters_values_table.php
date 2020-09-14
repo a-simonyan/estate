@@ -19,7 +19,7 @@ class CreateFiltersValuesTable extends Migration
             $table->foreign('filter_id')->references('id')->on('filters')->onDelete('cascade');
             $table->foreignId('property_id');
             $table->foreign('property_id')->references('id')->on('properties')->onDelete('cascade');
-            $table->string('value');
+            $table->string('value')->nullable();
         });
     }
 

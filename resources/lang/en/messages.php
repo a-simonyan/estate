@@ -9,6 +9,8 @@ return [
     'email_sent'               => 'Email sent',
     'email_not_sent'           => 'Email not sent', 
     'the_token_is_invalid'     => 'The token is invalid',
+    'must_be_png_type'         => 'Must be png type',  
+    'language_not_found'       => 'Language not found'
 
 
 ];

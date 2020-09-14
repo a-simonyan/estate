@@ -77,9 +77,9 @@ type Mutation {
     updateUserType(id:ID!,name: String): UserType! @update
     deleteUserType(id:ID!): UserType! @delete
 
-    createLanguage(name: String!): Language! @create
-    updateLanguage(id:ID!,name: String): Language! @update
-    deleteLanguage(id:ID!): Language! @delete
+    createLanguage(name: String!,code:String!,flag_image:ImageAndType!, language: String): Language! 
+    updateLanguage(id:ID!,name: String,code:String,flag_image:ImageAndType, language: String): Language! 
+    deleteLanguage(id:ID!,language: String): Language! 
 
     createTranslation(name: String!, translated_name: String!, language_id: Int!): Translation! @create
     updateTranslation( id: ID!,name: String, translated_name: String, language_id: Int!): Translation! @update
@@ -114,14 +114,14 @@ type Mutation {
     deleteFilter(id:ID!): Country! @delete
 
 
-    createProperty(property_type_id: Int!,deal_type_ids: [Int!]!,property_number: Int!,bulding_type_id: Int!,latitude: Float!,longitude: Float!,country_id: Int!,city_id: Int!,address: String!,postal_code: String!, property_images:String!): Property  @middleware(checks: ["auth:api"])
-    updateProperty( id: ID!,property_type_id: Int,deal_type_id: Int,property_number: Int,bulding_type_id: Int,latitude: Float,longitude: Float,country_id: Int,city_id: Int,address: String,postal_code: String,property_images:String): Property  @middleware(checks: ["auth:api"]) 
+    createProperty(property_type_id: Int!,deal_type_ids: [Int!]!,property_number: Int!,bulding_type_id: Int!,latitude: Float!,longitude: Float!,country_id: Int!,city_id: Int!,address: String!,postal_code: String!, property_images:[ImageAndType!],property_filter_values:[PropertyFilterValue!]): Property @CreatePropertyValidation  @middleware(checks: ["auth:api"]) 
+    updateProperty( id: ID!,property_type_id: Int,deal_type_id: Int,property_number: Int,bulding_type_id: Int,latitude: Float,longitude: Float,country_id: Int,city_id: Int,address: String,postal_code: String,property_images:[ImageAndType],property_filter_values:[PropertyFilterValue!]): Property  @middleware(checks: ["auth:api"]) 
     deleteProperty(id:ID!): Property!  @middleware(checks: ["auth:api"]) 
     deletePropertyImages(images_ids:[Int!]!): String!  @middleware(checks: ["auth:api"]) 
 
-    createPropertyDeal( property_id: Int!, deal_type_id: Int!, price: Float!): Country! @create
-    updatePropertyDeal(id:ID!,property_id: Int!, deal_type_id: Int!, price: Float!): Country! @update
-    deletePropertyDeal(id:ID!): Country! @delete
+    createPropertyDeal( property_id: Int!, deal_type_id: Int!, price: Float!): PropertyDeal! @create
+    updatePropertyDeal(id:ID!,property_id: Int!, deal_type_id: Int!, price: Float!): PropertyDeal! @update
+    deletePropertyDeal(id:ID!): PropertyDeal! @delete
 
 
 
@@ -131,11 +131,14 @@ type Mutation {
 }
 
 
-type PropertyImageArray{
+input ImageAndType{
     type: String!
     image: String!
 }
-
+input PropertyFilterValue{
+    filter_id: int!
+    value: String
+}
 
 
 
@@ -166,6 +169,8 @@ type User {
 type Language {
     id: ID!
     name: String!
+    code: String!
+    flag_image: String!
     translations: [Translation!]!
 
 }
@@ -181,6 +186,7 @@ type Translation{
 type PropertyType{
     id: ID!
     name: String!
+    icon_class: String
     properties: [Property!]!
     filters: [Filter!]!
 }
@@ -256,10 +262,16 @@ type FilterPropertyType{
     filter_id: Int!
     property_type_id: Int!
 }
+type FilterGroup{
+    id: ID!
+    name: String!
+    filters: [Filter!]!
+}
 
 type Filter{
     id: ID!
     name: String!
+    icon_class: String
     filter_type: FiltersValuesEnum!
     filters_values: [FiltersValue!]!
     property_types: [PropertyType!]!
@@ -267,9 +279,7 @@ type Filter{
 
 
 enum FiltersValuesEnum {
-  radio @enum(value: radio)
   text @enum(value: text)
   number @enum(value: number)
-  textarea @enum(value: textarea)
   checkbox @enum(value: checkbox)
 }
