@@ -18,4 +18,5 @@ class PropertyType extends Model
     return $this->belongsToMany('App\Filter','filter_property_types','property_type_id','filter_id');
   }
   
+  
 }
