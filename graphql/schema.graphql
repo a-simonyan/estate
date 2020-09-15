@@ -56,8 +56,9 @@ type Query {
 
 
 
+    #  create new Query
 
-     test:String
+     propertyTypeFilterGroup(property_type_id:Int):String
 
 }
 
@@ -286,8 +287,8 @@ type Filter{
     filters_values: [FiltersValue!]!
     property_types: [PropertyType!]!
     filter_group_id:ID
+    filter_group: FilterGroup
 }
-
 
 enum FiltersValuesEnum {
   text @enum(value: text)

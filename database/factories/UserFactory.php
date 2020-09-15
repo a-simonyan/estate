@@ -123,7 +123,7 @@ $factory->define(Filter::class, function(Faker $faker){
         'name' => $faker->unique()->word,
         'filter_type' => $faker->randomElement(['text','number','checkbox']),
         'icon_class' => 'fa fa-home',
-        'filter_group_id' => $faker->randomElement([ null,1,2]),
+        'filter_group_id' => $faker->randomElement([1,2,3]),
 
     ];
 });
