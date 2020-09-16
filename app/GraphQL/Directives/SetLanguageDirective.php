@@ -4,16 +4,17 @@ namespace App\GraphQL\Directives;
 
 use Illuminate\Validation\Rule;
 use Nuwave\Lighthouse\Schema\Directives\ValidationDirective;
+use App\Http\Traits\ConfigTrait;
 
 
-class VerifyEmailInputValidationDirective extends ValidationDirective 
+class SetLanguageDirective extends ValidationDirective 
 {
-
+    use ConfigTrait;
+    
     public function rules(): array
     {
-        
-        return [
-            'token' => ['required'],
-        ];
+        $this->setLanguage($this->args);
+        return [];
     }
+    
 }

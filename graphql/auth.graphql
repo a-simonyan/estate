@@ -45,8 +45,8 @@ type UpdatePasswordResponse {
 }
 
 enum RegisterStatuses {
-    MUST_VERIFY_EMAIL
-    SUCCESS
+    must_verify_email
+    success
 }
 
 input ForgotPasswordInput {
@@ -69,7 +69,7 @@ input RegisterInput {
     picture: String
     picture_type:  String 
     email: String! 
-    phones: [String!]!
+    phones: [String]
     user_type_id: Int
     password: String!
     password_confirmation: String!

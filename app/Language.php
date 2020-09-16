@@ -13,4 +13,8 @@ class Language extends Model
     public function translations(){
         return $this->hasMany('App\Translation','language_id','id');
     }
+
+    public function translate_descriptions(){
+        return $this->hasMany('App\TranslateDescription','language_id','id'); 
+    }
 }

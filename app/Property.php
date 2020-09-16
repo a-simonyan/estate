@@ -46,6 +46,9 @@ class Property extends Model
    public function deal_types(){
        return $this->belongsToMany('App\DealType','property_deals','property_id','deal_type_id');
    }
+   public function translate_descriptions(){
+      return $this->hasMany('App\TranslateDescription','property_id','id'); 
+   }
 
 
 }

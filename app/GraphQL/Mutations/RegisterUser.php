@@ -23,7 +23,9 @@ class RegisterUser extends BaseAuthResolver
         $model = app(config('auth.providers.users.model'));
         $input = collect($args)->except('password_confirmation')->toArray();
         $input['password'] = Hash::make($input['password']);
-        $input['picture'] = $this->savePicture($input['picture'],$input['picture_type']); 
+        if(!empty($input['picture'])){
+           $input['picture'] = $this->savePicture($input['picture'],$input['picture_type']); 
+        }
         $model->fill($input);
         $model->save();
       
@@ -34,7 +36,7 @@ class RegisterUser extends BaseAuthResolver
 
             return [
                 'tokens' => [],
-                'status' => __('messages.must_verify_email'),
+                'status' => 'must_verify_email',
             ];
         }
         $credentials = $this->buildCredentials([
@@ -46,13 +48,15 @@ class RegisterUser extends BaseAuthResolver
         $response['user'] = $user;
         event(new Registered($user));
 
-        $phones=$input['phones'];
-        $id=$user->id;
-        $this->savePhone( $phones, $id);
+        if(!empty($input['phones'])){
+            $phones=$input['phones'];
+            $id=$user->id;
+            $this->savePhone( $phones, $id);
+        }
 
         return [
             'tokens' => $response,
-            'status' => 'SUCCESS',
+            'status' => 'success',
         ];
     }
 

@@ -12,7 +12,8 @@ class FilterGroupSeeder extends Seeder
      */
     public function run()
     {
-        $items = [            
+        $items = [          
+            ['name' => 'undefined'],  
             ['name' => 'other'],
             ['name' => 'utilities'],
         ];

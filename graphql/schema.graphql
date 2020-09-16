@@ -20,7 +20,7 @@ type Query {
     translations: [Translation!]! @paginate(defaultCount: 10)
     translation(id: ID @eq): Translation @find
 
-    propertyTypes: [PropertyType!]! @paginate(defaultCount: 10)
+    propertyTypes(language: String): [PropertyType!]! @paginate(defaultCount: 10)
     ropertyType(id: ID @eq): PropertyType @find
 
     dealTypes: [DealType!]! @paginate(defaultCount: 10)
@@ -54,11 +54,17 @@ type Query {
     propertyDeal(id: ID @eq): PropertyDeal @find
 
 
+    translateDescription: [TranslateDescription!]! @paginate(defaultCount: 10)
+    translateDescription(id: ID @eq): TranslateDescription @find
+
+
 
 
     #  create new Query
 
      propertyTypeFilterGroup(property_type_id:Int):String
+
+     test(language: String):String @SetLanguage
 
 }
 
@@ -73,11 +79,11 @@ type Mutation {
     # verifyEmail(input: VerifyEmailInput! @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\VerifyEmail@resolve")
     # updatePassword(input: UpdatePassword! @spread): UpdatePasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\UpdatePassword@resolve") @guard(with: ["api"])
      
-    loginUser(input: LoginInput @spread): AuthPayload! @LoginInputValidation
-    registerUser(input: RegisterInput @spread): RegisterResponse! @RegisterInputValidation
-    verifyEmailUser(input: VerifyEmailInput! @spread): AuthPayload! @VerifyEmailInputValidation
-    forgotPasswordUser(input: ForgotPasswordInput! @spread): ForgotPasswordResponse! @ForgotPasswordInputValidation
-    resetPasswordUser(input: NewPasswordWithCodeInput @spread): ForgotPasswordResponse! @NewPasswordWithCodeInputValidation
+    loginUser(input: LoginInput @spread): AuthPayload! @LoginInputValidation 
+    registerUser(input: RegisterInput @spread): RegisterResponse! @RegisterInputValidation @SetLanguage
+    verifyEmailUser(input: VerifyEmailInput! @spread): AuthPayload! @VerifyEmailInputValidation @SetLanguage
+    forgotPasswordUser(input: ForgotPasswordInput!  @spread): ForgotPasswordResponse!  @ForgotPasswordInputValidation @SetLanguage
+    resetPasswordUser(input: NewPasswordWithCodeInput @spread): ForgotPasswordResponse! @NewPasswordWithCodeInputValidation @SetLanguage
 
 
 
@@ -132,6 +138,10 @@ type Mutation {
     updatePropertyDeal(id:ID!,property_id: Int!, deal_type_id: Int!, price: Float!): PropertyDeal! @update
     deletePropertyDeal(id:ID!): PropertyDeal! @delete
 
+
+    createTranslateDescription( property_id: Int!, language_id: Int!, description: String!): TranslateDescription! @create
+    updateTranslateDescription(id:ID!,property_id: Int, language_id: Int, description: String): TranslateDescription! @update
+    deleteTranslateDescription(id:ID!): TranslateDescription! @delete
 
 
 
@@ -252,6 +262,11 @@ type Property{
     property_images:[PropertyImage!]!
     filters_values: [FiltersValue!]!
 
+}
+type TranslateDescription{
+    id: ID!
+    property: Property!
+    language: Language!
 }
 
 type PropertyImage{
