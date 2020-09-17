@@ -3,12 +3,20 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Traits\TranslationTrait;
 
 class PropertyType extends Model
 {
+  use TranslationTrait;
+
   public $timestamps = false;
   protected $table = "property_types";
   protected $fillable = ['name','icon_class'];
+
+  public function getNameAttribute($value)
+  {
+      return $this->translat($value);
+  }
 
 
   public function properties(){

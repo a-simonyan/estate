@@ -1,7 +1,6 @@
 <?php
 
 namespace  App\Http\Traits;
-use App\Config;
 use App;
 
 trait ConfigTrait {
