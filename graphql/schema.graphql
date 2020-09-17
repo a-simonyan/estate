@@ -129,7 +129,7 @@ type Mutation {
     deleteFilter(id:ID!): Country! @delete
 
 
-    createProperty(property_type_id: Int!,deal_type_ids: [Int!]!,property_number: Int!,bulding_type_id: Int!,latitude: Float!,longitude: Float!,country_id: Int!,city_id: Int!,address: String!,postal_code: String!, property_images:[ImageAndType!],property_filter_values:[PropertyFilterValue!]): Property @CreatePropertyValidation  @middleware(checks: ["auth:api"]) 
+    createProperty(input: CreatePropertyInput @spread):Property!  @middleware(checks: ["auth:api"]) @SetLanguage
     updateProperty( id: ID!,property_type_id: Int,deal_type_id: Int,property_number: Int,bulding_type_id: Int,latitude: Float,longitude: Float,country_id: Int,city_id: Int,address: String,postal_code: String,property_images:[ImageAndType],property_filter_values:[PropertyFilterValue!]): Property  @middleware(checks: ["auth:api"]) 
     deleteProperty(id:ID!): Property!  @middleware(checks: ["auth:api"]) 
     deletePropertyImages(images_ids:[Int!]!): String!  @middleware(checks: ["auth:api"]) 
@@ -149,11 +149,38 @@ type Mutation {
     getimage:String
 }
 
+input CreatePropertyInput{
+    property_type_id: Int!,
+    property_deal_types:[PropertyDealTypes!]!,
+    property_number: Int!,
+    bulding_type_id: Int!,
+    latitude: Float!,
+    longitude: Float!,
+    country_id: Int!,
+    city_id: Int!,
+    address: String!,
+    postal_code: String!,
+    property_state: String!,
+    property_images:[ImageAndType],
+    property_filter_values: [PropertyFilterValue!], 
+    translate_descriptions: [TranslateDescriptionInput],
+    language: String
+}
+input PropertyDealTypes{
+    deal_type_id: Int!,
+    price: Float
+}
+
+input TranslateDescriptionInput{
+    language: String!
+    description: String!
+}
 
 input ImageAndType{
     type: String!
     image: String!
 }
+
 input PropertyFilterValue{
     filter_id: Int!
     value: String
@@ -177,8 +204,7 @@ type UserType{
 
 type User {
     id: ID!
-    first_name: String!
-    last_name: String!
+    full_name: String!
     picture: String!
     email: String!
     phones:[Phone!]!
@@ -259,8 +285,12 @@ type Property{
     city: City!
     address: String!
     postal_code: String!
+    property_state: String!
+    created_at: Date
+    updated_at: Date
     property_images:[PropertyImage!]!
     filters_values: [FiltersValue!]!
+    translate_descriptions: [TranslateDescription!]!
 
 }
 type TranslateDescription{
@@ -309,4 +339,10 @@ enum FiltersValuesEnum {
   text @enum(value: text)
   number @enum(value: number)
   checkbox @enum(value: checkbox)
+}
+
+enum PropertyStateEnum {
+  good @enum(value: good)
+  average @enum(value: average)
+  poor @enum(value: poor)
 }

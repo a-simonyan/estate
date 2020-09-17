@@ -16,7 +16,9 @@ class Property extends Model
                            'country_id',
                            'city_id',
                            'address',
-                           'postal_code'];
+                           'postal_code',
+                           'property_state',
+                        ];
 
 
    public function   property_type(){

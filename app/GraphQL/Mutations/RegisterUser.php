@@ -23,7 +23,7 @@ class RegisterUser extends BaseAuthResolver
         $model = app(config('auth.providers.users.model'));
         $input = collect($args)->except('password_confirmation')->toArray();
         $input['password'] = Hash::make($input['password']);
-        if(!empty($input['picture'])){
+        if(!empty($input['picture'])&&!empty($input['picture_type'])){
            $input['picture'] = $this->savePicture($input['picture'],$input['picture_type']); 
         }
         $model->fill($input);

@@ -11,8 +11,7 @@ class RegisterInputValidationDirective extends ValidationDirective
     public function rules(): array
     {
         return [
-            'first_name'   => ['required', 'string'], 
-            'last_name'    => ['required', 'string'],
+            'full_name'   => ['required', 'string'], 
             'picture'      => ['string','nullable'],
             'picture_type' => ['string','in:jpeg,jpg,png','nullable'],
             'email'        => ['required', 'email', 'unique:users'],

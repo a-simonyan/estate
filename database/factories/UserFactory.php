@@ -32,8 +32,7 @@ use Illuminate\Support\Str;
 
 $factory->define(User::class, function (Faker $faker) {
     return [
-        'first_name' => $faker->name,
-        'last_name'  => $faker->lastName,
+        'full_name' => $faker->name,
         'picture' =>$faker->imageUrl($width = 640, $height = 480),
         'email' => $faker->unique()->safeEmail,
         'user_type_id' => 1,

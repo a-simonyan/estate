@@ -64,8 +64,7 @@ input NewPasswordWithCodeInput {
 }
 
 input RegisterInput {
-    first_name: String! 
-    last_name: String!
+    full_name: String! 
     picture: String
     picture_type:  String 
     email: String! 
