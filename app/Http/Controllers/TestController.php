@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use File;
 use App\Property;
+use App\User;
 // use App\Singleton\RestUrl;
 
 class TestController extends Controller
@@ -67,10 +68,8 @@ class TestController extends Controller
 
     public function json(){
 
-        // $restUrl =RestUrl::getrestUrl();
-        // app('RestUrl')->setUrl('my');
-        $property = Property::get()->groupBy('property_type_id');
+       $user=User::all();
 
-        dd($property);
+       dd($user);
     }
 }
