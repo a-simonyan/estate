@@ -23,13 +23,13 @@ class ResetPasswordUser
 
         if ($response === Password::PASSWORD_RESET) {
             return [
-                'status'  => 'PASSWORD_UPDATED',
-                'message' => __('messages.'.$response),
+                'status'  =>  1,
+                'message' => __($response),
             ];
         }
 
         return [
-            'status'  => 'PASSWORD_NOT_UPDATED',
+            'status'  => 0,
             'message' => __($response),
         ];
     }

@@ -30,13 +30,13 @@ type LogoutResponse {
 }
 
 type ForgotPasswordResponse {
-    status: String!
+    status: Int!
     message: String
 }
 
 type RegisterResponse {
     tokens: AuthPayload
-    status: RegisterStatuses!
+    status: Int!
 }
 
 type UpdatePasswordResponse {
@@ -45,8 +45,8 @@ type UpdatePasswordResponse {
 }
 
 enum RegisterStatuses {
-    must_verify_email
-    success
+    true
+    false
 }
 
 input ForgotPasswordInput {
@@ -65,10 +65,7 @@ input NewPasswordWithCodeInput {
 
 input RegisterInput {
     full_name: String! 
-    picture: String
-    picture_type:  String 
     email: String! 
-    phones: [String]
     user_type_id: Int
     password: String!
     password_confirmation: String!

@@ -5,7 +5,7 @@ scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
 
 type Query {
-    users: [User!]! @paginate(defaultCount: 10)
+    users: [User!]! @paginate(defaultCount: 10) @middleware(checks: ["auth:api"])
     user(id: ID @eq): User @find
 
     phones: [Phone!]! @paginate(defaultCount: 10)
