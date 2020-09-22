@@ -68,8 +68,7 @@ class TestController extends Controller
 
     public function json(){
 
-       $user=User::all();
-
-       dd($user);
+      
+     return 'json';
     }
 }

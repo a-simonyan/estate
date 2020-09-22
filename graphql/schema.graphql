@@ -21,13 +21,13 @@ type Query {
     translation(id: ID @eq): Translation @find
 
     propertyTypes(language: String): [PropertyType!]! @paginate(defaultCount: 10) @SetLanguage
-    propertyType(id: ID @eq): PropertyType @find
+    propertyType(id: ID @eq,language: String): PropertyType @find @SetLanguage
 
-    dealTypes: [DealType!]! @paginate(defaultCount: 10)
-    dealType(id: ID @eq): DealType @find
+    dealTypes(language: String): [DealType!]! @paginate(defaultCount: 10) @SetLanguage
+    dealType(id: ID @eq, language: String): DealType @find @SetLanguage
 
-    buldingTypes: [BuldingType!]! @paginate(defaultCount: 10)
-    buldingType(id: ID @eq): BuldingType @find
+    buldingTypes(language: String): [BuldingType!]! @paginate(defaultCount: 10) @SetLanguage
+    buldingType(id: ID @eq,language: String): BuldingType @find @SetLanguage
 
     countries: [Country!]! @paginate(defaultCount: 10)
     country(id: ID @eq): Country @find
@@ -35,23 +35,23 @@ type Query {
     cities: [City!]! @paginate(defaultCount: 10)
     city(id: ID @eq): City @find
 
-    properties: [Property!]! @paginate(defaultCount: 10)
-    property(id: ID @eq): Property @find
+    properties(language: String): [Property!]! @paginate(defaultCount: 10) @SetLanguage
+    property(id: ID @eq,language: String): Property @find @SetLanguage
 
     propertyImages: [PropertyImage!]! @paginate(defaultCount: 10)
     propertyImage(id: ID @eq): PropertyImage @find
 
-    filtersValues: [FiltersValue!]! @paginate(defaultCount: 10)
-    filtersValue(id: ID @eq): FiltersValue @find
+    filtersValues(language: String): [FiltersValue!]! @paginate(defaultCount: 10) @SetLanguage
+    filtersValue(id: ID @eq,language: String): FiltersValue @find @SetLanguage
 
-    filters: [Filter!]! @paginate(defaultCount: 10)
-    filter(id: ID @eq): Filter @find
+    filters(language: String): [Filter!]! @paginate(defaultCount: 10) @SetLanguage
+    filter(id: ID @eq,language: String): Filter @find @SetLanguage
 
-    filterGroups: [FilterGroup!]! @paginate(defaultCount: 10)
-    filterGroup(id: ID @eq): FilterGroup @find
+    filterGroups(language: String): [FilterGroup!]! @paginate(defaultCount: 10) @SetLanguage
+    filterGroup(id: ID @eq,language: String): FilterGroup @find @SetLanguage
 
-    propertyDeals: [PropertyDeal!]! @paginate(defaultCount: 10)
-    propertyDeal(id: ID @eq): PropertyDeal @find
+    propertyDeals(language: String): [PropertyDeal!]! @paginate(defaultCount: 10) @SetLanguage
+    propertyDeal(id: ID @eq,language: String): PropertyDeal @find @SetLanguage
 
 
     translateDescription: [TranslateDescription!]! @paginate(defaultCount: 10)
@@ -62,7 +62,8 @@ type Query {
 
     #  create new Query
 
-     propertyTypeFilterGroup(property_type_id:Int):String
+     propertyTypeFilterGroup(property_type_id:Int, language: String):String @SetLanguage
+     propertyFilterGroupFilters(property_id:Int, language: String):String @SetLanguage
 
      test(language: String):String @SetLanguage
 
@@ -152,7 +153,7 @@ type Mutation {
 input CreatePropertyInput{
     property_type_id: Int!,
     property_deal_types:[PropertyDealTypes!]!,
-    property_number: Int!,
+    property_number: Int,
     bulding_type_id: Int!,
     latitude: Float!,
     longitude: Float!,
@@ -309,7 +310,7 @@ type FiltersValue{
     id: ID!
     filter: Filter!
     property: Property!
-    value: String!
+    value: String
 
 }
 type FilterPropertyType{

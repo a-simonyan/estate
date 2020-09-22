@@ -25,7 +25,8 @@ class PropertyTypeFilterGroup
              if($property_type_id){
                $query->where('property_type_id', $property_type_id);
              };
-               $query->select('filters.*','filter_property_types.property_type_id'); }])->get();
+               $query->select('filters.*'); 
+             }])->get();
         return json_encode($filterGroup);
     }
 }

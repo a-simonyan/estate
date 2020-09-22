@@ -2,5 +2,5 @@
 
 return [
 
-    'languages' =>['am','en']
+    'languages' =>['am','en','ru']
 ];
