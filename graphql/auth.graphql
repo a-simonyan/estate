@@ -44,10 +44,10 @@ type UpdatePasswordResponse {
     message: String
 }
 
-enum RegisterStatuses {
-    true
-    false
-}
+# enum RegisterStatuses {
+#     true
+#     false
+# }
 
 input ForgotPasswordInput {
     email: String! 

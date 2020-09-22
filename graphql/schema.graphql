@@ -21,7 +21,7 @@ type Query {
     translation(id: ID @eq): Translation @find
 
     propertyTypes(language: String): [PropertyType!]! @paginate(defaultCount: 10) @SetLanguage
-    ropertyType(id: ID @eq): PropertyType @find
+    propertyType(id: ID @eq): PropertyType @find
 
     dealTypes: [DealType!]! @paginate(defaultCount: 10)
     dealType(id: ID @eq): DealType @find
