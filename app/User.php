@@ -26,7 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-     'full_name','picture', 'email','user_type_id','password','is_admin'
+     'full_name','picture', 'email','user_type_id','password','is_admin','first_time'
     ];
 
     /**
@@ -69,6 +69,9 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     public function properties(){
         return $this->hasMany('App\Property','user_id','id');
+    }
+    public function user_favorite_properties(){
+        return $this->hasMany('App\UserFavoriteProperty','user_id','id');
     }
 
 }

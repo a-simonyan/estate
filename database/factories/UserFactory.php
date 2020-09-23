@@ -63,12 +63,12 @@ $factory->define(Translation::class, function(Faker $faker){
 
 
 
-$factory->define(PropertyType::class, function(Faker $faker){
-    return [
-        'name' => $faker->unique()->word,
-        'icon_class' => 'fa fa-home'
-    ];
-});
+// $factory->define(PropertyType::class, function(Faker $faker){
+//     return [
+//         'name' => $faker->unique()->word,
+//         'icon_class' => 'fa fa-home'
+//     ];
+// });
 
 $factory->define(DealType::class, function(Faker $faker){
     return [

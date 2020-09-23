@@ -27,12 +27,23 @@ class LoginUser extends BaseAuthResolver
          $credentials = $this->buildCredentials($args);
          $response = $this->makeRequest($credentials);
 
+         if($user->first_time){
+            $is_first_time = 0;
+         } else {
+            $is_first_time = 1;
+         };
+
+         $user->update(['first_time' => now()]);
+
        $this->validateUser($user);
        
        return array_merge(
            $response,
            [
                'user' => $user,
+           ],
+           [
+            'is_first_time' => $is_first_time
            ]
        );
      } else {

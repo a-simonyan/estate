@@ -5,59 +5,82 @@ scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
 
 type Query {
-    users: [User!]! @paginate(defaultCount: 10) @middleware(checks: ["auth:api"])
-    user(id: ID @eq): User @find
+    users: [User!]! @all @middleware(checks: ["auth:api"])
+    usersPaginate: [User!]! @paginate(defaultCount: 10) @middleware(checks: ["auth:api"])
+    user(id: ID @eq): User @find @middleware(checks: ["auth:api"])
 
-    phones: [Phone!]! @paginate(defaultCount: 10)
+    phones: [Phone!]! @all 
+    phonesPaginate: [Phone!]! @paginate(defaultCount: 10)
     phone(id: ID @eq): Phone @find
 
-    userTypes: [UserType!]! @paginate(defaultCount: 10)
-    userType(id: ID @eq): Phone @find
+    userTypes(language: String): [UserType!]! @all  @SetLanguage
+    userTypesPaginate(language: String): [UserType!]! @paginate(defaultCount: 10)  @SetLanguage
+    userType(id: ID @eq, language: String): Phone @find  @SetLanguage
 
-    languages: [Language!]! @paginate(defaultCount: 10)
+    languages: [Language!]! @all
+    languagesPaginate: [Language!]! @paginate(defaultCount: 10)
     language(id: ID @eq): Language @find
 
-    translations: [Translation!]! @paginate(defaultCount: 10)
+    translations: [Translation!]! @all
+    translationsPaginate: [Translation!]! @paginate(defaultCount: 10)
     translation(id: ID @eq): Translation @find
 
-    propertyTypes(language: String): [PropertyType!]! @paginate(defaultCount: 10) @SetLanguage
+    propertyTypes(language: String): [PropertyType!]! @all @SetLanguage
+    propertyTypesPaginate(language: String): [PropertyType!]! @paginate(defaultCount: 10) @SetLanguage
     propertyType(id: ID @eq,language: String): PropertyType @find @SetLanguage
 
+    dealTypes(language: String): [DealType!]! @all @SetLanguage
     dealTypes(language: String): [DealType!]! @paginate(defaultCount: 10) @SetLanguage
     dealType(id: ID @eq, language: String): DealType @find @SetLanguage
 
-    buldingTypes(language: String): [BuldingType!]! @paginate(defaultCount: 10) @SetLanguage
+    buldingTypes(language: String): [BuldingType!]! @all @SetLanguage
+    buldingTypesPaginate(language: String): [BuldingType!]! @paginate(defaultCount: 10) @SetLanguage
     buldingType(id: ID @eq,language: String): BuldingType @find @SetLanguage
 
-    countries: [Country!]! @paginate(defaultCount: 10)
+    countries: [Country!]! @all
+    countriesPaginate: [Country!]! @paginate(defaultCount: 10)
     country(id: ID @eq): Country @find
 
-    cities: [City!]! @paginate(defaultCount: 10)
+    cities: [City!]! @all
+    citiesPaginate: [City!]! @paginate(defaultCount: 10)
     city(id: ID @eq): City @find
 
-    properties(language: String): [Property!]! @paginate(defaultCount: 10) @SetLanguage
+
+
+    properties(language: String): [Property!]!  @SetLanguage
+    propertiesPaginate(language: String): [Property!]! @paginate(defaultCount: 10) @SetLanguage
     property(id: ID @eq,language: String): Property @find @SetLanguage
 
-    propertyImages: [PropertyImage!]! @paginate(defaultCount: 10)
+   
+
+    propertyImages: [PropertyImage!]! @all
+    propertyImagesPaginate: [PropertyImage!]! @paginate(defaultCount: 10)
     propertyImage(id: ID @eq): PropertyImage @find
 
-    filtersValues(language: String): [FiltersValue!]! @paginate(defaultCount: 10) @SetLanguage
+    filtersValues(language: String): [FiltersValue!]! @all @SetLanguage
+    filtersValuesPaginate(language: String): [FiltersValue!]! @paginate(defaultCount: 10) @SetLanguage
     filtersValue(id: ID @eq,language: String): FiltersValue @find @SetLanguage
 
-    filters(language: String): [Filter!]! @paginate(defaultCount: 10) @SetLanguage
+    filters(language: String): [Filter!]! @all @SetLanguage
+    filtersPaginate(language: String): [Filter!]! @paginate(defaultCount: 10) @SetLanguage
     filter(id: ID @eq,language: String): Filter @find @SetLanguage
 
+    filterGroups(language: String): [FilterGroup!]! @all @SetLanguage
     filterGroups(language: String): [FilterGroup!]! @paginate(defaultCount: 10) @SetLanguage
     filterGroup(id: ID @eq,language: String): FilterGroup @find @SetLanguage
 
-    propertyDeals(language: String): [PropertyDeal!]! @paginate(defaultCount: 10) @SetLanguage
+    propertyDeals(language: String): [PropertyDeal!]! @all @SetLanguage
+    propertyDealsPaginate(language: String): [PropertyDeal!]! @paginate(defaultCount: 10) @SetLanguage
     propertyDeal(id: ID @eq,language: String): PropertyDeal @find @SetLanguage
 
-
-    translateDescription: [TranslateDescription!]! @paginate(defaultCount: 10)
+    translateDescription: [TranslateDescription!]! @all 
+    translateDescriptionPaginate: [TranslateDescription!]! @paginate(defaultCount: 10)
     translateDescription(id: ID @eq): TranslateDescription @find
 
 
+    userFavoriteProperties(language: String): [UserFavoriteProperty!]! @all @SetLanguage
+    userFavoritePropertiesPaginate(language: String): [UserFavoriteProperty!]! @paginate(defaultCount: 10) @SetLanguage
+    userFavoriteProperty(id: ID @eq,language: String): UserFavoriteProperty @find @SetLanguage
 
 
     #  create new Query
@@ -80,7 +103,7 @@ type Mutation {
     # verifyEmail(input: VerifyEmailInput! @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\VerifyEmail@resolve")
     # updatePassword(input: UpdatePassword! @spread): UpdatePasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\UpdatePassword@resolve") @guard(with: ["api"])
      
-    loginUser(input: LoginInput @spread): AuthPayload! @LoginInputValidation 
+    loginUser(input: LoginInput @spread): AuthPayloadLogin! @LoginInputValidation 
     registerUser(input: RegisterInput @spread): RegisterResponse! @RegisterInputValidation @SetLanguage
     verifyEmailUser(input: VerifyEmailInput! @spread): AuthPayload! @VerifyEmailInputValidation @SetLanguage
     forgotPasswordUser(input: ForgotPasswordInput!  @spread): ForgotPasswordResponse!  @ForgotPasswordInputValidation @SetLanguage
@@ -144,6 +167,10 @@ type Mutation {
     updateTranslateDescription(id:ID!,property_id: Int, language_id: Int, description: String): TranslateDescription! @update
     deleteTranslateDescription(id:ID!): TranslateDescription! @delete
 
+
+    createUserFavoriteProperty(property_id:Int!, language: String): UserFavoriteProperty! @middleware(checks: ["auth:api"]) @SetLanguage
+    updateUserFavoriteProperty(id:ID!, property_id:Int!, language: String): UserFavoriteProperty!  @middleware(checks: ["auth:api"]) @SetLanguage
+    deleteUserFavoriteProperty(id:ID!): UserFavoriteProperty! @delete  @middleware(checks: ["auth:api"]) @SetLanguage
 
 
     #  test
@@ -210,6 +237,7 @@ type User {
     email: String!
     phones:[Phone!]!
     user_type:UserType! 
+    first_time: Date
 }
 
 type Language {
@@ -335,6 +363,14 @@ type Filter{
     property_types: [PropertyType!]!
     filter_group_id:ID
     filter_group: FilterGroup
+}
+
+type UserFavoriteProperty{
+    id:ID
+    user: User
+    property: Property
+    created_at: Date
+    updated_at: Date
 }
 
 enum FiltersValuesEnum {

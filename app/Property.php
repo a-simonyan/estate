@@ -19,6 +19,7 @@ class Property extends Model
                            'address',
                            'postal_code',
                            'property_state',
+                           'is_delete'
                         ];
 
 
@@ -51,6 +52,9 @@ class Property extends Model
    }
    public function translate_descriptions(){
       return $this->hasMany('App\TranslateDescription','property_id','id'); 
+   }
+   public function user_favorite_properties(){
+    return $this->hasMany('App\UserFavoriteProperty','property_id','id');
    }
 
 

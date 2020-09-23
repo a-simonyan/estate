@@ -31,6 +31,7 @@ class CreatePropertiesTable extends Migration
             $table->string('address');
             $table->string('postal_code')->nullable();
             $table->enum('property_state',['good','average','poor']);
+            $table->boolean('is_delete')->default(false);
             $table->timestamps();
         });
     }

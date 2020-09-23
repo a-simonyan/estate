@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use PropertyType;
 
 class PropertyTypeSeeder extends Seeder
 {
@@ -11,6 +12,14 @@ class PropertyTypeSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\PropertyType::class, 10)->create();
+        $items = [            
+            ['name' => 'undefined','icon_class' => 'fa fa-home'],
+            ['name' => 'other','icon_class' => 'fa fa-home'],
+            ['name' => 'home' ,'icon_class' => 'fa fa-home'],
+        ];
+    
+        foreach ($items as $item) {
+            PropertyType::create($item);
+        }
     }
 }
