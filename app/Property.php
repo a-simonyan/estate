@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class Property extends Model
 {
     protected $table = "properties";
@@ -51,6 +52,7 @@ class Property extends Model
    public function translate_descriptions(){
       return $this->hasMany('App\TranslateDescription','property_id','id'); 
    }
+
 
 
 }

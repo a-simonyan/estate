@@ -266,8 +266,8 @@ type City{
 }
 type PropertyDeal{
     id: ID!
-    property_id: Int!
-    deal_type_id: Int!
+    deal_type:DealType
+    property: Property
     price: Float!
 }
 
@@ -292,6 +292,7 @@ type Property{
     property_images:[PropertyImage!]!
     filters_values: [FiltersValue!]!
     translate_descriptions: [TranslateDescription!]!
+  
 
 }
 type TranslateDescription{
