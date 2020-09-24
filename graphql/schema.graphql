@@ -47,8 +47,8 @@ type Query {
 
 
 
-    properties(language: String): [Property!]!  @SetLanguage
-    propertiesPaginate(language: String): [Property!]! @paginate(defaultCount: 10) @SetLanguage
+    properties(language: String, orderBy:OrderBy): [Property!]!  @SetLanguage
+    propertiesPaginate( first:Int, page:Int, language: String, orderBy:OrderBy ): [Property!]!  @SetLanguage
     property(id: ID @eq,language: String): Property @find @SetLanguage
 
    
@@ -213,7 +213,10 @@ input PropertyFilterValue{
     filter_id: Int!
     value: String
 }
-
+input OrderBy{
+    field: String!
+    order: String!
+}
 
 
 

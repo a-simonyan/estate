@@ -78,6 +78,8 @@ input RegisterInput {
     password: String!
     password_confirmation: String!
     email_verification_url: String!
+    system_type: String!
+    recaptcha: String!
     language: String
 }
 

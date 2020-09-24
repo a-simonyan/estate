@@ -15,9 +15,16 @@ class NewPasswordWithCodeInputValidationDirective extends ValidationDirective
         return [
             'email'    => ['required', 'email'],
             'token'    => ['required', 'string'],
-            'password' => ['required', 'confirmed', 'min:8'],
-            'password_confirmation' => ['required', 'string'],
+            'password' => ['required', 'min:8'],
+            'password_confirmation' => ['required','same:password'],
         ];
     }
   
+    public function messages(): array
+    {   
+        
+        return [
+            'password_confirmation.same' =>  __('messages.same_password_validation'),
+        ];
+    }
 }

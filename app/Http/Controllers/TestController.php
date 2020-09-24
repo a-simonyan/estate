@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use File;
 use App\Property;
 use App\User;
+use Illuminate\Support\Facades\Http;
 // use App\Singleton\RestUrl;
 
 class TestController extends Controller
@@ -67,8 +68,22 @@ class TestController extends Controller
 
 
     public function json(){
+        $value='03AGdBq27AddGH-Cna_KbPyeTAqekmyko0i5ornxJMa5nKXIE4vXeaxzACWidtN03ofgT40dsv_fevxGGiChsXtZtI81z26XANDW2PGke-MSlfJJSiT0xQSDWBRMuJMh1jU1PR_gLQ7QKmhegxSEmKk6c20J07lK2U8a4VJoK3RqXHjTq4lyPGG3FvMEo32z6mSWiXKQ_0vlhaSTiew0S5sz9Q56wOYCG2ozI7mHSSZYuk68KFIpWG0Pf0WgzLeZ88ndZpVtCJHjlttsv-SreK9TRy17IMhzy2UBjub1GQ6J0EUTcJOrwSEsEgoHG5m97ZhcpIZV_9j-UB5CdKCDYdd76VESEDXT_usshGgRxsNP13USQ4jXJnkYKY8RQE-dC0Ykf1_Rw6NDjU';
+    
+        $response = Http::asForm()->post(
+            'https://www.google.com/recaptcha/api/siteverify',
+                [
+                    'secret'   => '6LdIHMYZAAAAABXWnWD6jiYGs9Nm9bU3If32pZTS',
+                    'response' =>  $value
+                 ]
+        );
+    
+        $body = json_decode((string)$response->getBody());
 
-      
-     return 'json';
+        dd($body->success);
+
+        
+        return $body->success;
+     
     }
 }

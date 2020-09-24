@@ -12,8 +12,18 @@ class Properties
      */
     public function __invoke($_, array $args)
     {
-        $pageNumber=2;
-        $properties = Property::where('is_delete', false)->get();
+        $field = 'id';
+        // ASC or DESC
+        $order = 'DESC';
+
+        if(!empty($args['orderBy'])){
+            $field = $args['orderBy']['field'];
+            $order = $args['orderBy']['order'];
+        };
+
+
+
+        $properties = Property::where('is_delete', false)->orderBy($field, $order)->get();
 
         return $properties;
     }

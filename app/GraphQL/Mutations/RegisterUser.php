@@ -20,6 +20,8 @@ class RegisterUser extends BaseAuthResolver
      */
     public function __invoke($_, array $args)
     {
+        
+
         $model = app(config('auth.providers.users.model'));
         $input = collect($args)->except('password_confirmation')->toArray();
         $input['password'] = Hash::make($input['password']);

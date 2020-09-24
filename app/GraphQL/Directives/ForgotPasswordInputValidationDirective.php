@@ -14,7 +14,6 @@ class ForgotPasswordInputValidationDirective extends ValidationDirective
 
         return [
             'email' => ['required', 'email'],
-            'password_reset_url' => ['required']
         ];
     }
  

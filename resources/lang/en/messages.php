@@ -10,7 +10,8 @@ return [
     'email_not_sent'           => 'Email not sent', 
     'the_token_is_invalid'     => 'The token is invalid',
     'must_be_png_type'         => 'Must be png type',  
-    'language_not_found'       => 'Language not found'
-
+    'language_not_found'       => 'Language not found',
+    'recaptcha_error'          => 'Please ensure that you are not a robot!',
+    'same_password_validation' => 'The password confirmation and password must match',
 
 ];
