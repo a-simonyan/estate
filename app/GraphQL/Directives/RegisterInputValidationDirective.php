@@ -19,7 +19,6 @@ class RegisterInputValidationDirective extends ValidationDirective
             'user_type_id' => ['required','numeric'],
             'password'     => ['required', 'min:8'],
             'password_confirmation' => ['required','same:password'],
-            'system_type'  => ['required', 'in:web,androud,ios'],
             'recaptcha'    =>  ['required', function ($attribute, $value, $fail) {
 
                                              $recapcha_secret = Config('googlerecapcha.recapcha_secret_'.$this->args['system_type']);  
