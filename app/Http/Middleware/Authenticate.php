@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+// use Illuminate\Auth\AuthenticationException;
+use Joselfonseca\LighthouseGraphQLPassport\Exceptions\AuthenticationException;
 
 class Authenticate extends Middleware
 {
@@ -17,5 +19,10 @@ class Authenticate extends Middleware
         if (! $request->expectsJson()) {
             return route('login');
         }
+    }
+
+    protected function unauthenticated($request, array $guards)
+    {
+        throw new AuthenticationException('Not Authenticated', 'Not Authenticated');
     }
 }
