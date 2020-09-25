@@ -8,9 +8,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Hash;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-use App\Phone;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
+
 
 class RegisterUser extends BaseAuthResolver
 {
@@ -55,23 +53,23 @@ class RegisterUser extends BaseAuthResolver
         ];
     }
 
-    public function savePhone($phones=[],$id=0){
-        if($id){
+    // public function savePhone($phones=[],$id=0){
+    //     if($id){
 
-            foreach($phones as $phone){
-                Phone::create([
-                    'number'  => $phone,
-                    'user_id' => $id 
-                ]);
+    //         foreach($phones as $phone){
+    //             Phone::create([
+    //                 'number'  => $phone,
+    //                 'user_id' => $id 
+    //             ]);
 
-            }
+    //         }
               
 
-            return true;
-        }
-            return false;
+    //         return true;
+    //     }
+    //         return false;
 
-    }
+    // }
 
     
 

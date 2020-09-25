@@ -179,12 +179,14 @@ type Mutation {
 
 input updateUserProfileInput{
      image:ImageAndType
-     full_name: String 
+     full_name: String
+     old_password: String 
      password: String
      password_confirmation: String
      phone: [NewPhone!]
      update_phone: [UpdatePhone!]
      delete_phone: [Int!]
+
 }
 
 
@@ -266,9 +268,9 @@ type UserType{
 type User {
     id: ID!
     full_name: String!
-    picture: String!
+    picture: String
     email: String!
-    phones:[Phone!]!
+    phones:[Phone!]
     user_type:UserType! 
     first_time: Date
 }
