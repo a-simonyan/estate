@@ -109,7 +109,7 @@ type Mutation {
     forgotPasswordUser(input: ForgotPasswordInput!  @spread): ForgotPasswordResponse!  @ForgotPasswordInputValidation @SetLanguage
     resetPasswordUser(input: NewPasswordWithCodeInput @spread): ForgotPasswordResponse! @NewPasswordWithCodeInputValidation @SetLanguage
 
-
+    updateUserProfile(input: updateUserProfileInput @spread): User! @UpdateUserProfileValidation @middleware(checks: ["auth:api"]) @SetLanguage
 
 
     createUserType(name: String!): UserType! @create
@@ -177,6 +177,35 @@ type Mutation {
     getimage:String
 }
 
+input updateUserProfileInput{
+     image:ImageAndType
+     full_name: String 
+     password: String
+     password_confirmation: String
+     phone: [NewPhone!]
+     update_phone: [UpdatePhone!]
+     delete_phone: [Int!]
+}
+
+
+input NewPhone{
+    phone: String!
+    viber: Int!
+    whatsapp: Int!
+    telegram: Int!
+
+}
+input UpdatePhone{
+    phone_id: Int
+    phone: String!
+    viber: Int!
+    whatsapp: Int!
+    telegram: Int!
+}
+
+
+
+
 input CreatePropertyInput{
     property_type_id: Int!,
     property_deal_types:[PropertyDealTypes!]!,
@@ -194,6 +223,7 @@ input CreatePropertyInput{
     translate_descriptions: [TranslateDescriptionInput],
     language: String
 }
+
 input PropertyDealTypes{
     deal_type_id: Int!,
     price: Float
