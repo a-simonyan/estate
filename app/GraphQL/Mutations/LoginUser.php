@@ -23,7 +23,7 @@ class LoginUser extends BaseAuthResolver
     {
        
         $user = $this->findUser($args['username']);
-     if($user&&$user->email_verified_at){
+     if($user&&$user->email_verified_at&&!$user->is_delete){
          $credentials = $this->buildCredentials($args);
          $response = $this->makeRequest($credentials);
 
@@ -47,7 +47,7 @@ class LoginUser extends BaseAuthResolver
            ]
        );
      } else {
-          if($user){
+          if($user&&!$user->is_delete){
            throw new SendException(
              'error',
              __('messages.error_email_verification')

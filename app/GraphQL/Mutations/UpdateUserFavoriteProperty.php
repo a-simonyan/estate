@@ -23,7 +23,7 @@ class UpdateUserFavoriteProperty
         $property = Property::find($property_id);
 
         if($userFavoriteProperty->user->id==$user_id&&$property&&!$property->is_delete){
-            UserFavoriteProperty::update([
+            $userFavoriteProperty->update([
                 'user_id'     => $user_id,
                 'property_id' => $property_id
             ]);

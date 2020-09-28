@@ -13,6 +13,7 @@ class UpdateUserProfileValidationDirective extends ValidationDirective
         
         return [
             'full_name'    => ['string','nullable' ],
+            'email'        => ['email', 'unique:users','nullable'],
             'password'     => ['min:8','nullable' ],
             'password_confirmation' => ['same:password','nullable'],
         ];

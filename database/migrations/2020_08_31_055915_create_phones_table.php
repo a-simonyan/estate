@@ -16,6 +16,9 @@ class CreatePhonesTable extends Migration
         Schema::create('phones', function (Blueprint $table) {
             $table->id();
             $table->string('number');
+            $table->boolean('viber')->default(false);
+            $table->boolean('whatsapp')->default(false);
+            $table->boolean('telegram')->default(false);
             $table->foreignId('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

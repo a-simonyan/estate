@@ -109,7 +109,11 @@ type Mutation {
     forgotPasswordUser(input: ForgotPasswordInput!  @spread): ForgotPasswordResponse!  @ForgotPasswordInputValidation @SetLanguage
     resetPasswordUser(input: NewPasswordWithCodeInput @spread): ForgotPasswordResponse! @NewPasswordWithCodeInputValidation @SetLanguage
 
+
+
     updateUserProfile(input: updateUserProfileInput @spread): User! @UpdateUserProfileValidation @middleware(checks: ["auth:api"]) @SetLanguage
+    deleteUserProfile(password: String!,language: String):Boolean @middleware(checks: ["auth:api"]) @SetLanguage
+
 
 
     createUserType(name: String!): UserType! @create
@@ -180,29 +184,31 @@ type Mutation {
 input updateUserProfileInput{
      image:ImageAndType
      full_name: String
+     email: String
      old_password: String 
      password: String
      password_confirmation: String
      phone: [NewPhone!]
      update_phone: [UpdatePhone!]
      delete_phone: [Int!]
+     language: String
 
 }
 
 
 input NewPhone{
-    phone: String!
-    viber: Int!
-    whatsapp: Int!
-    telegram: Int!
+    number: String!
+    viber: Boolean
+    whatsapp: Boolean
+    telegram: Boolean
 
 }
 input UpdatePhone{
     phone_id: Int
-    phone: String!
-    viber: Int!
-    whatsapp: Int!
-    telegram: Int!
+    number: String!
+    viber: Boolean
+    whatsapp: Boolean
+    telegram: Boolean
 }
 
 
@@ -257,6 +263,9 @@ type Phone{
     number:String!
     user_id:ID!
     user: User!
+    viber: Boolean
+    whatsapp: Boolean
+    telegram: Boolean
 }
 
 type UserType{
@@ -273,6 +282,8 @@ type User {
     phones:[Phone!]
     user_type:UserType! 
     first_time: Date
+    is_admin: Boolean
+    is_delete: Boolean
 }
 
 type Language {

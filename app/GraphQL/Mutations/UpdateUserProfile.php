@@ -23,6 +23,12 @@ class UpdateUserProfile
         $user_id = $user->id;
         $update_arr = [];
        
+        if(!empty($args['full_name'])){
+          $update_arr['full_name']=$args['full_name'];
+        }
+        if(!empty($args['email'])){
+            $update_arr['email']=$args['email'];
+          }
 
         if(!empty($args['image'])){
             $user_picture  =  $user->picture;
@@ -45,7 +51,22 @@ class UpdateUserProfile
             $this->savePhone($args['phone'],  $user_id);
             
         }
+        if(!empty($args['update_phone'])){
+            
+            $this->updatePhone($args['update_phone'],  $user_id);
+            
+        }
+        if(!empty($args['delete_phone'])){
+            
+            $this->deletePhone($args['delete_phone'],  $user_id);
+            
+        }
 
+        if($update_arr){
+           $user->update($update_arr);
+        }
+
+        return $user;
 
     }
 
@@ -57,14 +78,11 @@ class UpdateUserProfile
                 unlink(storage_path('app/public/users/'.$user_picture));
               }
 
-
             $imageName = Str::random(10).time().'.'.$picture_type;
             while(file_exists(storage_path('app/public/users/'.$imageName))){
                 $imageName = Str::random(10).time().$picture_type;
             };
             Storage::put('public/users/'.$imageName, base64_decode($picture));
-
-            
 
             if(file_exists(storage_path('app/public/users/'.$imageName))){
 
@@ -83,6 +101,48 @@ class UpdateUserProfile
     }
 
     public function savePhone($phones, $user_id){
+        foreach($phones as $phone){
+            Phone::create([
+                'number'   => $phone['number'],
+                'user_id'  =>  $user_id,
+                'viber'    => !empty($phone['viber']) ? $phone['viber'] : false,
+                'whatsapp' => !empty($phone['whatsapp']) ? $phone['whatsapp'] : false,
+                'telegram' => !empty($phone['telegram']) ? $phone['telegram'] : false,
+            ]);
+        }
+        return true;
+    }
+
+
+    public function updatePhone($phones, $user_id){
+        foreach($phones as $phone){
+            $get_phone=Phone::find($phone['phone_id']);
+
+            if($get_phone->user->id == $user_id){
+                $get_phone->update([
+                    'number'   => $phone['number'],
+                    'viber'    => !empty($phone['viber']) ? $phone['viber'] : false,
+                    'whatsapp' => !empty($phone['whatsapp']) ? $phone['whatsapp'] : false,
+                    'telegram' => !empty($phone['telegram']) ? $phone['telegram'] : false,
+                ]);
+
+            }
+        }
+
+        return true; 
+    }
+
+    public function deletePhone($phone_ids, $user_id){
+        foreach($phone_ids as $phone_id){
+            $get_phone=Phone::find($phone_id);
+
+            if($get_phone->user->id == $user_id){
+                $get_phone->delete();
+            }
+        }
+
+        return true; 
 
     }
+
 }

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use PropertyType;
+use App\PropertyType;
 
 class PropertyTypeSeeder extends Seeder
 {
