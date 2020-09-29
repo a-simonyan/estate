@@ -44,6 +44,10 @@ class Property extends Model
    public function property_images(){
        return $this->hasMany('App\PropertyImage','property_id','id'); 
    }
+   public function property_images_paginat(){
+    return $this->hasMany('App\PropertyImage','property_id','id')->limit(1); 
+   }
+
    public function property_deals(){
        return $this->hasMany('App\PropertyDeal','property_id','id'); 
    }

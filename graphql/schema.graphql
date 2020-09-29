@@ -5,7 +5,8 @@ scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
 
 type Query {
-    users(orderBy: [OrderByClause!] @orderBy): [User!]! @all @middleware(checks: ["auth:api"])
+
+    users(orderBy: [OrderByClause!] @orderBy): [User!]! @all @middleware(checks: ["auth:api"]) 
     usersPaginate(orderBy: [OrderByClause!] @orderBy): [User!]! @paginate(defaultCount: 10) @middleware(checks: ["auth:api"])
     user(id: ID @eq): User @find @middleware(checks: ["auth:api"])
 
@@ -152,9 +153,13 @@ type Mutation {
     updateFiltersValue( id: ID!,filter_id: Int, property_id: Int,value: String): FiltersValue! @update
     deleteFiltersValue(id:ID!): FiltersValue! @delete
 
-    createFilter(name: String!, filter_type:FiltersValuesEnum ): Country! @create
-    updateFilter(id:ID!,name: String, filter_type:FiltersValuesEnum): Country! @update
-    deleteFilter(id:ID!): Country! @delete
+    createFilter(name: String!, filter_type:FiltersValuesEnum, filter_group_id: Int ): Filter! @create
+    updateFilter(id:ID!,name: String, filter_type:FiltersValuesEnum,  filter_group_id: Int): Filter! @update
+    deleteFilter(id:ID!): Filter! @delete
+
+    createFilterGroup(name: String!): FilterGroup! @create
+    updateFilterGroup(id:ID!,name: String): FilterGroup! @update
+    deleteFilterGroup(id:ID!): FilterGroup! @delete
 
 
     createProperty(input: CreatePropertyInput @spread):Property!  @middleware(checks: ["auth:api"]) @SetLanguage
@@ -276,7 +281,7 @@ type UserType{
 
 type User {
     id: ID!
-    full_name: String!
+    full_name: String! 
     picture: String
     email: String!
     phones:[Phone!]
@@ -348,24 +353,25 @@ type PropertyDeal{
 
 type Property{
     id: ID!
-    property_type: PropertyType!
+    property_type: PropertyType
     user: User!
-    property_deals: [PropertyDeal!]!
-    deal_types: [DealType!]!
-    property_number: Int!
+    property_deals: [PropertyDeal!]
+    deal_types: [DealType!]
+    property_number: Int
     bulding_type: BuldingType!
     latitude: Float!
     longitude: Float!
-    country: Country!
-    city: City!
-    address: String!
-    postal_code: String!
-    property_state: String!
+    country: Country
+    city: City
+    address: String
+    postal_code: String
+    property_state: String
     created_at: Date
     updated_at: Date
-    property_images:[PropertyImage!]!
-    filters_values: [FiltersValue!]!
-    translate_descriptions: [TranslateDescription!]!
+    property_images:[PropertyImage!] 
+    property_images_paginat:[PropertyImage!] @hasMany(type: "paginator")
+    filters_values: [FiltersValue!]
+    translate_descriptions: [TranslateDescription!]
   
 
 }
