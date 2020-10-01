@@ -13,6 +13,7 @@ return [
     'language_not_found'       => 'Language not found',
     'recaptcha_error'          => 'Please ensure that you are not a robot!',
     'same_password_validation' => 'The password confirmation and password must match',
-    'current_password_is_incorrect' => 'Current password is incorrect'
+    'current_password_is_incorrect' => 'Current password is incorrect',
+    'not_have_permission'      => 'not have permission',
 
 ];

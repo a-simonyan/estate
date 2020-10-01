@@ -28,7 +28,7 @@ class DeleteUserProfile
             ], 'Validation Exception');
         }
 
-        $user->update([ 'email'     => null,
+        $user->update([ 'email'     => $user->email.'-'.now(),
                         'is_delete' => true 
                        ]);
 

@@ -6,7 +6,7 @@ use App\PropertyImage;
 use Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
-use Nuwave\Lighthouse\Exceptions\DefinitionException;
+
 
 
 class DeleteProperty
@@ -23,16 +23,15 @@ class DeleteProperty
 
         if($user_auth->is_admin||$user_auth->id == $property->user_id){
         
-            foreach($property->property_images as $img){
-             if($img->name&&file_exists(storage_path('app/public/property/'.$img->name))){
-                 unlink(storage_path('app/public/property/'.$img->name));
-               }
-            }
+            $property->update(['is_delete'=>true]);
 
-            $delete_property = $property->delete();
+            return $property;
 
         } else {
-            return new DefinitionException("not have  permission");
+             throw new SendException(
+                'error',
+                __('messages.not_have_permission')
+              );
         }
     }
 }

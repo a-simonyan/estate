@@ -24,13 +24,15 @@ class CreatePropertiesTable extends Migration
             $table->foreign('bulding_type_id')->references('id')->on('bulding_types')->onDelete('cascade');
             $table->float('latitude');
             $table->float('longitude');
-            $table->foreignId('country_id');
+            $table->foreignId('country_id')->nullable();
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
             $table->foreignId('city_id')->nullable();
             $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');
             $table->string('address');
             $table->string('postal_code')->nullable();
             $table->enum('property_state',['good','average','poor']);
+            $table->text('review')->nullable();
+            $table->enum('is_public_status',['under_review','published','rejected'])->default('under_review');;
             $table->boolean('is_delete')->default(false);
             $table->timestamps();
         });

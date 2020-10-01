@@ -4,7 +4,7 @@ namespace App\GraphQL\Queries;
 
 use App\Property;
 
-class Properties
+class PropertiesUnderReview
 {
     /**
      * @param  null  $_
@@ -23,7 +23,7 @@ class Properties
 
 
 
-        $properties = Property::where('is_delete', false)->orderBy($field, $order)->get();
+        $properties = Property::where('is_delete', false)->where('is_public_status','under_review')->orderBy($field, $order)->get();
 
         return $properties;
     }

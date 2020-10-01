@@ -19,6 +19,8 @@ class Property extends Model
                            'address',
                            'postal_code',
                            'property_state',
+                           'review',
+                           'is_public_status',
                            'is_delete'
                         ];
 

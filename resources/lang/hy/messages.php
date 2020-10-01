@@ -14,4 +14,6 @@ return [
     'recaptcha_error'          => 'Խնդրում եմ հաստատեք որ դուք ռոբոտ չէք!',
     'same_password_validation' => 'Գաղտնաբառի հաստատումը և գաղտնաբառը պետք է համընկնեն',
     'current_password_is_incorrect' => 'Ընթացիկ գաղտնաբառը սխալ է',
+    'not_have_permission'      => 'Թույլտվություն չկա',
+
 ];

@@ -48,8 +48,15 @@ type Query {
 
 
 
-    properties(language: String, orderBy:OrderBy): [Property!]!  @SetLanguage
-    propertiesPaginate( first:Int, page:Int, language: String, orderBy:OrderBy ): [Property!]!  @SetLanguage
+    propertiesPublished(language: String, orderBy:OrderBy):[Property!]!   @SetLanguage
+    propertiesPublishedPaginate(first: Int, page: Int,language: String, orderBy:OrderBy ):[Property!]!  @SetLanguage
+
+    propertiesRejected(language: String, orderBy:OrderBy): [Property!]!  @SetLanguage
+    propertiesRejectedPaginate(first: Int, page: Int, language: String, orderBy:OrderBy ):[Property!]!  @SetLanguage
+
+    propertiesUnderReview(language: String, orderBy:OrderBy): [Property!]!  @SetLanguage
+    propertiesUnderReviewPaginate(first: Int, page: Int, language: String, orderBy:OrderBy ):[Property!]! @SetLanguage
+
     property(id: ID @eq,language: String): Property @find @SetLanguage
 
    
@@ -164,8 +171,8 @@ type Mutation {
 
     createProperty(input: CreatePropertyInput @spread):Property!  @middleware(checks: ["auth:api"]) @SetLanguage
     updateProperty( id: ID!,property_type_id: Int,deal_type_id: Int,property_number: Int,bulding_type_id: Int,latitude: Float,longitude: Float,country_id: Int,city_id: Int,address: String,postal_code: String,property_images:[ImageAndType],property_filter_values:[PropertyFilterValue!]): Property  @middleware(checks: ["auth:api"]) 
-    deleteProperty(id:ID!): Property!  @middleware(checks: ["auth:api"]) 
-    deletePropertyImages(images_ids:[Int!]!): String!  @middleware(checks: ["auth:api"]) 
+    deleteProperty(id:ID!,language: String): Property!  @middleware(checks: ["auth:api"]) @SetLanguage
+    deletePropertyImages(images_ids:[Int!]!,language: String): String!  @middleware(checks: ["auth:api"]) @SetLanguage
 
     createPropertyDeal( property_id: Int!, deal_type_id: Int!, price: Float!): PropertyDeal! @create
     updatePropertyDeal(id:ID!,property_id: Int!, deal_type_id: Int!, price: Float!): PropertyDeal! @update
@@ -261,6 +268,21 @@ input OrderBy{
     order: String!
 }
 
+type PropertyPaginate{
+    data: [Property]!
+    paginatorInfo: PaginatorInfo
+}
+
+type PaginatorInfo {
+      count: Int!
+      currentPage: Int!
+      firstItem: Int
+      hasMorePages: Boolean!
+      lastItem: Int
+      lastPage: Int!
+      perPage: Int!
+      total: Int!
+    }
 
 
 type Phone{
@@ -372,7 +394,9 @@ type Property{
     property_images_paginat:[PropertyImage!] @hasMany(type: "paginator")
     filters_values: [FiltersValue!]
     translate_descriptions: [TranslateDescription!]
-  
+    review: String
+    is_public_status: String
+    is_delete: Boolean
 
 }
 type TranslateDescription{
