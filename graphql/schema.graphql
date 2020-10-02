@@ -170,7 +170,7 @@ type Mutation {
 
 
     createProperty(input: CreatePropertyInput @spread):Property!  @middleware(checks: ["auth:api"]) @SetLanguage
-    updateProperty( id: ID!,property_type_id: Int,deal_type_id: Int,property_number: Int,bulding_type_id: Int,latitude: Float,longitude: Float,country_id: Int,city_id: Int,address: String,postal_code: String,property_images:[ImageAndType],property_filter_values:[PropertyFilterValue!]): Property  @middleware(checks: ["auth:api"]) 
+    updateProperty(input: UpdatePropertyInput @spread): Property  @middleware(checks: ["auth:api"]) 
     deleteProperty(id:ID!,language: String): Property!  @middleware(checks: ["auth:api"]) @SetLanguage
     deletePropertyImages(images_ids:[Int!]!,language: String): String!  @middleware(checks: ["auth:api"]) @SetLanguage
 
@@ -233,12 +233,32 @@ input CreatePropertyInput{
     bulding_type_id: Int!,
     latitude: Float!,
     longitude: Float!,
-    country_id: Int!,
-    city_id: Int!,
+    country: String!,
+    city: String!,
     address: String!,
     postal_code: String!,
     property_state: String!,
     property_images:[ImageAndType],
+    property_filter_values: [PropertyFilterValue!], 
+    translate_descriptions: [TranslateDescriptionInput],
+    language: String
+}
+
+input UpdatePropertyInput{
+    id:ID!
+    property_type_id: Int,
+    property_deal_types:[PropertyDealTypes!],
+    property_number: Int,
+    bulding_type_id: Int,
+    latitude: Float,
+    longitude: Float,
+    country: String,
+    city: String,
+    address: String,
+    postal_code: String,
+    property_state: String,
+    property_images:[ImageAndType],
+    property_images_delete_ids: [Int!],
     property_filter_values: [PropertyFilterValue!], 
     translate_descriptions: [TranslateDescriptionInput],
     language: String

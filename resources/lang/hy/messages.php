@@ -15,5 +15,6 @@ return [
     'same_password_validation' => 'Գաղտնաբառի հաստատումը և գաղտնաբառը պետք է համընկնեն',
     'current_password_is_incorrect' => 'Ընթացիկ գաղտնաբառը սխալ է',
     'not_have_permission'      => 'Թույլտվություն չկա',
+    'language_code_wrong'      => 'Լեզվի կոդը սխալ է',
 
 ];

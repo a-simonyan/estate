@@ -11,10 +11,13 @@ use App\Language;
 use Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Traits\PlaceTrait;
 
 
 class CreateProperty
 {
+    use PlaceTrait;
+
     /**
      * @param  null  $_
      * @param  array<string, mixed>  $args
@@ -32,8 +35,8 @@ class CreateProperty
                                       'bulding_type_id'  => $args['bulding_type_id'],
                                       'latitude'         => $args['latitude'],
                                       'longitude'        => $args['longitude'],
-                                      'country_id'       => $args['country_id'],
-                                      'city_id'          => $args['city_id'],
+                                      'country_id'       => $this->countryId($args['country']),
+                                      'city_id'          => $this->cityId($args['city']),
                                       'address'          => $args['address'],
                                       'postal_code'      => $args['postal_code'],
                                       'property_state'   => $args['property_state'],
