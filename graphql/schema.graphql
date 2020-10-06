@@ -6,9 +6,10 @@ scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date
 
 type Query {
 
-    users(orderBy: [OrderByClause!] @orderBy): [User!]! @all @middleware(checks: ["auth:api"]) 
-    usersPaginate(orderBy: [OrderByClause!] @orderBy): [User!]! @paginate(defaultCount: 10) @middleware(checks: ["auth:api"])
-    user(id: ID @eq): User @find @middleware(checks: ["auth:api"])
+    userProfile(language: String):User @middleware(checks: ["auth:api"]) @SetLanguage
+    users(orderBy: [OrderByClause!] @orderBy): [User!]! @all @middleware(checks: ["auth:api","admin"]) 
+    usersPaginate(orderBy: [OrderByClause!] @orderBy): [User!]! @paginate(defaultCount: 10) @middleware(checks: ["auth:api","admin"])
+    user(id: ID @eq): User @find @middleware(checks: ["auth:api","admin"])
 
     phones(orderBy: [OrderByClause!] @orderBy): [Phone!]! @all 
     phonesPaginate(orderBy: [OrderByClause!] @orderBy): [Phone!]! @paginate(defaultCount: 10)

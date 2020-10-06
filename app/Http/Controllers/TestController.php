@@ -14,6 +14,20 @@ use Illuminate\Support\Facades\Http;
 
 class TestController extends Controller
 {
+
+    public function json(){
+       
+        // $property= Property::where('properties.id',51)->leftJoin('filters_values','properties.id','=','filters_values.property_id')
+        //            ->leftJoin('filters','filters.id','=','filters_values.filter_id')->select('properties.*','filters.*')->get();
+
+        // dd($property);
+
+     }
+
+
+
+
+
     public function test(Request $request){
 
       
@@ -67,11 +81,5 @@ class TestController extends Controller
     }
 
 
-    public function json(){
-       if([1]){
-           dd('sss');
-       }
-
-       dd(222);
-    }
+ 
 }
