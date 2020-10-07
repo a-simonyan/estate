@@ -18,7 +18,14 @@ class TestController extends Controller
     public function json(){
        
         // $property= Property::where('properties.id',51)->leftJoin('filters_values','properties.id','=','filters_values.property_id')
-        //            ->leftJoin('filters','filters.id','=','filters_values.filter_id')->select('properties.*','filters.*')->get();
+        //            ->leftJoin('filters','filters.id','=','filters_values.filter_id')->where('value',1000)->select('properties.*','filters.*','filters_values.value')->get();
+
+
+        // // $property = Property::with(['filters_values' => function ($query){
+        // //     $query->leftJoin('filters', 'filters.id', '=', 'filters_values.filter_id');
+        // //     $query->where('value',1000);
+        // // }])->get();
+
 
         // dd($property);
 

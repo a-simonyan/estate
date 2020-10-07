@@ -11,6 +11,8 @@ class RegisterInputValidationDirective extends ValidationDirective
     
     public function rules(): array
     {
+        
+
         return [
             'full_name'    => ['required', 'string'], 
             'picture'      => ['string','nullable'],
@@ -19,8 +21,8 @@ class RegisterInputValidationDirective extends ValidationDirective
             'user_type_id' => ['required','numeric'],
             'password'     => ['required', 'min:8'],
             'password_confirmation' => ['required','same:password'],
-            'recaptcha'    =>  ['required', function ($attribute, $value, $fail) {
-
+            'recaptcha'    =>  [ function ($attribute, $value, $fail) {
+                                           if($this->args['system_type']=='web'){     
                                              $recapcha_secret = Config('googlerecapcha.recapcha_secret_'.$this->args['system_type']);  
                                              if($recapcha_secret){
                                                  $response = Http::asForm()->post(
@@ -37,7 +39,11 @@ class RegisterInputValidationDirective extends ValidationDirective
                                             }
                                             $fail(__('messages.recaptcha_error'));
                 
-                                             },
+                                            } else {
+                                                return true;
+                                            }
+
+                                             }, 'nullable'
             ]
         ];
     }
