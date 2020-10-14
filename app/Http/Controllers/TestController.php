@@ -17,17 +17,49 @@ class TestController extends Controller
 
     public function json(){
        
-        // $property= Property::where('properties.id',51)->leftJoin('filters_values','properties.id','=','filters_values.property_id')
-        //            ->leftJoin('filters','filters.id','=','filters_values.filter_id')->where('value',1000)->select('properties.*','filters.*','filters_values.value')->get();
+        // $property= Property::leftJoin('filters_values','properties.id','=','filters_values.property_id')
+        //            ->leftJoin('filters','filters.id','=','filters_values.filter_id')->where('filters_values.value',1000)->select('properties.*')->get()
+        //            ->unique('id');
+
+        $filters = ['test2'];
+
+       
+
+        $propertyClass = Property::Class;
+        $first = true;
+
+        foreach($filters as $filter){
+            if($first){
+                 $property=$propertyClass::whereHas('filters_values' , function ($query) use ($filter){
+                     $query->leftJoin('filters', 'filters.id', '=', 'filters_values.filter_id');
+             
+                      $query->where(function ($query) use ($filter) {
+                         $query->where('name',$filter);
+                         $query->where('value',1000);
+                     });
+         
+                 });
+            } else {
+                $property=$propertyClass->whereHas('filters_values' , function ($query) use ($filter){
+                    $query->leftJoin('filters', 'filters.id', '=', 'filters_values.filter_id');
+            
+                     $query->where(function ($query) use ($filter) {
+                        $query->where('name',$filter);
+                        $query->where('value',1000);
+                    });
+        
+                });
+
+            }
+
+            $propertyClass=$property;
+            $first=false;
+
+       }
 
 
-        // // $property = Property::with(['filters_values' => function ($query){
-        // //     $query->leftJoin('filters', 'filters.id', '=', 'filters_values.filter_id');
-        // //     $query->where('value',1000);
-        // // }])->get();
 
-
-        // dd($property);
+        dd($property->get());
 
      }
 
