@@ -142,9 +142,11 @@ $factory->define(FiltersValue::class, function(Faker $faker){
 });
 
 $factory->define(PropertyImage::class, function(Faker $faker){
+    static $index = 1; 
     return [
         'property_id' => $faker->numberBetween($min = 1, $max = 50),
         'name' => $faker->imageUrl($width = 640, $height = 480),
+        'index' => $index++
     ];
 });
 

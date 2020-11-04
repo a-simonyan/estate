@@ -173,7 +173,10 @@ type Mutation {
     createProperty(input: CreatePropertyInput @spread):Property!  @middleware(checks: ["auth:api"]) @SetLanguage
     updateProperty(input: UpdatePropertyInput @spread): Property  @middleware(checks: ["auth:api"]) 
     deleteProperty(id:ID!,language: String): Property!  @middleware(checks: ["auth:api"]) @SetLanguage
-    deletePropertyImages(images_ids:[Int!]!,language: String): String!  @middleware(checks: ["auth:api"]) @SetLanguage
+    deletePropertyImages(images_ids:[Int!]!,language: String): Boolean!  @middleware(checks: ["auth:api"]) @SetLanguage
+    propertyImagePosition(images_ids:[Int!]!,language: String): Boolean!  @middleware(checks: ["auth:api"]) @SetLanguage
+
+
 
     createPropertyDeal( property_id: Int!, deal_type_id: Int!, price: Float!): PropertyDeal! @create
     updatePropertyDeal(id:ID!,property_id: Int!, deal_type_id: Int!, price: Float!): PropertyDeal! @update
@@ -430,6 +433,7 @@ type PropertyImage{
     id:ID!
     property: Property!
     name: String!
+    index:Int!
 }
 
 type FiltersValue{

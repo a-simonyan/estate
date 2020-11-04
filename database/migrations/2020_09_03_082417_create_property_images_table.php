@@ -18,6 +18,7 @@ class CreatePropertyImagesTable extends Migration
             $table->foreignId('property_id');
             $table->foreign('property_id')->references('id')->on('properties')->onDelete('cascade');
             $table->string('name');
+            $table->integer('index')->default(1);
             $table->timestamps();
         });
     }

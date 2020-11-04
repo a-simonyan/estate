@@ -66,3 +66,4 @@ sudo apt install php php-pgsql libapache2-mod-php
 //////////////////////////
 php artisan key:generate 
 php artisan passport:install
+php artisan config:clear

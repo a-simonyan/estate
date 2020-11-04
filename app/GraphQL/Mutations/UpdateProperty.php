@@ -120,10 +120,18 @@ class UpdateProperty
 
      if($property_images){
        $image_types = ["jpeg","jpg","png"];
+       $propertyImage=PropertyImage::where('property_id',1)->orderBy('index','desc')->first();
+
+       if($propertyImage){
+           $index = $propertyImage->index + 1;
+       } else {
+           $index = 1;
+       }
+
 
        foreach($property_images as $property_image){
            $picture_type=$property_image['type'];
-           
+
            if (in_array($picture_type, $image_types)){
                $image = $property_image['image'];
                 
@@ -135,7 +143,8 @@ class UpdateProperty
                if(file_exists(storage_path('app/public/property/'.$imageName))){
                    PropertyImage::create([
                        'property_id' => $property_id,
-                       'name'        => $imageName
+                       'name'        => $imageName,
+                       'index'       => $index++
                    ]);
                }
 

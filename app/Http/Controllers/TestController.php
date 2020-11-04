@@ -10,12 +10,21 @@ use File;
 use App\Property;
 use App\User;
 use Illuminate\Support\Facades\Http;
+use App\PropertyImage;
 // use App\Singleton\RestUrl;
 
 class TestController extends Controller
 {
 
     public function json(){
+
+        $a=PropertyImage::where('property_id',1)->orderBy('index','desc')->first();
+
+        dd($a);
+
+
+
+
        
         // $property= Property::leftJoin('filters_values','properties.id','=','filters_values.property_id')
         //            ->leftJoin('filters','filters.id','=','filters_values.filter_id')->where('filters_values.value',1000)->select('properties.*')->get()

@@ -84,6 +84,8 @@ class CreateProperty
       if($property_images){
         $image_types = ["jpeg","jpg","png"];
 
+        $index=1;
+
         foreach($property_images as $property_image){
             $picture_type=$property_image['type'];
             
@@ -98,7 +100,8 @@ class CreateProperty
                 if(file_exists(storage_path('app/public/property/'.$imageName))){
                     PropertyImage::create([
                         'property_id' => $property_id,
-                        'name'        => $imageName
+                        'name'        => $imageName,
+                        'index'       => $index++
                     ]);
                 }
 

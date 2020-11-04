@@ -44,10 +44,10 @@ class Property extends Model
        return $this->hasMany('App\FiltersValue','property_id','id');
    }
    public function property_images(){
-       return $this->hasMany('App\PropertyImage','property_id','id'); 
+       return $this->hasMany('App\PropertyImage','property_id','id')->orderBy('index','asc'); 
    }
    public function property_images_paginat(){
-    return $this->hasMany('App\PropertyImage','property_id','id')->limit(1); 
+    return $this->hasMany('App\PropertyImage','property_id','id')->orderBy('index','asc')->limit(1); 
    }
 
    public function property_deals(){
