@@ -82,28 +82,14 @@ $factory->define(BuldingType::class, function(Faker $faker){
     ];
 });
 
-$factory->define(Country::class, function(Faker $faker){
-    return [
-        'name' => $faker->unique()->country,
-    ];
-});
-
-$factory->define(City::class, function(Faker $faker){
-    return [
-        'name' => $faker->unique()->city,
-    ];
-});
-
 $factory->define(Property::class, function(Faker $faker){
     return [
+        'property_key'     => $faker->numberBetween($min = 100000, $max = 999999),
         'property_type_id' => 1,
         'user_id' => $faker->numberBetween($min = 1, $max = 2),
-        'property_number' => $faker->buildingNumber,
         'bulding_type_id' => $faker->numberBetween($min = 1, $max = 10),
         'latitude' => $faker->unique()->latitude($min = -90, $max = 90),
         'longitude' => $faker->unique()->longitude($min = -180, $max = 180),
-        'country_id' => $faker->numberBetween($min = 1, $max = 5),
-        'city_id' => $faker->numberBetween($min = 1, $max = 50),
         'address' => $faker->address,
         'postal_code' => $faker->postcode,
         'property_state' => $faker->randomElement(['good','average','poor']),

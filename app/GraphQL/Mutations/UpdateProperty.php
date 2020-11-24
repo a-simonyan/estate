@@ -8,12 +8,10 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Nuwave\Lighthouse\Exceptions\DefinitionException;
 use App\Exceptions\SendException;
-use App\Http\Traits\PlaceTrait;
 
 
 class UpdateProperty
 {
-    use PlaceTrait;
     /**
      * @param  null  $_
      * @param  array<string, mixed>  $args
@@ -33,9 +31,6 @@ class UpdateProperty
             if(!empty($args['property_type_id'])){
                 $array_property['property_type_id'] = $args['property_type_id'];
             }
-            if(!empty($args['property_number'])){
-                $array_property['property_number'] = $args['property_number'];
-            }
             if(!empty($args['bulding_type_id'])){
                 $array_property['bulding_type_id'] = $args['bulding_type_id'];
             }
@@ -44,12 +39,6 @@ class UpdateProperty
             }
             if(!empty($args['longitude'])){
                 $array_property['longitude'] = $args['longitude'];
-            }
-            if(!empty($args['country'])){
-                $array_property['country_id'] = $this->countryId($args['country']);
-            }
-            if(!empty($args['city'])){
-                $array_property['city_id'] = $this->cityId($args['city']);
             }
             if(!empty($args['address'])){
                 $array_property['address'] = $args['address'];
@@ -120,7 +109,7 @@ class UpdateProperty
 
      if($property_images){
        $image_types = ["jpeg","jpg","png"];
-       $propertyImage=PropertyImage::where('property_id',1)->orderBy('index','desc')->first();
+       $propertyImage=PropertyImage::where('property_id',$property_id)->orderBy('index','desc')->first();
 
        if($propertyImage){
            $index = $propertyImage->index + 1;

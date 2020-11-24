@@ -39,16 +39,6 @@ type Query {
     buldingTypesPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [BuldingType!]! @paginate(defaultCount: 10) @SetLanguage
     buldingType(id: ID @eq,language: String): BuldingType @find @SetLanguage
 
-    countries(orderBy: [OrderByClause!] @orderBy): [Country!]! @all
-    countriesPaginate(orderBy: [OrderByClause!] @orderBy): [Country!]! @paginate(defaultCount: 10)
-    country(id: ID @eq): Country @find
-
-    cities(orderBy: [OrderByClause!] @orderBy): [City!]! @all
-    citiesPaginate(orderBy: [OrderByClause!] @orderBy): [City!]! @paginate(defaultCount: 10)
-    city(id: ID @eq): City @find
-
-
-
     propertiesPublished(language: String, orderBy:OrderBy):[Property!]!   @SetLanguage
     propertiesPublishedPaginate(first: Int, page: Int,language: String, orderBy:OrderBy ):[Property!]!  @SetLanguage
 
@@ -149,14 +139,6 @@ type Mutation {
     updateBuldingType(id:ID!,name: String): BuldingType! @update
     deleteBuldingType(id:ID!): BuldingType! @delete
 
-    createCountry(name: String!): Country! @create
-    updateCountry(id:ID!,name: String): Country! @update
-    deleteCountry(id:ID!): Country! @delete
-
-    createCity(name: String!, parent_id:Int): City! @create
-    updateCity(id:ID!,name: String, parent_id:Int): City! @update
-    deleteCity(id:ID!): City! @delete
-
     createFiltersValue(filter_id: Int!, property_id: Int!, value: String!): FiltersValue! @create
     updateFiltersValue( id: ID!,filter_id: Int, property_id: Int,value: String): FiltersValue! @update
     deleteFiltersValue(id:ID!): FiltersValue! @delete
@@ -176,6 +158,7 @@ type Mutation {
     deletePropertyImages(images_ids:[Int!]!,language: String): Boolean!  @middleware(checks: ["auth:api"]) @SetLanguage
     propertyImagePosition(images_ids:[Int!]!,language: String): Boolean!  @middleware(checks: ["auth:api"]) @SetLanguage
 
+    saveProperty(input: SavePropertyInput @spread):Property!  @middleware(checks: ["auth:api"]) @SetLanguage
 
 
     createPropertyDeal( property_id: Int!, deal_type_id: Int!, price: Float!): PropertyDeal! @create
@@ -231,18 +214,17 @@ input UpdatePhone{
 
 
 input CreatePropertyInput{
+    property_id: Int,
     property_type_id: Int!,
     property_deal_types:[PropertyDealTypes!]!,
-    property_number: Int,
     bulding_type_id: Int!,
     latitude: Float!,
     longitude: Float!,
-    country: String!,
-    city: String!,
     address: String!,
     postal_code: String!,
     property_state: String!,
     property_images:[ImageAndType],
+    property_images_delete_ids: [Int!],
     property_filter_values: [PropertyFilterValue!], 
     translate_descriptions: [TranslateDescriptionInput],
     language: String
@@ -252,12 +234,9 @@ input UpdatePropertyInput{
     id:ID!
     property_type_id: Int,
     property_deal_types:[PropertyDealTypes!],
-    property_number: Int,
     bulding_type_id: Int,
     latitude: Float,
     longitude: Float,
-    country: String,
-    city: String,
     address: String,
     postal_code: String,
     property_state: String,
@@ -267,6 +246,28 @@ input UpdatePropertyInput{
     translate_descriptions: [TranslateDescriptionInput],
     language: String
 }
+
+
+input SavePropertyInput{
+    property_id: Int,
+    property_type_id: Int,
+    property_deal_types:[PropertyDealTypes],
+    bulding_type_id: Int,
+    latitude: Float,
+    longitude: Float,
+    address: String,
+    postal_code: String,
+    property_state: String,
+    property_images:[ImageAndType],
+    property_filter_values: [PropertyFilterValue], 
+    translate_descriptions: [TranslateDescriptionInput],
+    language: String
+}
+
+
+
+
+
 
 input PropertyDealTypes{
     deal_type_id: Int!,
@@ -377,18 +378,7 @@ type BuldingType{
     properties: [Property!]!
 }
 
-type Country{
-    id: ID!
-    name: String!
-    properties: [Property!]!
-}
 
-type City{
-    id: ID!
-    name: String!
-    parent_id: Int!
-    properties: [Property!]!
-}
 type PropertyDeal{
     id: ID!
     deal_type:DealType
@@ -400,24 +390,21 @@ type PropertyDeal{
 type Property{
     id: ID!
     property_type: PropertyType
-    user: User!
-    property_deals: [PropertyDeal!]
-    deal_types: [DealType!]
-    property_number: Int
-    bulding_type: BuldingType!
-    latitude: Float!
-    longitude: Float!
-    country: Country
-    city: City
+    user: User
+    property_deals: [PropertyDeal]
+    deal_types: [DealType]
+    bulding_type: BuldingType
+    latitude: Float
+    longitude: Float
     address: String
     postal_code: String
     property_state: String
     created_at: Date
     updated_at: Date
-    property_images:[PropertyImage!] 
-    property_images_paginat:[PropertyImage!] @hasMany(type: "paginator")
-    filters_values: [FiltersValue!]
-    translate_descriptions: [TranslateDescription!]
+    property_images:[PropertyImage] 
+    property_images_paginat:[PropertyImage] @hasMany(type: "paginator")
+    filters_values: [FiltersValue]
+    translate_descriptions: [TranslateDescription]
     review: String
     is_public_status: String
     is_delete: Boolean

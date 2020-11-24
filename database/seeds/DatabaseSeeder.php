@@ -20,8 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PropertyTypeSeeder::class);
         $this->call(DealTypeSeeder::class);
         $this->call(BuldingTypeSeeder::class);
-        $this->call(CountrySeeder::class);
-        $this->call(CitySeeder::class);
 
         $this->call(PropertySeeder::class);
 
@@ -31,7 +29,6 @@ class DatabaseSeeder extends Seeder
         $this->call(FiltersValueSeeder::class);
 
         $this->call(PropertyImageSeeder::class);
-
         
     }
 }

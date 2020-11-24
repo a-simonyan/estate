@@ -8,20 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class Property extends Model
 {
     protected $table = "properties";
-    protected $fillable = ['property_type_id',
+    protected $fillable = ['property_key',
+                           'property_type_id',
                            'user_id',
-                           'property_number',
                            'bulding_type_id',
                            'latitude',
                            'longitude',
-                           'country_id',
-                           'city_id',
                            'address',
                            'postal_code',
                            'property_state',
                            'review',
                            'is_public_status',
-                           'is_delete'
+                           'is_save',
+                           'is_delete',
                         ];
 
 
@@ -34,12 +33,6 @@ class Property extends Model
    public function   bulding_type(){
        return $this->belongsTo('App\BuldingType','bulding_type_id','id');
    }          
-   public function   country(){
-       return $this->belongsTo('App\Country','country_id','id');
-   }    
-   public function   city(){
-       return $this->belongsTo('App\City','city_id','id');
-   }     
    public function filters_values(){
        return $this->hasMany('App\FiltersValue','property_id','id');
    }

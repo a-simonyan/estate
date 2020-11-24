@@ -15,24 +15,21 @@ class CreatePropertiesTable extends Migration
     {
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('property_type_id');
+            $table->string('property_key')->unique()->nullable();
+            $table->foreignId('property_type_id')->nullable();
             $table->foreign('property_type_id')->references('id')->on('property_types')->onDelete('cascade');
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->bigInteger('property_number')->nullable();
-            $table->foreignId('bulding_type_id');
+            $table->foreignId('bulding_type_id')->nullable();
             $table->foreign('bulding_type_id')->references('id')->on('bulding_types')->onDelete('cascade');
-            $table->float('latitude');
-            $table->float('longitude');
-            $table->foreignId('country_id')->nullable();
-            $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
-            $table->foreignId('city_id')->nullable();
-            $table->foreign('city_id')->references('id')->on('cities')->onDelete('cascade');
-            $table->string('address');
+            $table->float('latitude')->nullable();
+            $table->float('longitude')->nullable();
+            $table->string('address')->nullable();
             $table->string('postal_code')->nullable();
-            $table->enum('property_state',['good','average','poor']);
+            $table->enum('property_state',['good','average','poor'])->nullable();
             $table->text('review')->nullable();
-            $table->enum('is_public_status',['under_review','published','rejected'])->default('under_review');;
+            $table->enum('is_public_status',['under_review','published','rejected'])->default('under_review');
+            $table->boolean('is_save')->default(false);
             $table->boolean('is_delete')->default(false);
             $table->timestamps();
         });

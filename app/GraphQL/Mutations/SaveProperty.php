@@ -13,9 +13,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
 
-class CreateProperty
+class SaveProperty
 {
-
     /**
      * @param  null  $_
      * @param  array<string, mixed>  $args
@@ -30,14 +29,15 @@ class CreateProperty
         if(empty($args['property_id'])){
 
             $property = Property::create(['property_key'     => $this->property_key(),
-                                          'property_type_id' => $args['property_type_id'],
+                                          'property_type_id' => !empty($args['property_type_id'])? $args['property_type_id']:null,
                                           'user_id'          => $user_id,  
-                                          'bulding_type_id'  => $args['bulding_type_id'],
-                                          'latitude'         => $args['latitude'],
-                                          'longitude'        => $args['longitude'],
-                                          'address'          => $args['address'],
-                                          'postal_code'      => $args['postal_code'],
-                                          'property_state'   => $args['property_state'],
+                                          'bulding_type_id'  => !empty($args['bulding_type_id'])? $args['bulding_type_id']:null,
+                                          'latitude'         => !empty($args['latitude'])? $args['latitude']:null,
+                                          'longitude'        => !empty($args['longitude'])? $args['longitude']:null,
+                                          'address'          => !empty($args['address'])? $args['address']:null,
+                                          'postal_code'      => !empty($args['postal_code'])? $args['postal_code']:null,
+                                          'property_state'   => !empty($args['property_state'])? $args['property_state']:null,
+                                          'is_save'          => true
                                          ]); 
     
             if($property){                             
@@ -66,19 +66,18 @@ class CreateProperty
             $property = Property::Find($args['property_id']);
 
             if($property){
-                $property->update(
-                   ['property_key'     => $this->property_key(),
-                    'property_type_id' => $args['property_type_id'],
+                $property->update([
+                    'property_key'     => $this->property_key(),
+                    'property_type_id' => !empty($args['property_type_id'])? $args['property_type_id']:null,
                     'user_id'          => $user_id,  
-                    'bulding_type_id'  => $args['bulding_type_id'],
-                    'latitude'         => $args['latitude'],
-                    'longitude'        => $args['longitude'],
-                    'address'          => $args['address'],
-                    'postal_code'      => $args['postal_code'],
-                    'property_state'   => $args['property_state'],
-                    'is_save'          => false   
-                   ]
-                );
+                    'bulding_type_id'  => !empty($args['bulding_type_id'])? $args['bulding_type_id']:null,
+                    'latitude'         => !empty($args['latitude'])? $args['latitude']:null,
+                    'longitude'        => !empty($args['longitude'])? $args['longitude']:null,
+                    'address'          => !empty($args['address'])? $args['address']:null,
+                    'postal_code'      => !empty($args['postal_code'])? $args['postal_code']:null,
+                    'property_state'   => !empty($args['property_state'])? $args['property_state']:null,
+                    'is_save'          => true
+                ]);
 
             }
 
@@ -260,8 +259,4 @@ class CreateProperty
        
 
     }
-
-
-
-
 }
