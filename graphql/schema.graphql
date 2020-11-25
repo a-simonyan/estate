@@ -7,78 +7,96 @@ scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date
 type Query {
 
     userProfile(language: String):User @middleware(checks: ["auth:api"]) @SetLanguage
-    users(orderBy: [OrderByClause!] @orderBy): [User!]! @all @middleware(checks: ["auth:api","admin"]) 
-    usersPaginate(orderBy: [OrderByClause!] @orderBy): [User!]! @paginate(defaultCount: 10) @middleware(checks: ["auth:api","admin"])
+    users(orderBy: [OrderByClause!] @orderBy): [User]! @all @middleware(checks: ["auth:api","admin"]) 
+    usersPaginate(orderBy: [OrderByClause!] @orderBy): [User]! @paginate(defaultCount: 10) @middleware(checks: ["auth:api","admin"])
     user(id: ID @eq): User @find @middleware(checks: ["auth:api","admin"])
 
-    phones(orderBy: [OrderByClause!] @orderBy): [Phone!]! @all 
-    phonesPaginate(orderBy: [OrderByClause!] @orderBy): [Phone!]! @paginate(defaultCount: 10)
+    userProperties(language: String):[Property] @middleware(checks: ["auth:api"])
+    userSaveProperties(language: String):[Property] @middleware(checks: ["auth:api"])
+
+
+
+
+
+
+    phones(orderBy: [OrderByClause!] @orderBy): [Phone]! @all 
+    phonesPaginate(orderBy: [OrderByClause!] @orderBy): [Phone]! @paginate(defaultCount: 10)
     phone(id: ID @eq): Phone @find
 
-    userTypes(language: String,orderBy: [OrderByClause!] @orderBy): [UserType!]! @all  @SetLanguage
-    userTypesPaginate(language: String,orderBy: [OrderByClause!] @orderBy): [UserType!]! @paginate(defaultCount: 10)  @SetLanguage
+    userTypes(language: String,orderBy: [OrderByClause!] @orderBy): [UserType]! @all  @SetLanguage
+    userTypesPaginate(language: String,orderBy: [OrderByClause!] @orderBy): [UserType]! @paginate(defaultCount: 10)  @SetLanguage
     userType(id: ID @eq, language: String): Phone @find  @SetLanguage
 
-    languages(orderBy: [OrderByClause!] @orderBy): [Language!]! @all
-    languagesPaginate: [Language!]! @paginate(defaultCount: 10)
+    languages(orderBy: [OrderByClause!] @orderBy): [Language]! @all
+    languagesPaginate: [Language] @paginate(defaultCount: 10)
     language(id: ID @eq): Language @find
 
-    translations(orderBy: [OrderByClause!] @orderBy): [Translation!]! @all
-    translationsPaginate(orderBy: [OrderByClause!] @orderBy): [Translation!]! @paginate(defaultCount: 10)
+    translations(orderBy: [OrderByClause!] @orderBy): [Translation] @all
+    translationsPaginate(orderBy: [OrderByClause!] @orderBy): [Translation] @paginate(defaultCount: 10)
     translation(id: ID @eq): Translation @find
 
-    propertyTypes(language: String, orderBy: [OrderByClause!] @orderBy): [PropertyType!]! @all @SetLanguage
-    propertyTypesPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [PropertyType!]! @paginate(defaultCount: 10) @SetLanguage
+    propertyTypes(language: String, orderBy: [OrderByClause!] @orderBy): [PropertyType] @all @SetLanguage
+    propertyTypesPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [PropertyType!] @paginate(defaultCount: 10) @SetLanguage
     propertyType(id: ID @eq,language: String): PropertyType @find @SetLanguage
 
-    dealTypes(language: String, orderBy: [OrderByClause!] @orderBy): [DealType!]! @all @SetLanguage
-    dealTypes(language: String, orderBy: [OrderByClause!] @orderBy): [DealType!]! @paginate(defaultCount: 10) @SetLanguage
+    dealTypes(language: String, orderBy: [OrderByClause!] @orderBy): [DealType] @all @SetLanguage
+    dealTypes(language: String, orderBy: [OrderByClause!] @orderBy): [DealType] @paginate(defaultCount: 10) @SetLanguage
     dealType(id: ID @eq, language: String): DealType @find @SetLanguage
 
-    buldingTypes(language: String, orderBy: [OrderByClause!] @orderBy): [BuldingType!]! @all @SetLanguage
-    buldingTypesPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [BuldingType!]! @paginate(defaultCount: 10) @SetLanguage
+    buldingTypes(language: String, orderBy: [OrderByClause!] @orderBy): [BuldingType] @all @SetLanguage
+    buldingTypesPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [BuldingType] @paginate(defaultCount: 10) @SetLanguage
     buldingType(id: ID @eq,language: String): BuldingType @find @SetLanguage
 
-    propertiesPublished(language: String, orderBy:OrderBy):[Property!]!   @SetLanguage
-    propertiesPublishedPaginate(first: Int, page: Int,language: String, orderBy:OrderBy ):[Property!]!  @SetLanguage
 
-    propertiesRejected(language: String, orderBy:OrderBy): [Property!]!  @SetLanguage
-    propertiesRejectedPaginate(first: Int, page: Int, language: String, orderBy:OrderBy ):[Property!]!  @SetLanguage
+    # properties
 
-    propertiesUnderReview(language: String, orderBy:OrderBy): [Property!]!  @SetLanguage
-    propertiesUnderReviewPaginate(first: Int, page: Int, language: String, orderBy:OrderBy ):[Property!]! @SetLanguage
+    propertiesPublished(language: String, orderBy:OrderBy):[Property]   @SetLanguage
+    propertiesPublishedPaginate(first: Int, page: Int,language: String, orderBy:OrderBy ):[Property]  @SetLanguage
+
+    propertiesRejected(language: String, orderBy:OrderBy): [Property]  @SetLanguage
+    propertiesRejectedPaginate(first: Int, page: Int, language: String, orderBy:OrderBy ):[Property]  @SetLanguage
+
+    propertiesUnderReview(language: String, orderBy:OrderBy): [Property]  @SetLanguage
+    propertiesUnderReviewPaginate(first: Int, page: Int, language: String, orderBy:OrderBy ):[Property] @SetLanguage
 
     property(id: ID @eq,language: String): Property @find @SetLanguage
+  
+    propertiesPublishedFilters( input: PropertiesPublishedFiltersInput @spread ):[Property] @SetLanguage
+
+
+
+
+
 
    
 
-    propertyImages(orderBy: [OrderByClause!] @orderBy): [PropertyImage!]! @all
-    propertyImagesPaginate(orderBy: [OrderByClause!] @orderBy): [PropertyImage!]! @paginate(defaultCount: 10)
+    propertyImages(orderBy: [OrderByClause!] @orderBy): [PropertyImage] @all
+    propertyImagesPaginate(orderBy: [OrderByClause!] @orderBy): [PropertyImage] @paginate(defaultCount: 10)
     propertyImage(id: ID @eq): PropertyImage @find
 
-    filtersValues(language: String, orderBy: [OrderByClause!] @orderBy): [FiltersValue!]! @all @SetLanguage
-    filtersValuesPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [FiltersValue!]! @paginate(defaultCount: 10) @SetLanguage
+    filtersValues(language: String, orderBy: [OrderByClause!] @orderBy): [FiltersValue] @all @SetLanguage
+    filtersValuesPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [FiltersValue] @paginate(defaultCount: 10) @SetLanguage
     filtersValue(id: ID @eq,language: String): FiltersValue @find @SetLanguage
 
-    filters(language: String,orderBy: [OrderByClause!] @orderBy): [Filter!]! @all @SetLanguage
-    filtersPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [Filter!]! @paginate(defaultCount: 10) @SetLanguage
+    filters(language: String,orderBy: [OrderByClause!] @orderBy): [Filter] @all @SetLanguage
+    filtersPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [Filter] @paginate(defaultCount: 10) @SetLanguage
     filter(id: ID @eq,language: String): Filter @find @SetLanguage
 
-    filterGroups(language: String, orderBy: [OrderByClause!] @orderBy): [FilterGroup!]! @all @SetLanguage
-    filterGroups(language: String, orderBy: [OrderByClause!] @orderBy): [FilterGroup!]! @paginate(defaultCount: 10) @SetLanguage
+    filterGroups(language: String, orderBy: [OrderByClause!] @orderBy): [FilterGroup] @all @SetLanguage
+    filterGroups(language: String, orderBy: [OrderByClause!] @orderBy): [FilterGroup] @paginate(defaultCount: 10) @SetLanguage
     filterGroup(id: ID @eq,language: String): FilterGroup @find @SetLanguage
 
-    propertyDeals(language: String, orderBy: [OrderByClause!] @orderBy): [PropertyDeal!]! @all @SetLanguage
-    propertyDealsPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [PropertyDeal!]! @paginate(defaultCount: 10) @SetLanguage
+    propertyDeals(language: String, orderBy: [OrderByClause!] @orderBy): [PropertyDeal] @all @SetLanguage
+    propertyDealsPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [PropertyDeal] @paginate(defaultCount: 10) @SetLanguage
     propertyDeal(id: ID @eq,language: String): PropertyDeal @find @SetLanguage
 
-    translateDescription(orderBy: [OrderByClause!] @orderBy): [TranslateDescription!]! @all 
-    translateDescriptionPaginate(orderBy: [OrderByClause!] @orderBy): [TranslateDescription!]! @paginate(defaultCount: 10)
+    translateDescription(orderBy: [OrderByClause!] @orderBy): [TranslateDescription] @all 
+    translateDescriptionPaginate(orderBy: [OrderByClause!] @orderBy): [TranslateDescription] @paginate(defaultCount: 10)
     translateDescription(id: ID @eq): TranslateDescription @find
 
 
-    userFavoriteProperties(language: String, orderBy: [OrderByClause!] @orderBy): [UserFavoriteProperty!]! @all @SetLanguage
-    userFavoritePropertiesPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [UserFavoriteProperty!]! @paginate(defaultCount: 10) @SetLanguage
+    userFavoriteProperties(language: String, orderBy: [OrderByClause!] @orderBy): [UserFavoriteProperty] @all @SetLanguage
+    userFavoritePropertiesPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [UserFavoriteProperty] @paginate(defaultCount: 10) @SetLanguage
     userFavoriteProperty(id: ID @eq,language: String): UserFavoriteProperty @find @SetLanguage
 
 
@@ -88,6 +106,12 @@ type Query {
      propertyFilterGroupFilters(property_id:Int, language: String):String @SetLanguage
 
      test(language: String):String @SetLanguage
+
+
+
+
+
+
 
 }
 
@@ -265,7 +289,18 @@ input SavePropertyInput{
 }
 
 
+input PropertiesPublishedFiltersInput{
+      filters:[PropertyFilterValue],
+      place:placeInput,
+      language: String,
 
+}
+
+input placeInput{
+    latitude: Float,
+    longitude: Float,
+    radius: Int
+}
 
 
 
@@ -389,6 +424,7 @@ type PropertyDeal{
 
 type Property{
     id: ID!
+    property_key: String
     property_type: PropertyType
     user: User
     property_deals: [PropertyDeal]
@@ -407,6 +443,7 @@ type Property{
     translate_descriptions: [TranslateDescription]
     review: String
     is_public_status: String
+    is_save: String
     is_delete: Boolean
 
 }
