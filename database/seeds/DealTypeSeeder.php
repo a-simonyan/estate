@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\DealType;
 
 class DealTypeSeeder extends Seeder
 {
@@ -11,6 +12,14 @@ class DealTypeSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\DealType::class, 10)->create();
+        $items = [          
+            ['name' => 'sale'],  
+            ['name' => 'monthly_rental_fee'],
+            ['name' => 'daily_rental_fee'],
+        ];
+    
+        foreach ($items as $item) {
+            DealType::create($item);
+        }
     }
 }

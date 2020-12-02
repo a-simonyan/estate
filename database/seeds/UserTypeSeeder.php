@@ -13,8 +13,8 @@ class UserTypeSeeder extends Seeder
     public function run()
     {   
         $items = [            
-            ['name' => 'admin'],
-            ['name' => 'user'],
+            ['name' => 'individual'],
+            ['name' => 'agency'],
         ];
     
         foreach ($items as $item) {

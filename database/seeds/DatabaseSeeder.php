@@ -25,6 +25,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call(FilterGroupSeeder::class);
         $this->call(FilterSeeder::class);
+        $this->call(FilterPropertyTypeSeeder::class);
+
 
         $this->call(FiltersValueSeeder::class);
 

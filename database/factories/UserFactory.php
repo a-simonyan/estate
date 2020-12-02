@@ -70,11 +70,6 @@ $factory->define(Translation::class, function(Faker $faker){
 //     ];
 // });
 
-$factory->define(DealType::class, function(Faker $faker){
-    return [
-        'name' => $faker->unique()->word,
-    ];
-});
 
 $factory->define(BuldingType::class, function(Faker $faker){
     return [
@@ -97,32 +92,17 @@ $factory->define(Property::class, function(Faker $faker){
 });
 $factory->define(PropertyDeal::class, function(Faker $faker){
     return [
-        'deal_type_id' => $faker->numberBetween($min = 1, $max = 10),
+        'deal_type_id' => $faker->numberBetween($min = 1, $max = 3),
         'price' => $faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = 1000)        
     ];
 });
 
 
-$factory->define(Filter::class, function(Faker $faker){
-    return [
-        'name' => $faker->unique()->word,
-        'filter_type' => $faker->randomElement(['text','number','checkbox']),
-        'icon_class' => 'fa fa-home',
-        'filter_group_id' => $faker->randomElement([1,2,3]),
-
-    ];
-});
-
-$factory->define(FilterPropertyType::class, function(Faker $faker){
-    return [
-        'property_type_id' => 1,
-    ];
-});
 
 $factory->define(FiltersValue::class, function(Faker $faker){
     return [
         'filter_id' => $faker->numberBetween($min = 1, $max = 10),
-        'property_id' => $faker->numberBetween($min = 1, $max = 10),
+        'property_id' => $faker->numberBetween($min = 1, $max = 4),
         'value' => $faker->unique()->word,
     ];
 });

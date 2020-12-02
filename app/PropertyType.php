@@ -11,7 +11,7 @@ class PropertyType extends Model
 
   public $timestamps = false;
   protected $table = "property_types";
-  protected $fillable = ['name','icon_class'];
+  protected $fillable = ['name'];
 
   public function getNameAttribute($value)
   {

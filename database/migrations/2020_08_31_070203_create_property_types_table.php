@@ -16,7 +16,6 @@ class CreatePropertyTypesTable extends Migration
         Schema::create('property_types', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('icon_class')->nullable();
         });
     }
 

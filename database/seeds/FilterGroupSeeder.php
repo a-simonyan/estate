@@ -14,8 +14,8 @@ class FilterGroupSeeder extends Seeder
     {
         $items = [          
             ['name' => 'undefined'],  
+            ['name' => 'communal_facilities'],
             ['name' => 'other'],
-            ['name' => 'utilities'],
         ];
     
         foreach ($items as $item) {

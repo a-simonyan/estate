@@ -241,12 +241,12 @@ input CreatePropertyInput{
     property_id: Int,
     property_type_id: Int!,
     property_deal_types:[PropertyDealTypes!]!,
-    bulding_type_id: Int!,
+    bulding_type_id: Int,
     latitude: Float!,
     longitude: Float!,
     address: String!,
-    postal_code: String!,
-    property_state: String!,
+    postal_code: String,
+    property_state: String,
     property_images:[ImageAndType],
     property_images_delete_ids: [Int!],
     property_filter_values: [PropertyFilterValue!], 
@@ -393,10 +393,8 @@ type Translation{
 type PropertyType{
     id: ID!
     name: String!
-    icon_class: String
     properties: [Property!]!
     filters: [Filter!]!
-  
 }
 
 
@@ -482,8 +480,6 @@ type FilterGroup{
 type Filter{
     id: ID!
     name: String!
-    icon_class: String
-    filter_type: FiltersValuesEnum!
     filters_values: [FiltersValue!]!
     property_types: [PropertyType!]!
     filter_group_id:ID
@@ -498,11 +494,6 @@ type UserFavoriteProperty{
     updated_at: Date
 }
 
-enum FiltersValuesEnum {
-  text @enum(value: text)
-  number @enum(value: number)
-  checkbox @enum(value: checkbox)
-}
 
 enum PropertyStateEnum {
   good @enum(value: good)

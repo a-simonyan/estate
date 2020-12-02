@@ -13,9 +13,10 @@ class PropertyTypeSeeder extends Seeder
     public function run()
     {
         $items = [            
-            ['name' => 'undefined','icon_class' => 'fa fa-home'],
-            ['name' => 'other','icon_class' => 'fa fa-home'],
-            ['name' => 'home' ,'icon_class' => 'fa fa-home'],
+            ['name' => 'apartment'],
+            ['name' => 'mansion'],
+            ['name' => 'land_area' ],
+            ['name' => 'commercial_area' ],
         ];
     
         foreach ($items as $item) {

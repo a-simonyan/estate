@@ -16,8 +16,6 @@ class CreateFiltersTable extends Migration
         Schema::create('filters', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->enum('filter_type',['text','number','checkbox']);
-            $table->string('icon_class')->nullable();
             $table->foreignId('filter_group_id')->nullable();
             $table->foreign('filter_group_id')->references('id')->on('filter_groups')->onDelete('cascade');
         });
