@@ -74,7 +74,7 @@ input NewPasswordWithCodeInput {
 input RegisterInput {
     full_name: String! 
     email: String! 
-    user_type_id: Int
+    user_type: String
     password: String!
     password_confirmation: String!
     email_verification_url: String!

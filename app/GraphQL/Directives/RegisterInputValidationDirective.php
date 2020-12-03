@@ -18,7 +18,7 @@ class RegisterInputValidationDirective extends ValidationDirective
             'picture'      => ['string','nullable'],
             'picture_type' => ['string','in:jpeg,jpg,png','nullable'],
             'email'        => ['required', 'email', 'unique:users'],
-            'user_type_id' => ['required','numeric'],
+            'user_type'    => ['required','string'],
             'password'     => ['required', 'min:8'],
             'password_confirmation' => ['required','same:password'],
             'recaptcha'    =>  [ function ($attribute, $value, $fail) {

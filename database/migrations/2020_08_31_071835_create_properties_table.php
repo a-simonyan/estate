@@ -15,7 +15,7 @@ class CreatePropertiesTable extends Migration
     {
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
-            $table->string('property_key')->unique()->nullable();
+            $table->string('property_key')->nullable();
             $table->foreignId('property_type_id')->nullable();
             $table->foreign('property_type_id')->references('id')->on('property_types')->onDelete('cascade');
             $table->foreignId('user_id')->nullable();

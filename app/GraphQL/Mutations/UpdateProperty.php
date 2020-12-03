@@ -2,6 +2,8 @@
 
 namespace App\GraphQL\Mutations;
 use Auth;
+use App\DealType;
+use App\Filter;
 use App\Property;
 use App\PropertyImage;
 use Illuminate\Support\Str;
@@ -27,9 +29,11 @@ class UpdateProperty
 
         if($property&&$user_auth->is_admin||$property->user->id == $user_id){      
             $array_property = [];   
-            
+            if(!empty($args['property_key'])){
+                $array_property['property_key'] = $args['property_key'];
+            }
             if(!empty($args['property_type_id'])){
-                $array_property['property_type_id'] = $args['property_type_id'];
+                $array_property['property_type_id'] = $this->getKeyId(PropertyType::Class,'name',$args['property_type']);
             }
             if(!empty($args['bulding_type_id'])){
                 $array_property['bulding_type_id'] = $args['bulding_type_id'];
@@ -65,7 +69,7 @@ class UpdateProperty
              }
 
              if(!empty($args['property_filter_values'])){
-               $this->savePropertyFilterValues($property_id, $args['property_type_id'], $args['property_filter_values']);
+               $this->savePropertyFilterValues($property_id, $this->getKeyId(PropertyType::Class,'name',$args['property_type']), $args['property_filter_values']);
              }
              if(!empty($args['translate_descriptions'])){
                $this->saveTranslateDescription($property_id, $args['translate_descriptions']);
@@ -96,7 +100,7 @@ class UpdateProperty
         foreach($property_deal_types as $property_deal_type){
            PropertyDeal::create([
                'property_id'   => $property_id,
-               'deal_type_id'  => $property_deal_type['deal_type_id'],
+               'deal_type_id'  => $this->getKeyId(DealType::Class,'name',$property_deal_type['deal_type']),
                'price'         => $property_deal_type['price']
            ]);
         }
@@ -170,7 +174,8 @@ class UpdateProperty
           FiltersValue::where('property_id',$property_id)->update(['value' => null]);
 
           foreach($property_filter_values as $property_filter_value){
-              FiltersValue::where('filter_id',$property_filter_value['filter_id'])->update(['value' => $property_filter_value['value']]);
+              $filter_id = $this->getKeyId(Filter::Class,'name',$property_filter_value['filter']);
+              FiltersValue::where('filter_id', $filter_id)->update(['value' => $property_filter_value['value']]);
           }
        }
         

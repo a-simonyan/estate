@@ -12,15 +12,21 @@ use App\User;
 use Illuminate\Support\Facades\Http;
 use App\PropertyImage;
 // use App\Singleton\RestUrl;
+use App\Http\Traits\GetIdTrait;
+
 
 class TestController extends Controller
 {
+    use GetIdTrait;
 
     public function json(){
 
-        $a=PropertyImage::where('property_id',1)->orderBy('index','desc')->first();
 
-        dd($a);
+      $id = $this->getKeyId(User::Class,'full_name','Mihran Baldryan');
+
+    $user= User::where('full_name','Mihran Baldryan')->first();
+        
+    dd($id);
 
 
 

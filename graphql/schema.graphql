@@ -167,8 +167,8 @@ type Mutation {
     updateFiltersValue( id: ID!,filter_id: Int, property_id: Int,value: String): FiltersValue! @update
     deleteFiltersValue(id:ID!): FiltersValue! @delete
 
-    createFilter(name: String!, filter_type:FiltersValuesEnum, filter_group_id: Int ): Filter! @create
-    updateFilter(id:ID!,name: String, filter_type:FiltersValuesEnum,  filter_group_id: Int): Filter! @update
+    createFilter(name: String!, filter_group_id: Int ): Filter! @create
+    updateFilter(id:ID!,name: String,  filter_group_id: Int): Filter! @update
     deleteFilter(id:ID!): Filter! @delete
 
     createFilterGroup(name: String!): FilterGroup! @create
@@ -239,7 +239,8 @@ input UpdatePhone{
 
 input CreatePropertyInput{
     property_id: Int,
-    property_type_id: Int!,
+    property_key: String,
+    property_type: String!,
     property_deal_types:[PropertyDealTypes!]!,
     bulding_type_id: Int,
     latitude: Float!,
@@ -256,7 +257,8 @@ input CreatePropertyInput{
 
 input UpdatePropertyInput{
     id:ID!
-    property_type_id: Int,
+    property_key: String,
+    property_type: String,
     property_deal_types:[PropertyDealTypes!],
     bulding_type_id: Int,
     latitude: Float,
@@ -274,7 +276,8 @@ input UpdatePropertyInput{
 
 input SavePropertyInput{
     property_id: Int,
-    property_type_id: Int,
+    property_key: String,
+    property_type: String,
     property_deal_types:[PropertyDealTypes],
     bulding_type_id: Int,
     latitude: Float,
@@ -293,7 +296,6 @@ input PropertiesPublishedFiltersInput{
       filters:[PropertyFilterValue],
       place:placeInput,
       language: String,
-
 }
 
 input placeInput{
@@ -305,7 +307,7 @@ input placeInput{
 
 
 input PropertyDealTypes{
-    deal_type_id: Int!,
+    deal_type: String!,
     price: Float
 }
 
@@ -320,7 +322,7 @@ input ImageAndType{
 }
 
 input PropertyFilterValue{
-    filter_id: Int!
+    filter: String!
     value: String
 }
 input OrderBy{

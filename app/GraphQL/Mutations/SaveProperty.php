@@ -1,6 +1,8 @@
 <?php
 
 namespace App\GraphQL\Mutations;
+use App\DealType;
+use App\Filter;
 use App\Property;
 use App\PropertyImage;
 Use App\PropertyType;
@@ -11,10 +13,13 @@ use App\Language;
 use Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Traits\GetIdTrait;
 
 
 class SaveProperty
 {
+
+    use GetIdTrait;
     /**
      * @param  null  $_
      * @param  array<string, mixed>  $args
@@ -28,8 +33,8 @@ class SaveProperty
 
         if(empty($args['property_id'])){
 
-            $property = Property::create(['property_key'     => $this->property_key(),
-                                          'property_type_id' => !empty($args['property_type_id'])? $args['property_type_id']:null,
+            $property = Property::create(['property_key'     => !empty($args['property_key'])? $args['property_key']:null,
+                                          'property_type_id' => !empty($args['property_type'])? $this->getKeyId(PropertyType::Class,'name',$args['property_type']):null,
                                           'user_id'          => $user_id,  
                                           'bulding_type_id'  => !empty($args['bulding_type_id'])? $args['bulding_type_id']:null,
                                           'latitude'         => !empty($args['latitude'])? $args['latitude']:null,
@@ -51,7 +56,7 @@ class SaveProperty
                    $this->savePropertyImages($property_id,$args['property_images']);
                  }
                  if(!empty($args['property_filter_values'])){
-                   $this->savePropertyFilterValues($property_id, $args['property_type_id'], $args['property_filter_values']);
+                   $this->savePropertyFilterValues($property_id, $this->getKeyId(PropertyType::Class,'name',$args['property_type']), $args['property_filter_values']);
                  }
                  if(!empty($args['translate_descriptions'])){
                    $this->saveTranslateDescription($property_id, $args['translate_descriptions']);
@@ -67,8 +72,8 @@ class SaveProperty
 
             if($property){
                 $property->update([
-                    'property_key'     => $this->property_key(),
-                    'property_type_id' => !empty($args['property_type_id'])? $args['property_type_id']:null,
+                    'property_key'     => !empty($args['property_key'])? $args['property_key']:null,
+                    'property_type_id' => !empty($args['property_type'])? $this->getKeyId(PropertyType::Class,'name',$args['property_type']):null,
                     'user_id'          => $user_id,  
                     'bulding_type_id'  => !empty($args['bulding_type_id'])? $args['bulding_type_id']:null,
                     'latitude'         => !empty($args['latitude'])? $args['latitude']:null,
@@ -93,7 +98,7 @@ class SaveProperty
             }
             if(!empty($args['property_filter_values'])){
                 FiltersValue::where('property_id',$property_id)->delete();
-                $this->savePropertyFilterValues($property_id, $args['property_type_id'], $args['property_filter_values']);
+                $this->savePropertyFilterValues($property_id,$this->getKeyId(PropertyType::Class,'name',$args['property_type']), $args['property_filter_values']);
             }
             if(!empty($args['translate_descriptions'])){
                 TranslateDescription::where('property_id',$property_id)->delete(); 
@@ -119,7 +124,7 @@ class SaveProperty
          foreach($property_deal_types as $property_deal_type){
             PropertyDeal::create([
                 'property_id'   => $property_id,
-                'deal_type_id'  => $property_deal_type['deal_type_id'],
+                'deal_type_id'  => $this->getKeyId(DealType::Class,'name',$property_deal_type['deal_type']),
                 'price'         => $property_deal_type['price']
             ]);
          }
@@ -193,11 +198,6 @@ class SaveProperty
 
 
 
-
-
-
-
-
     public function savePropertyFilterValues($property_id, $property_type_id, $property_filter_values){
 
         $property_type_filters = PropertyType::find($property_type_id)->filters;
@@ -213,7 +213,9 @@ class SaveProperty
         }
         if($property_filter_values){
            foreach($property_filter_values as $property_filter_value){
-               FiltersValue::where('filter_id',$property_filter_value['filter_id'])->update(['value' => $property_filter_value['value']]);
+
+               $filter_id = $this->getKeyId(Filter::Class,'name',$property_filter_value['filter']);
+               FiltersValue::where('filter_id', $filter_id)->update(['value' => $property_filter_value['value']]);
            }
         }
          
@@ -248,15 +250,5 @@ class SaveProperty
 
     }
 
-    public function property_key(){
-
-        $key = mt_rand(100000, 999999);
-        while(Property::where('property_key',$key)->first()){
-            $key = mt_rand(100000, 999999);
-        };
-
-        return $key;
-       
-
-    }
+    
 }

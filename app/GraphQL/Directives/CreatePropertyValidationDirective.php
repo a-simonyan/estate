@@ -11,15 +11,13 @@ class CreatePropertyValidationDirective extends ValidationDirective
     {
         
         return [
-            'property_type_id'=> ['required'],
+            'property_type'   => ['required'],
             'user_id'         => ['required'],
-            'deal_type_id'    => ['required'],
+            'deal_type'       => ['required'],
             'property_number' => ['required'],
             'bulding_type_id' => ['required'],
             'latitude'        => ['required'],
             'longitude'       => ['required'],
-            'country_id'      => ['required'],
-            'city_id'         => ['required'],
             'address'         => ['required'],
             'property_images' => ['required']
         ];

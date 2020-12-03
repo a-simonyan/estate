@@ -8,10 +8,13 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Hash;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
+use App\UserType;
+use App\Http\Traits\GetIdTrait;
 
 
 class RegisterUser extends BaseAuthResolver
 {
+    use GetIdTrait;
     /**
      * @param  null  $_
      * @param  array<string, mixed>  $args
@@ -21,9 +24,9 @@ class RegisterUser extends BaseAuthResolver
         
 
         $model = app(config('auth.providers.users.model'));
-        $input = collect($args)->except('password_confirmation')->toArray();
+        $input = collect($args)->except(['user_type','password_confirmation'])->toArray();
         $input['password'] = Hash::make($input['password']);
-      
+        $input['user_type_id'] = $this->getKeyId(UserType::Class,'name',$args['user_type']); 
         $model->fill($input);
         $model->save();
       
