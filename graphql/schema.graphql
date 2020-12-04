@@ -293,8 +293,17 @@ input SavePropertyInput{
 
 
 input PropertiesPublishedFiltersInput{
-      filters:[PropertyFilterValue],
       place:placeInput,
+      property_type: String,
+      user_type: String,
+      area: MinMax,
+      number_of_floors_of_the_building:MinMax,
+      apartment_floor:MinMax,
+      number_of_rooms:MinMax,
+      number_of_bathrooms: Int,
+      property_state: String,
+      bulding_type_id: Int,
+      filters:[PropertyFilterValue],
       language: String,
 }
 
@@ -304,6 +313,10 @@ input placeInput{
     radius: Int
 }
 
+input MinMax{
+    min:Int,
+    max: Int
+}
 
 
 input PropertyDealTypes{
