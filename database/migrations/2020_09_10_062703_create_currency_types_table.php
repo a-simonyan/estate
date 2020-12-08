@@ -17,8 +17,7 @@ class CreateCurrencyTypesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('symbol');
-            $table->boolean('is_current');
-            $table->float('value');
+            $table->boolean('is_current')->default(false);
         });
     }
 

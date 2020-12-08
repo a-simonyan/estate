@@ -31,6 +31,8 @@ class DatabaseSeeder extends Seeder
         $this->call(FiltersValueSeeder::class);
 
         $this->call(PropertyImageSeeder::class);
+
+        $this->call(CurrencyTypeSeeder::class);
         
     }
 }

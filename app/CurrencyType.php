@@ -8,7 +8,10 @@ class CurrencyType extends Model
 {
     public $timestamps = false;
     protected $table = "currency_types";
-    protected $fillable = ['name','symbol','is_current','value'];
+    protected $fillable = ['name','symbol','is_current'];
 
 
+    public function property_deals(){
+        return $this->hasMany('App\PropertyDeal','currency_type_id','id'); 
+    }
 }

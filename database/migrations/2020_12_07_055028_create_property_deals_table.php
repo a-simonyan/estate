@@ -20,6 +20,8 @@ class CreatePropertyDealsTable extends Migration
             $table->foreignId('deal_type_id');
             $table->foreign('deal_type_id')->references('id')->on('deal_types')->onDelete('cascade');
             $table->float('price');
+            $table->foreignId('currency_type_id');
+            $table->foreign('currency_type_id')->references('id')->on('currency_types')->onDelete('cascade');
         });
     }
 

@@ -31,6 +31,12 @@ type Query {
     languagesPaginate: [Language] @paginate(defaultCount: 10)
     language(id: ID @eq): Language @find
 
+    currencyTypes(orderBy: [OrderByClause!] @orderBy): [CurrencyType]! @all
+    currencyTypesPaginate: [CurrencyType] @paginate(defaultCount: 10)
+    currencyType(id: ID @eq): CurrencyType @find
+
+
+
     translations(orderBy: [OrderByClause!] @orderBy): [Translation] @all
     translationsPaginate(orderBy: [OrderByClause!] @orderBy): [Translation] @paginate(defaultCount: 10)
     translation(id: ID @eq): Translation @find
@@ -185,8 +191,15 @@ type Mutation {
     saveProperty(input: SavePropertyInput @spread):Property!  @middleware(checks: ["auth:api"]) @SetLanguage
 
 
-    createPropertyDeal( property_id: Int!, deal_type_id: Int!, price: Float!): PropertyDeal! @create
-    updatePropertyDeal(id:ID!,property_id: Int!, deal_type_id: Int!, price: Float!): PropertyDeal! @update
+
+    createCurrencyType( name: String!, symbol: String!, is_current: Boolean!): CurrencyType! @create
+    updateCurrencyType(id:ID!, name: String, symbol: String, is_current: Boolean): CurrencyType! @update
+    deleteCurrencyType(id:ID!): CurrencyType! @delete
+
+
+
+    createPropertyDeal( property_id: Int!, deal_type_id: Int!, price: Float!, currency_type_id: Int!): PropertyDeal! @create
+    updatePropertyDeal(id:ID!,property_id: Int!, deal_type_id: Int!, price: Float!, currency_type_id: Int!): PropertyDeal! @update
     deletePropertyDeal(id:ID!): PropertyDeal! @delete
 
 
@@ -304,6 +317,8 @@ input PropertiesPublishedFiltersInput{
       property_state: String,
       bulding_type_id: Int,
       filters:[PropertyFilterValue],
+      currency_values:[CurrencyValue],
+      price_filters: [PriceFilter],
       language: String,
 }
 
@@ -317,7 +332,16 @@ input MinMax{
     min:Int,
     max: Int
 }
-
+input CurrencyValue {
+  currency_type_id: Int!
+  value: Float 
+}
+input PriceFilter{
+    currency_type_id: Int!,
+    deal_type: String!,
+    min: Int,
+    max: Int,
+}
 
 input PropertyDealTypes{
     deal_type: String!,
@@ -411,7 +435,12 @@ type PropertyType{
     properties: [Property!]!
     filters: [Filter!]!
 }
-
+type CurrencyType{
+     id: ID!
+     name: String!
+     symbol: String!
+     is_current: Boolean
+}
 
 type DealType{
     id: ID!
@@ -432,6 +461,7 @@ type PropertyDeal{
     deal_type:DealType
     property: Property
     price: Float!
+    currency_type: CurrencyType
 }
 
 
