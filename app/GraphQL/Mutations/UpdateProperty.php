@@ -99,9 +99,10 @@ class UpdateProperty
 
         foreach($property_deal_types as $property_deal_type){
            PropertyDeal::create([
-               'property_id'   => $property_id,
-               'deal_type_id'  => $this->getKeyId(DealType::Class,'name',$property_deal_type['deal_type']),
-               'price'         => $property_deal_type['price']
+               'property_id'       => $property_id,
+               'deal_type_id'      => $this->getKeyId(DealType::Class,'name',$property_deal_type['deal_type']),
+               'price'             => $property_deal_type['price'],
+               'currency_type_id'  => $property_deal_type['currency_type_id'],
            ]);
         }
 

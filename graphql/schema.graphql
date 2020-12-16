@@ -192,8 +192,8 @@ type Mutation {
 
 
 
-    createCurrencyType( name: String!, symbol: String!, is_current: Boolean!): CurrencyType! @create
-    updateCurrencyType(id:ID!, name: String, symbol: String, is_current: Boolean): CurrencyType! @update
+    createCurrencyType( name: String!, symbol: String!, is_current: Boolean, rate: Float ): CurrencyType! @create
+    updateCurrencyType(id:ID!, name: String, symbol: String, is_current: Boolean, rate: Float): CurrencyType! @update
     deleteCurrencyType(id:ID!): CurrencyType! @delete
 
 
@@ -317,7 +317,6 @@ input PropertiesPublishedFiltersInput{
       property_state: String,
       bulding_type_id: Int,
       filters:[PropertyFilterValue],
-      currency_values:[CurrencyValue],
       price_filters: [PriceFilter],
       language: String,
 }
@@ -332,10 +331,7 @@ input MinMax{
     min:Int,
     max: Int
 }
-input CurrencyValue {
-  currency_type_id: Int!
-  value: Float 
-}
+
 input PriceFilter{
     currency_type_id: Int!,
     deal_type: String!,
@@ -345,7 +341,8 @@ input PriceFilter{
 
 input PropertyDealTypes{
     deal_type: String!,
-    price: Float
+    price: Float!,
+    currency_type_id: Int!
 }
 
 input TranslateDescriptionInput{
@@ -440,6 +437,7 @@ type CurrencyType{
      name: String!
      symbol: String!
      is_current: Boolean
+     rate: Float
 }
 
 type DealType{

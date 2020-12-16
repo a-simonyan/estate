@@ -10,10 +10,11 @@ use App\PropertyDeal;
 use App\DealType;
 use DB;
 use App\Http\Traits\GetIdTrait;
+use App\Http\Traits\ChangeCurrencyTrait;
 
 class PropertiesPublishedFilters
 {
-    use GetIdTrait;
+    use GetIdTrait, ChangeCurrencyTrait;
     /**
      * @param  null  $_
      * @param  array<string, mixed>  $args
@@ -147,10 +148,10 @@ class PropertiesPublishedFilters
          $joinProperties = collect(new Property);
 
          if(!empty($args['price_filters'])){
-           $currency_values = !empty($args['currency_values']) ? $args['currency_values']:[];
+       
            foreach($args['price_filters'] as $price_filter){
               $deal_type_id=$this->getKeyId(DealType::Class,'name',$price_filter['deal_type']);
-              $propertiesFilters = $properties->filter(function($item) use ($price_filter, $deal_type_id, $currency_values){
+              $propertiesFilters = $properties->filter(function($item) use ($price_filter, $deal_type_id){
                 foreach($item->property_deals as $property_deal){
                  if($property_deal->deal_type_id==$deal_type_id){
 
@@ -160,7 +161,7 @@ class PropertiesPublishedFilters
                         }
                      } else {
                         $currency_type_id=$price_filter['currency_type_id'];
-                        $price = $this->changeCurrency($property_deal->price,$property_deal->currency_type_id,$currency_type_id,$currency_values);
+                        $price = $this->changeCurrency($property_deal->price,$property_deal->currency_type_id,$currency_type_id);
                         if($price>=$price_filter['min']&&$price<=$price_filter['max']){
                           return true;
                        }
@@ -215,34 +216,6 @@ class PropertiesPublishedFilters
    
      
 
-   public  function changeCurrency($price, $currency_type_id, $like_currency_type_id, array $currency_values){
-          
-            $currencies=null;   
-            $currencies_like=null;
-
-           foreach($currency_values as $currency_value){
-              if(!$currencies&&$currency_value['currency_type_id'] == $currency_type_id){
-                  $currencies = $currency_value['value'];
-              }
-              if(!$currencies_like&&$currency_value['currency_type_id'] == $like_currency_type_id){
-                 $currencies_like = $currency_value['value'];
-               }
-               if($currencies&&$currencies_like){
-                 break;
-               }
-           }
-
-           $currencies      = $currencies ? $currencies : 1;
-           $currencies_like = $currencies_like ? $currencies_like : 1;
-
-           $change_price = ($price*$currencies)/$currencies_like;
-
-
-           return $change_price; 
-
-      
-
-   } 
-
+   
 
 }

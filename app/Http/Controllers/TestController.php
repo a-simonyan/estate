@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Http;
 use App\PropertyImage;
 // use App\Singleton\RestUrl;
 use App\Http\Traits\GetIdTrait;
+use App\CurrencyType;
+
 
 
 class TestController extends Controller
@@ -20,13 +22,49 @@ class TestController extends Controller
     use GetIdTrait;
 
     public function json(){
+        $xml='<?xml version="1.0" encoding="utf-8"?>
+        <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+          <soap:Body>
+            <ExchangeRatesLatest xmlns="http://www.cba.am/" />
+          </soap:Body>
+        </soap:Envelope>';
 
+        $response = Http::withHeaders([
+            "Content-Type" => "text/xml;charset=utf-8",
+            'SOAPAction'   => 'http://www.cba.am/ExchangeRatesLatest'
+        ])->send("POST", "http://api.cba.am/exchangerates.asmx", [
+            "body" =>  $xml
+        ]);
+        $response =$response->body();
 
-      $id = $this->getKeyId(User::Class,'full_name','Mihran Baldryan');
+        $response = preg_replace("/(<\/?)(\w+):([^>]*>)/", "$1$2$3", $response);
+        $xml = new \SimpleXMLElement($response);
+        $body = $xml->xpath('//SBody');
+        $rates = json_decode(json_encode((array)$xml), TRUE); 
+        $rates = $rates['soapBody']['ExchangeRatesLatestResponse']['ExchangeRatesLatestResult']['Rates']['ExchangeRate'];
 
-    $user= User::where('full_name','Mihran Baldryan')->first();
+        $currencyTypes = CurrencyType::all();
+
+        foreach($currencyTypes as $currencyType){
+            $name = $currencyType->name;
+            $rate = $this->findRate($rates,$name);
+          
+            if($rate){
+              CurrencyType::where('name',$name)->update(['rate' =>  $rate]);
+            } 
+
+        }
+
         
-    dd($id);
+
+       dd('finish');
+       
+
+    // $id = $this->getKeyId(User::Class,'full_name','Mihran Baldryan');
+
+    // $user= User::where('full_name','Mihran Baldryan')->first();
+        
+    // dd($id);
 
 
 
@@ -75,6 +113,19 @@ class TestController extends Controller
 
 
         dd($property->get());
+
+     }
+
+
+     public function findRate($rates,$ISO){
+
+        foreach($rates as $rate){
+            if($rate['ISO']==$ISO){
+                return  $rate['Rate'];
+            };
+        }
+
+        return null;
 
      }
 

@@ -8,7 +8,7 @@ class CurrencyType extends Model
 {
     public $timestamps = false;
     protected $table = "currency_types";
-    protected $fillable = ['name','symbol','is_current'];
+    protected $fillable = ['name','symbol','is_current','rate'];
 
 
     public function property_deals(){
