@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('currency:rate')->hourly();
+        $schedule->command('currency:rate')->daily();
     }
 
     /**

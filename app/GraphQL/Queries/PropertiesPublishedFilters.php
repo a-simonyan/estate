@@ -156,15 +156,41 @@ class PropertiesPublishedFilters
                  if($property_deal->deal_type_id==$deal_type_id){
 
                     if($property_deal->currency_type_id==$price_filter['currency_type_id']){
-                        if($property_deal->price>=$price_filter['min']&&$property_deal->price<=$price_filter['max']){
+
+                     if(!empty($price_filter['min'])&&!empty($price_filter['max'])){
+                       if($property_deal->price>=$price_filter['min']&&$property_deal->price<=$price_filter['max']){
                            return true;
                         }
+                     } elseif(!empty($price_filter['max'])){
+                        if($property_deal->price<=$price_filter['max']){
+                           return true;
+                        }
+                     }
+                      elseif(!empty($price_filter['min'])){
+                        if($property_deal->price>=$price_filter['min']){
+                           return true;
+                        }
+                     }
+
+
                      } else {
                         $currency_type_id=$price_filter['currency_type_id'];
                         $price = $this->changeCurrency($property_deal->price,$property_deal->currency_type_id,$currency_type_id);
-                        if($price>=$price_filter['min']&&$price<=$price_filter['max']){
-                          return true;
-                       }
+                      
+                        if(!empty($price_filter['min'])&&!empty($price_filter['max'])){
+                           if($price>=$price_filter['min']&&$price<=$price_filter['max']){
+                             return true;
+                           }
+                        } elseif(!empty($price_filter['max'])){
+                           if($price<=$price_filter['max']){
+                              return true;
+                           }
+                        } elseif(!empty($price_filter['min'])){
+                           if($price>=$price_filter['min']){
+                              return true;
+                           }
+                        }
+
                      } 
 
 
