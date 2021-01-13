@@ -73,5 +73,8 @@ class User extends Authenticatable implements MustVerifyEmail
     public function user_favorite_properties(){
         return $this->hasMany('App\UserFavoriteProperty','user_id','id');
     }
+    public function saveUserFilters(){
+        return $this->hasMany('App\SaveUserFilter', 'user_id', 'id');
+    }
 
 }

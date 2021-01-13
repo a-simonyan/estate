@@ -106,10 +106,17 @@ type Query {
     userFavoriteProperty(id: ID @eq,language: String): UserFavoriteProperty @find @SetLanguage
 
 
+    saveUserFilters(language: String, orderBy:OrderBy): [SaveUserFilterJson] @middleware(checks: ["auth:api"]) @SetLanguage
+    SaveUserFilterById(id:ID!, language: String): SaveUserFilterJson  @middleware(checks: ["auth:api"]) @SetLanguage
+
     #  create new Query
 
-     propertyTypeFilterGroup(property_type_id:Int, language: String):String @SetLanguage
-     propertyFilterGroupFilters(property_id:Int, language: String):String @SetLanguage
+    propertyTypeFilterGroup(property_type_id:Int, language: String):String @SetLanguage
+    propertyFilterGroupFilters(property_id:Int, language: String):String @SetLanguage
+     
+
+
+
 
      test(language: String):String @SetLanguage
 
@@ -191,11 +198,9 @@ type Mutation {
     saveProperty(input: SavePropertyInput @spread):Property!  @middleware(checks: ["auth:api"]) @SetLanguage
 
 
-
     createCurrencyType( name: String!, symbol: String!, is_current: Boolean, rate: Float ): CurrencyType! @create
     updateCurrencyType(id:ID!, name: String, symbol: String, is_current: Boolean, rate: Float): CurrencyType! @update
     deleteCurrencyType(id:ID!): CurrencyType! @delete
-
 
 
     createPropertyDeal( property_id: Int!, deal_type_id: Int!, price: Float!, currency_type_id: Int!): PropertyDeal! @create
@@ -211,6 +216,11 @@ type Mutation {
     createUserFavoriteProperty(property_id:Int!, language: String): UserFavoriteProperty! @middleware(checks: ["auth:api"]) @SetLanguage
     updateUserFavoriteProperty(id:ID!, property_id:Int!, language: String): UserFavoriteProperty!  @middleware(checks: ["auth:api"]) @SetLanguage
     deleteUserFavoriteProperty(id:ID!): UserFavoriteProperty! @delete  @middleware(checks: ["auth:api"]) @SetLanguage
+
+
+    createSaveUserFilter(input: PropertiesPublishedFiltersInput @spread): Int @middleware(checks: ["auth:api"]) @SetLanguage
+    updateSaveUserFilter(id:ID! ,input: PropertiesPublishedFiltersInput @spread): Boolean @middleware(checks: ["auth:api"]) @SetLanguage
+    deleteSaveUserFilter(id:ID!, language: String): Boolean @middleware(checks: ["auth:api"]) @SetLanguage
 
 
     #  test
@@ -536,6 +546,54 @@ type UserFavoriteProperty{
     created_at: Date
     updated_at: Date
 }
+
+
+
+
+type SaveUserFilterJson{
+      id:ID,
+      place:placeType,
+      property_type: String,
+      user_type: String,
+      area: MinMaxType,
+      number_of_floors_of_the_building:MinMaxType,
+      apartment_floor:MinMaxType,
+      number_of_rooms:MinMaxType,
+      number_of_bathrooms: Int,
+      property_state: String,
+      bulding_type_id: Int,
+      filters:[PropertyFilterValueType],
+      price_filters: [PriceFilterType],
+      language: String,
+}
+
+
+type placeType{
+    latitude: Float,
+    longitude: Float,
+    radius: Int
+}
+
+type MinMaxType{
+    min:Int,
+    max: Int
+}
+
+type PriceFilterType{
+    currency_type_id: Int!,
+    deal_type: String!,
+    min: Int,
+    max: Int,
+}
+
+type PropertyFilterValueType{
+    filter: String!
+    value: String
+}
+
+
+
+
 
 
 enum PropertyStateEnum {
