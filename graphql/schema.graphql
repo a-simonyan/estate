@@ -474,7 +474,7 @@ type PropertyDeal{
 
 
 type Property{
-    id: ID!
+    id: ID
     property_key: String
     property_type: PropertyType
     user: User
