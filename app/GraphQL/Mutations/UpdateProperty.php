@@ -113,7 +113,6 @@ class UpdateProperty
    public function savePropertyImages($property_id,$property_images){
 
      if($property_images){
-       $image_types = ["jpeg","jpg","png"];
        $propertyImage=PropertyImage::where('property_id',$property_id)->orderBy('index','desc')->first();
 
        if($propertyImage){
@@ -122,27 +121,20 @@ class UpdateProperty
            $index = 1;
        }
 
-
        foreach($property_images as $property_image){
-           $picture_type=$property_image['type'];
-
-           if (in_array($picture_type, $image_types)){
-               $image = $property_image['image'];
-                
-               $imageName = Str::random(10).time().'.'.$picture_type;
-               while(file_exists(storage_path('app/public/property/'.$imageName))){
-                   $imageName = Str::random(10).time().$picture_type;
-               };
-               Storage::put('public/property/'.$imageName, base64_decode($image));
-               if(file_exists(storage_path('app/public/property/'.$imageName))){
+          
+          $fileName_img = Str::random(10).time().'.'.$property_image->getClientOriginalExtension();
+          while(file_exists(storage_path('app/public/property/'.$fileName_img))){
+              $fileName_img = Str::random(10).time().'.'.$property_image->getClientOriginalExtension();
+          };
+          $property_image->storeAs('public/property',$fileName_img);
+               if(file_exists(storage_path('app/public/property/'.$property_image))){
                    PropertyImage::create([
                        'property_id' => $property_id,
-                       'name'        => $imageName,
+                       'name'        => $fileName_img,
                        'index'       => $index++
                    ]);
                }
-
-           } 
 
        }
      }
@@ -154,9 +146,10 @@ class UpdateProperty
 
      foreach($property_images_delete_ids as $images_id){
         $propertyImage=PropertyImage::find($images_id);
-        if($user_auth->is_admin||$user_auth->id == $propertyImage->property->user_id){
-            if($propertyImage->name&&file_exists(storage_path('app/public/property/'.$propertyImage->name))){
-                unlink(storage_path('app/public/property/'.$propertyImage->name));
+        if($user_auth->id == $propertyImage->property->user_id){
+            $propertyImage_name = $propertyImage->getOriginal('name');
+            if($propertyImage_name&&file_exists(storage_path('app/public/property/'.$propertyImage_name))){
+                unlink(storage_path('app/public/property/'. $propertyImage_name));
               }
               $propertyImage->delete();
         }

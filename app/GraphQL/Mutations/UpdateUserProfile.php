@@ -31,8 +31,8 @@ class UpdateUserProfile
           }
 
         if(!empty($args['image'])){
-            $user_picture  =  $user->picture;
-            $update_arr['picture'] = $this->savePicture($args['image']['image'], $args['image']['type'],$user_picture);
+            $user_picture  =  $user->getOriginal('picture');
+            $update_arr['picture'] = $this->savePicture($args['image'],$user_picture);
            
         }
         if(!empty($args['old_password'])&&!empty($args['password'])){
@@ -70,27 +70,27 @@ class UpdateUserProfile
 
     }
 
-    public function savePicture($picture,$picture_type, $user_picture){
-        $image_types = ["jpeg","jpg","png"];
-        if($picture&&$picture_type&&in_array($picture_type, $image_types)){
+    public function savePicture($picture, $user_picture){
+        if($picture){
 
             if($user_picture&&file_exists(storage_path('app/public/users/'.$user_picture))){
                 unlink(storage_path('app/public/users/'.$user_picture));
               }
 
-            $imageName = Str::random(10).time().'.'.$picture_type;
-            while(file_exists(storage_path('app/public/users/'.$imageName))){
-                $imageName = Str::random(10).time().$picture_type;
-            };
-            Storage::put('public/users/'.$imageName, base64_decode($picture));
+              $fileName_img = Str::random(10).time().'.'.$picture->getClientOriginalExtension();
+              while(file_exists(storage_path('app/public/users/'.$fileName_img))){
+                  $fileName_img = Str::random(10).time().'.'.$picture->getClientOriginalExtension();
+              };
+  
+            $picture->storeAs('public/users',$fileName_img);
 
-            if(file_exists(storage_path('app/public/users/'.$imageName))){
+            if(file_exists(storage_path('app/public/users/'.$fileName_img))){
 
                 if($user_picture&&file_exists(storage_path('app/public/users/'.$user_picture))){
                     unlink(storage_path('app/public/users/'.$user_picture));
                 }
 
-                return $imageName;
+                return $fileName_img;
             } else {
                 return $user_picture;
             }   

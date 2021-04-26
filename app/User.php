@@ -58,7 +58,13 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->notify(new ResetPassword($token));
     }
 
-
+    public function getPictureAttribute($value)
+    {        if(is_null($value)){
+                return $value;
+              } else {
+                return url('storage/users/'.$value);
+              }
+    }  
 
     public function user_type(){
         return $this->belongsTo('App\UserType','user_type_id','id');

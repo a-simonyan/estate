@@ -23,7 +23,7 @@ class DeleteProperty
         $property_id = $args['id'];
         $property = Property::find($property_id);
 
-        if($user_auth->is_admin||$user_auth->id == $property->user_id){
+        if($user_auth->id == $property->user_id){
         
             $property->update(['is_delete'=>true]);
 

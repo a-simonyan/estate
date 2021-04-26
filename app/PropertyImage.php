@@ -13,5 +13,12 @@ class PropertyImage extends Model
        return $this->belongsTo('App\Property','property_id','id');
    }
 
+   public function getNameAttribute($value)
+    {        if(is_null($value)){
+                return $value;
+              } else {
+                return url('storage/property/'.$value);
+              }
+    }  
     
 }
