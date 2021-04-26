@@ -13,10 +13,8 @@ type Query {
     usersPaginate(orderBy: [OrderByClause!] @orderBy): [User]! @paginate(defaultCount: 10) @middleware(checks: ["auth:api","admin"])
     user(id: ID @eq): User @find @middleware(checks: ["auth:api","admin"])
 
-    userProperties(language: String):[Property] @middleware(checks: ["auth:api"])
-    userSaveProperties(language: String):[Property] @middleware(checks: ["auth:api"])
-
-
+    userProperties(is_public_status: IsPublicStatusEnum, first: Int, page: Int, orderBy:OrderBy, language: String ):[Property] @middleware(checks: ["auth:api"])
+    userSaveProperties(first: Int, page: Int, orderBy:OrderBy, language: String):[Property] @middleware(checks: ["auth:api"])
 
 
 
@@ -629,6 +627,12 @@ enum PropertyStateEnum {
   good @enum(value: good)
   average @enum(value: average)
   poor @enum(value: poor)
+}
+
+enum IsPublicStatusEnum {
+  under_review @enum(value: under_review)
+  published @enum(value: published)
+  rejected @enum(value: rejected)
 }
 
 #ADMIN
