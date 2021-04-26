@@ -72,15 +72,15 @@ class CreateProperty
 
             if($property){
                 $property->update(
-                   ['property_key'     => $args['property_key'],
+                   ['property_key'     => !empty($args['property_key'])? $args['property_key'] : null,
                     'property_type_id' => $this->getKeyId(PropertyType::Class,'name',$args['property_type']),
                     'user_id'          => $user_id,  
                     'bulding_type_id'  => $args['bulding_type_id'],
                     'latitude'         => $args['latitude'],
                     'longitude'        => $args['longitude'],
                     'address'          => $args['address'],
-                    'postal_code'      => $args['postal_code'],
-                    'property_state'   => $args['property_state'],
+                    'postal_code'      => !empty($args['postal_code'])? $args['postal_code'] : null,
+                    'property_state'   => !empty($args['property_state'])? $args['property_state'] : null,
                     'is_save'          => false   
                    ]
                 );

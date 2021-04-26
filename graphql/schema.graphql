@@ -223,6 +223,10 @@ type Mutation {
     deleteSaveUserFilter(id:ID!, language: String): Boolean @middleware(checks: ["auth:api"]) @SetLanguage
 
 
+    # ADMIN
+    AdminPropertiesIsPublicStatus(public_status:[public_status!],language: String): Boolean  @middleware(checks: ["auth:api"]) @SetLanguage
+
+
     #  test
     getimage:String
 }
@@ -600,4 +604,11 @@ enum PropertyStateEnum {
   good @enum(value: good)
   average @enum(value: average)
   poor @enum(value: poor)
+}
+
+#ADMIN
+
+input public_status{
+   property_id: Int,
+   status: String
 }

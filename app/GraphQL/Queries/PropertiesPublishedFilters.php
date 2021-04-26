@@ -170,6 +170,10 @@ class PropertiesPublishedFilters
                         if($property_deal->price>=$price_filter['min']){
                            return true;
                         }
+                     }  elseif(empty($price_filter['min'])&&empty($price_filter['max'])){
+
+                        return true;
+
                      }
 
 
@@ -189,6 +193,10 @@ class PropertiesPublishedFilters
                            if($price>=$price_filter['min']){
                               return true;
                            }
+                        } elseif(empty($price_filter['min'])&&empty($price_filter['max'])){
+
+                           return true;
+
                         }
 
                      } 
@@ -209,9 +217,9 @@ class PropertiesPublishedFilters
 
 
 
+      
 
-
-    
+ 
         return $properties;
   }
 
