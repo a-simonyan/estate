@@ -17,9 +17,43 @@ use App\CurrencyType;
 
 
 
+
 class TestController extends Controller
 {
     use GetIdTrait;
+
+    public function image(Request $request){
+
+        $validate = $request->validate([
+            'img' => 'image'
+        ]);
+
+        if($request->img){
+
+            $picture = $request->img;
+
+            $fileName_img = Str::random(10).time().'.'.$picture->getClientOriginalExtension();
+            while(file_exists(storage_path('app/public/users/'.$fileName_img))){
+                $fileName_img = Str::random(10).time().'.'.$picture->getClientOriginalExtension();
+            };
+
+          $picture->storeAs('public/users',$fileName_img);
+
+          if(file_exists(storage_path('app/public/users/'.$fileName_img))){
+               return  response()->json(['img' => url('storage/users/'.$fileName_img) ]);
+          }   
+
+
+        }
+
+       
+        return response()->json(['error' => 'not save']);
+
+
+    }
+
+
+
 
     public function json(){
         $xml='<?xml version="1.0" encoding="utf-8"?>
