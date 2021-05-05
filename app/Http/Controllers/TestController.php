@@ -25,24 +25,27 @@ class TestController extends Controller
     public function image(Request $request){
 
         $validate = $request->validate([
-            'img' => 'image'
+            'img.*' => 'image'
         ]);
 
         if($request->img){
+            $nkarner = [];
+            foreach( $request->img as $img) {
 
-            $picture = $request->img;
+                $picture = $img;
 
-            $fileName_img = Str::random(10).time().'.'.$picture->getClientOriginalExtension();
-            while(file_exists(storage_path('app/public/users/'.$fileName_img))){
-                $fileName_img = Str::random(10).time().'.'.$picture->getClientOriginalExtension();
-            };
+                $fileName_img = Str::random(10) . time() . '.' . $picture->getClientOriginalExtension();
+                while (file_exists(storage_path('app/public/users/' . $fileName_img))) {
+                    $fileName_img = Str::random(10) . time() . '.' . $picture->getClientOriginalExtension();
+                };
 
-          $picture->storeAs('public/users',$fileName_img);
+                $picture->storeAs('public/users', $fileName_img);
 
-          if(file_exists(storage_path('app/public/users/'.$fileName_img))){
-               return  response()->json(['img' => url('storage/users/'.$fileName_img) ]);
-          }   
-
+                if (file_exists(storage_path('app/public/users/' . $fileName_img))) {
+                    array_push($nkarner, url('storage/users/' . $fileName_img));
+                }
+            }
+            return response()->json(['img' => $nkarner]);
 
         }
 
