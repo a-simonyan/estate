@@ -11,6 +11,7 @@ use App\DealType;
 use DB;
 use App\Http\Traits\GetIdTrait;
 use App\Http\Traits\ChangeCurrencyTrait;
+use App\CurrencyType;
 
 class PropertiesPublishedFilters
 {
@@ -22,27 +23,11 @@ class PropertiesPublishedFilters
     public function __invoke($_, array $args)
     {
         $propertyClass = Property::with('filters_values');
-    
-
-        if(!empty($args['place'])){
-
-            $place = $args['place'];
-            $radius=empty($place['radius']) ? 5 : $place['radius'];
-                    $propertyClass=$propertyClass->from(DB::raw("(select *,
-                       ( 6371 * acos( cos( radians(?) ) *
-                           cos( radians( latitude) )
-                           * cos( radians( longitude ) - radians(?)
-                           ) + sin( radians(?) ) *
-                           sin( radians( latitude ) ) )
-                       ) AS distance from properties) as properties"))
-                       ->groupBy(DB::raw('id, property_key,property_type_id, user_id, bulding_type_id, latitude, longitude, address, postal_code ,property_state, review, is_public_status, is_save, is_delete, created_at, updated_at, distance'))
-                       ->having("distance", "<", $radius)
-                       ->orderBy("distance")
-                       ->setBindings([$place['latitude'], $place['longitude'], $place['latitude']]);
-
-        }
-
         $propertyClass = $propertyClass->where('is_delete', false)->where('is_public_status','published');
+
+
+     
+        
 
 
          if(!empty($args['property_type'])){
@@ -130,33 +115,47 @@ class PropertiesPublishedFilters
 
         }
 
-
       
-          $properties = $propertyClass->orderBy('created_at', 'DESC')->get();
-         //       $min = 1000;  
-         //       $max=2000;
-         //  $properties = $properties->filter(function($item) use ($min, $max){
-         //   foreach($item->property_deals as $property_deal){
-         //      if($property_deal->deal_type_id==1&&$property_deal->price>=$min&&$property_deal->price<=$max){
-         //        return true;
-         //      }
-         //   }
-
-         //   });
+       $properties = $propertyClass->orderBy('created_at', 'DESC')->get();
 
 
-         $joinProperties = collect(new Property);
+          if(!empty($args['place'])){
+            $places = $args['place'];
+            foreach($places as $key => $place){
+
+                    $plaseModel = $propertyClass ; 
+                    $radius = empty($place['radius']) ? 5 : $place['radius'];
+                    $plaseModel = $plaseModel->from(DB::raw("(select *,
+                       ( 6371 * acos( cos( radians(".$place['latitude'].") ) *
+                           cos( radians( latitude) )
+                           * cos( radians( longitude ) - radians(".$place['longitude'].")
+                           ) + sin( radians(".$place['latitude'].") ) *
+                           sin( radians( latitude ) ) )
+                       ) AS distance from properties) as properties"))
+                       ->groupBy(DB::raw('id, property_key,property_type_id, user_id, bulding_type_id, latitude, longitude, address, postal_code ,property_state, review, is_public_status, is_save, is_delete, created_at, updated_at, distance'))
+                       ->orderBy("distance")
+                       ->get();
+                   
+                   $plaseModel = $plaseModel->where("distance", "<", $radius);
+                   if(!$key){
+                      $merge_place = $plaseModel;
+                    } else {
+                      $merge_place = $merge_place->merge( $plaseModel);
+                    }
+             }
+             $propertyClass = $merge_place;
+             $properties = $merge_place->unique('id');
+          }
 
          if(!empty($args['price_filters'])){
+            $joinProperties = collect(new Property);
        
            foreach($args['price_filters'] as $price_filter){
               $deal_type_id=$this->getKeyId(DealType::Class,'name',$price_filter['deal_type']);
               $propertiesFilters = $properties->filter(function($item) use ($price_filter, $deal_type_id){
                 foreach($item->property_deals as $property_deal){
                  if($property_deal->deal_type_id==$deal_type_id){
-
-                    if($property_deal->currency_type_id==$price_filter['currency_type_id']){
-
+                    if(!empty($price_filter['currency_type_id'])&&$property_deal->currency_type_id==$price_filter['currency_type_id']){
                      if(!empty($price_filter['min'])&&!empty($price_filter['max'])){
                        if($property_deal->price>=$price_filter['min']&&$property_deal->price<=$price_filter['max']){
                            return true;
@@ -171,13 +170,10 @@ class PropertiesPublishedFilters
                            return true;
                         }
                      }  elseif(empty($price_filter['min'])&&empty($price_filter['max'])){
-
                         return true;
-
                      }
 
-
-                     } else {
+                     } elseif(!empty($price_filter['currency_type_id'])){
                         $currency_type_id=$price_filter['currency_type_id'];
                         $price = $this->changeCurrency($property_deal->price,$property_deal->currency_type_id,$currency_type_id);
                       
@@ -194,12 +190,12 @@ class PropertiesPublishedFilters
                               return true;
                            }
                         } elseif(empty($price_filter['min'])&&empty($price_filter['max'])){
-
                            return true;
-
                         }
 
-                     } 
+                     } else {
+                        return true;
+                    }
 
 
                  }
@@ -214,6 +210,79 @@ class PropertiesPublishedFilters
          }
 
 
+         // order by price
+          if(!empty($args['price_order'])){
+              $currency_type_id = CurrencyType::where('is_current',true)->first()->id;
+
+              $price_order=$args['price_order'];
+
+              if(!empty($args['price_filters']) && count($args['price_filters'])){
+                  $price_filter =  $args['price_filters'][0];
+                       foreach($properties as $propertie){
+                          $deal_type_id=$this->getKeyId(DealType::Class,'name',$price_filter['deal_type']);
+                          foreach($propertie->property_deals as $property_deal){
+                              if($property_deal->deal_type_id==$deal_type_id){
+                                  $propertie->price_order = $this->changeCurrency($property_deal->price,$property_deal->currency_type_id,$currency_type_id);
+                                  break;
+                              }
+                          }
+                           $propertie->price_order = !empty($propertie->price_order) ? $propertie->price_order : 0;
+                       }
+
+             } elseif(empty($args['price_filters'])){
+                  $deal_type_id=$this->getKeyId(DealType::Class,'name','sale');
+                  foreach($properties as $propertie){
+                      foreach($propertie->property_deals as $property_deal){
+                          if($property_deal->deal_type_id==$deal_type_id){
+                              $propertie->price_order = $this->changeCurrency($property_deal->price,$property_deal->currency_type_id,$currency_type_id);
+                              break;
+                          }
+                      }
+                      if(empty($propertie->price_order) && !empty($propertie->property_deals[0])){
+                          $property_deal = $propertie->property_deals[0];
+                          $propertie->price_order = -$this->changeCurrency($property_deal->price,$property_deal->currency_type_id,$currency_type_id);
+                      }
+
+
+                  }
+              }
+
+              if( $price_order == 'DESC') {
+                  $properties = $properties->sort(function ($item1, $item2) {
+                      if($item2->price_order < 0){
+                          if($item1->price_order < 0){
+                              return $item1>$item2;
+                          }
+                          dd('work');
+                          return 1;
+                      }
+                      return $item2<$item1;
+                  });
+              } else {
+                  $properties = $properties->sort(function ($item1, $item2) {
+                      if($item1->price_order < 0){
+                          if($item2->price_order < 0){
+                              return $item1<$item2;
+                          }
+                          return 1;
+                      }
+                      return $item1>$item2;
+                  });
+              }
+
+
+          }
+
+
+
+
+
+       if(!empty($args['paginate'])){
+           $first = !empty($args['paginate']['first']) ? $args['paginate']['first'] : 10;
+           $page  = !empty($args['paginate']['page']) ? $args['paginate']['page'] : 1;
+
+           return $properties->forPage($page, $first);
+       }
 
 
 

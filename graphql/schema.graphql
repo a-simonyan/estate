@@ -343,7 +343,7 @@ input SavePropertyInput{
 
 
 input PropertiesPublishedFiltersInput{
-      place:placeInput,
+      place:[placeInput],
       property_type: String,
       user_type: String,
       area: MinMax,
@@ -355,6 +355,8 @@ input PropertiesPublishedFiltersInput{
       bulding_type_id: Int,
       filters:[PropertyFilterValue],
       price_filters: [PriceFilter],
+      price_order:String,
+      paginate: PaginateInput,
       language: String,
 }
 
@@ -370,7 +372,7 @@ input MinMax{
 }
 
 input PriceFilter{
-    currency_type_id: Int!,
+    currency_type_id: Int,
     deal_type: String!,
     min: Int,
     max: Int,
@@ -400,6 +402,13 @@ input OrderBy{
     field: String!
     order: String!
 }
+
+input PaginateInput{
+      first: Int,
+      page: Int
+      }
+
+
 
 type PropertyPaginate{
     data: [Property]!
