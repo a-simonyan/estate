@@ -213,7 +213,8 @@ class PropertiesPublishedFilters
          // order by price
           if(!empty($args['price_order'])){
               $currency_type_id = CurrencyType::where('is_current',true)->first()->id;
-
+              $propertie_plus = [];
+              $propertie_minus = [];
               $price_order=$args['price_order'];
 
               if(!empty($args['price_filters']) && count($args['price_filters'])){
@@ -227,6 +228,7 @@ class PropertiesPublishedFilters
                               }
                           }
                            $propertie->price_order = !empty($propertie->price_order) ? $propertie->price_order : 0;
+                           $propertie_plus[]=$propertie;
                        }
 
              } elseif(empty($args['price_filters'])){
@@ -241,33 +243,27 @@ class PropertiesPublishedFilters
                       if(empty($propertie->price_order) && !empty($propertie->property_deals[0])){
                           $property_deal = $propertie->property_deals[0];
                           $propertie->price_order = -$this->changeCurrency($property_deal->price,$property_deal->currency_type_id,$currency_type_id);
-                      }
 
+                          $propertie_minus[]=$propertie;
+
+                      } else {
+                          $propertie_plus[]=$propertie;
+                      }
 
                   }
               }
 
+              $propertie_plus  = collect($propertie_plus);
+              $propertie_minus = collect($propertie_minus);
+
               if( $price_order == 'DESC') {
-                  $properties = $properties->sort(function ($item1, $item2) {
-                      if($item2->price_order < 0){
-                          if($item1->price_order < 0){
-                              return $item1>$item2;
-                          }
-                          dd('work');
-                          return 1;
-                      }
-                      return $item2<$item1;
-                  });
+                  $propertie_plus  = $propertie_plus->sortByDesc('price_order');
+                  $propertie_minus = $propertie_minus->sortBy('price_order'); 
+                  $properties = $propertie_plus->merge($propertie_minus);
               } else {
-                  $properties = $properties->sort(function ($item1, $item2) {
-                      if($item1->price_order < 0){
-                          if($item2->price_order < 0){
-                              return $item1<$item2;
-                          }
-                          return 1;
-                      }
-                      return $item1>$item2;
-                  });
+                 $propertie_plus  = $propertie_plus->sortBy('price_order');
+                 $propertie_minus = $propertie_minus->sortByDesc('price_order'); 
+                 $properties = $propertie_plus->merge($propertie_minus);
               }
 
 

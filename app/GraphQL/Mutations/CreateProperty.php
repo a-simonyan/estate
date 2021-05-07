@@ -214,7 +214,7 @@ class CreateProperty
            foreach($property_filter_values as $property_filter_value){
                
                $filter_id = $this->getKeyId(Filter::Class,'name',$property_filter_value['filter']);
-               FiltersValue::where('filter_id',$filter_id)->update(['value' => $property_filter_value['value']]);
+               FiltersValue::where('filter_id',$filter_id)->where('property_id',$property_id)->update(['value' => $property_filter_value['value']]);
            }
         }
          
