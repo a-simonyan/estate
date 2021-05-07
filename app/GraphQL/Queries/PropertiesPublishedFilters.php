@@ -26,55 +26,40 @@ class PropertiesPublishedFilters
         $propertyClass = $propertyClass->where('is_delete', false)->where('is_public_status','published');
 
 
-     
-        
-
-
+        /*search by property type*/
          if(!empty($args['property_type'])){
             $property_type_id = $this->getKeyId(PropertyType::Class,'name',$args['property_type']);
             $propertyClass = $propertyClass->where('property_type_id',$property_type_id);
           }
-
-
+          /*search by user type*/
           if(!empty($args['user_type'])){
             $user_type_id = $this->getKeyId(UserType::Class,'name',$args['user_type']);
             $propertyClass = $propertyClass->whereHas('user',function ($query) use ($user_type_id){
                                                          $query->where('user_type_id',$user_type_id);
                                                       });
           }
-
-          if(!empty($args['area'])){
-
+        /*search by area*/
+        if(!empty($args['area'])){
              $minMax = $args['area'];
              $propertyClass = $this->filtersMinMax($propertyClass, $minMax, 'area');
-
           }
-
-
-
-
-          if(!empty($args['number_of_floors_of_the_building'])){
-
+        /*search by number of floors of the building*/
+        if(!empty($args['number_of_floors_of_the_building'])){
             $minMax = $args['number_of_floors_of_the_building'];
             $propertyClass = $this->filtersMinMax($propertyClass, $minMax, 'number_of_floors_of_the_building');
-
-         }
-
+        }
+        /*search by apartment floor*/
          if(!empty($args['apartment_floor'])){
-
             $minMax = $args['apartment_floor'];
             $propertyClass = $this->filtersMinMax($propertyClass, $minMax, 'apartment_floor');
-
          }
+        /*search by number of rooms*/
          if(!empty($args['number_of_rooms'])){
-
             $minMax = $args['number_of_rooms'];
             $propertyClass = $this->filtersMinMax($propertyClass, $minMax, 'number_of_rooms');
-
          }
-
+        /*search by number of bathrooms*/
          if(!empty($args['number_of_bathrooms'])){
-
                     $filter_id = $this->getKeyId(Filter::Class,'name','number_of_bathrooms');
                     $number_of_bathrooms = $args['number_of_bathrooms'];
                     $propertyClass=$propertyClass->whereHas('filters_values' , function ($query) use ( $number_of_bathrooms,$filter_id){
@@ -83,43 +68,34 @@ class PropertiesPublishedFilters
                             $query->where('value',$number_of_bathrooms);
                         });
                     });
-
          }
-
+        /*search by property state*/
          if(!empty($args['property_state'])){
-
-            $propertyClass=$propertyClass->where('property_state',$args['property_state']);          
-
+            $propertyClass=$propertyClass->where('property_state',$args['property_state']);
          }
-
+        /*search by bulding type*/
          if(!empty($args['bulding_type_id'])){
-
-            $propertyClass=$propertyClass->where('bulding_type_id',$args['bulding_type_id']);          
-
+            $propertyClass=$propertyClass->where('bulding_type_id',$args['bulding_type_id']);
          }
-
+        /*search by filters value*/
         if(!empty($args['filters'])){
-
             $filters = $args['filters'];
             foreach($filters as $filter){
                 $filter_id = $this->getKeyId(Filter::Class,'name',$filter['filter']);
                     $propertyClass=$propertyClass->whereHas('filters_values' , function ($query) use ($filter,$filter_id){
-                
                          $query->where(function ($query) use ($filter,$filter_id) {
                             $query->where('filter_id',$filter_id);
                             $query->where('value',$filter['value']);
                         });
                     });
-              
            }
-
         }
 
-      
+       /* order by created date*/
        $properties = $propertyClass->orderBy('created_at', 'DESC')->get();
 
-
-          if(!empty($args['place'])){
+       /*search by place*/
+        if(!empty($args['place'])){
             $places = $args['place'];
             foreach($places as $key => $place){
 
@@ -147,6 +123,7 @@ class PropertiesPublishedFilters
              $properties = $merge_place->unique('id');
           }
 
+        /*search by price and deal type*/
          if(!empty($args['price_filters'])){
             $joinProperties = collect(new Property);
        
@@ -197,7 +174,6 @@ class PropertiesPublishedFilters
                         return true;
                     }
 
-
                  }
               }
    
@@ -206,11 +182,10 @@ class PropertiesPublishedFilters
               $joinProperties=$joinProperties->merge($propertiesFilters);
            }
            $properties = $joinProperties->unique('id')->sortBy('created_at');
-
          }
 
 
-         // order by price
+          /*order by price  ASC and DESC*/
           if(!empty($args['price_order'])){
               $currency_type_id = CurrencyType::where('is_current',true)->first()->id;
               $propertie_plus = [];
@@ -266,13 +241,10 @@ class PropertiesPublishedFilters
                  $properties = $propertie_plus->merge($propertie_minus);
               }
 
-
           }
 
 
-
-
-
+       /*add paginate*/
        if(!empty($args['paginate'])){
            $first = !empty($args['paginate']['first']) ? $args['paginate']['first'] : 10;
            $page  = !empty($args['paginate']['page']) ? $args['paginate']['page'] : 1;
@@ -281,18 +253,11 @@ class PropertiesPublishedFilters
        }
 
 
-
-      
-
- 
         return $properties;
   }
 
-
-  
-
    
-     public function filtersMinMax($propertyClass, $minMax, $filter_name){
+  public function filtersMinMax($propertyClass, $minMax, $filter_name){
    
            $filter_id = $this->getKeyId(Filter::Class,'name', $filter_name);
            $propertyClass=$propertyClass->whereHas('filters_values' , function ($query) use ($minMax,$filter_id){
