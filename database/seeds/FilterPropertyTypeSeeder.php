@@ -110,7 +110,7 @@ class FilterPropertyTypeSeeder extends Seeder
             ['filter_id' => 47 , 'property_type_id' => 2 ],
             ['filter_id' => 48 , 'property_type_id' => 2 ],
             ['filter_id' => 49 , 'property_type_id' => 2 ],
-            ['filter_id' => 1  , 'property_type_id' => 3 ],
+            ['filter_id' => 2  , 'property_type_id' => 3 ],
             ['filter_id' => 14 , 'property_type_id' => 3 ],
             ['filter_id' => 15 , 'property_type_id' => 3 ],
             ['filter_id' => 24 , 'property_type_id' => 3 ],

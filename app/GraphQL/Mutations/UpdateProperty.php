@@ -27,7 +27,7 @@ class UpdateProperty
 
          $property = Property::Find($property_id);                            
 
-        if($property&&$user_auth->is_admin||$property->user->id == $user_id){      
+        if($property&&$property->user->id == $user_id){
             $array_property = [];   
             if(!empty($args['property_key'])){
                 $array_property['property_key'] = $args['property_key'];

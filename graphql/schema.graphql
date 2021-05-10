@@ -9,19 +9,12 @@ scalar Upload @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload
 type Query {
 
     userProfile(language: String):User @middleware(checks: ["auth:api"]) @SetLanguage
-    users(orderBy: [OrderByClause!] @orderBy): [User]! @all @middleware(checks: ["auth:api","admin"]) 
-    usersPaginate(orderBy: [OrderByClause!] @orderBy): [User]! @paginate(defaultCount: 10) @middleware(checks: ["auth:api","admin"])
-    user(id: ID @eq): User @find @middleware(checks: ["auth:api","admin"])
-
     userProperties(is_public_status: IsPublicStatusEnum, first: Int, page: Int, orderBy:OrderBy, language: String ):[Property] @middleware(checks: ["auth:api"])
     userSaveProperties(first: Int, page: Int, orderBy:OrderBy, language: String):[Property] @middleware(checks: ["auth:api"])
 
-
-
-
-    phones(orderBy: [OrderByClause!] @orderBy): [Phone]! @all 
-    phonesPaginate(orderBy: [OrderByClause!] @orderBy): [Phone]! @paginate(defaultCount: 10)
-    phone(id: ID @eq): Phone @find
+#    phones(orderBy: [OrderByClause!] @orderBy): [Phone]! @all
+#    phonesPaginate(orderBy: [OrderByClause!] @orderBy): [Phone]! @paginate(defaultCount: 10)
+#    phone(id: ID @eq): Phone @find
 
     userTypes(language: String,orderBy: [OrderByClause!] @orderBy): [UserType]! @all  @SetLanguage
     userTypesPaginate(language: String,orderBy: [OrderByClause!] @orderBy): [UserType]! @paginate(defaultCount: 10)  @SetLanguage
@@ -35,89 +28,81 @@ type Query {
     currencyTypesPaginate: [CurrencyType] @paginate(defaultCount: 10)
     currencyType(id: ID @eq): CurrencyType @find
 
+#    translations(orderBy: [OrderByClause!] @orderBy): [Translation] @all
+#    translationsPaginate(orderBy: [OrderByClause!] @orderBy): [Translation] @paginate(defaultCount: 10)
+#    translation(id: ID @eq): Translation @find
 
+#    propertyTypes(language: String, orderBy: [OrderByClause!] @orderBy): [PropertyType] @all @SetLanguage
+#    propertyTypesPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [PropertyType!] @paginate(defaultCount: 10) @SetLanguage
+#    propertyType(id: ID @eq,language: String): PropertyType @find @SetLanguage
 
-    translations(orderBy: [OrderByClause!] @orderBy): [Translation] @all
-    translationsPaginate(orderBy: [OrderByClause!] @orderBy): [Translation] @paginate(defaultCount: 10)
-    translation(id: ID @eq): Translation @find
-
-    propertyTypes(language: String, orderBy: [OrderByClause!] @orderBy): [PropertyType] @all @SetLanguage
-    propertyTypesPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [PropertyType!] @paginate(defaultCount: 10) @SetLanguage
-    propertyType(id: ID @eq,language: String): PropertyType @find @SetLanguage
-
-    dealTypes(language: String, orderBy: [OrderByClause!] @orderBy): [DealType] @all @SetLanguage
-    dealTypes(language: String, orderBy: [OrderByClause!] @orderBy): [DealType] @paginate(defaultCount: 10) @SetLanguage
-    dealType(id: ID @eq, language: String): DealType @find @SetLanguage
+#    dealTypes(language: String, orderBy: [OrderByClause!] @orderBy): [DealType] @all @SetLanguage
+#    dealTypes(language: String, orderBy: [OrderByClause!] @orderBy): [DealType] @paginate(defaultCount: 10) @SetLanguage
+#    dealType(id: ID @eq, language: String): DealType @find @SetLanguage
 
     buldingTypes(language: String, orderBy: [OrderByClause!] @orderBy): [BuldingType] @all @SetLanguage
     buldingTypesPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [BuldingType] @paginate(defaultCount: 10) @SetLanguage
     buldingType(id: ID @eq,language: String): BuldingType @find @SetLanguage
-
 
     # properties
 
     propertiesPublished(language: String, orderBy:OrderBy):[Property]   @SetLanguage
     propertiesPublishedPaginate(first: Int, page: Int,language: String, orderBy:OrderBy ):[Property]  @SetLanguage
 
-    propertiesRejected(language: String, orderBy:OrderBy): [Property]  @SetLanguage
-    propertiesRejectedPaginate(first: Int, page: Int, language: String, orderBy:OrderBy ):[Property]  @SetLanguage
+#    propertiesRejected(language: String, orderBy:OrderBy): [Property]  @SetLanguage
+#    propertiesRejectedPaginate(first: Int, page: Int, language: String, orderBy:OrderBy ):[Property]  @SetLanguage
 
-    propertiesUnderReview(language: String, orderBy:OrderBy): [Property]  @SetLanguage
-    propertiesUnderReviewPaginate(first: Int, page: Int, language: String, orderBy:OrderBy ):[Property] @SetLanguage
+#    propertiesUnderReview(language: String, orderBy:OrderBy): [Property]  @SetLanguage
+#    propertiesUnderReviewPaginate(first: Int, page: Int, language: String, orderBy:OrderBy ):[Property] @SetLanguage
 
     property(id: ID @eq,language: String): Property @find @SetLanguage
-  
     propertiesPublishedFilters( input: PropertiesPublishedFiltersInput @spread ):[Property] @SetLanguage
 
+#    propertyImages(orderBy: [OrderByClause!] @orderBy): [PropertyImage] @all
+#    propertyImagesPaginate(orderBy: [OrderByClause!] @orderBy): [PropertyImage] @paginate(defaultCount: 10)
+#    propertyImage(id: ID @eq): PropertyImage @find
 
+#    filtersValues(language: String, orderBy: [OrderByClause!] @orderBy): [FiltersValue] @all @SetLanguage
+#    filtersValuesPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [FiltersValue] @paginate(defaultCount: 10) @SetLanguage
+#    filtersValue(id: ID @eq,language: String): FiltersValue @find @SetLanguage
+#
+#    filters(language: String,orderBy: [OrderByClause!] @orderBy): [Filter] @all @SetLanguage
+#    filtersPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [Filter] @paginate(defaultCount: 10) @SetLanguage
+#    filter(id: ID @eq,language: String): Filter @find @SetLanguage
 
+#    filterGroups(language: String, orderBy: [OrderByClause!] @orderBy): [FilterGroup] @all @SetLanguage
+#    filterGroups(language: String, orderBy: [OrderByClause!] @orderBy): [FilterGroup] @paginate(defaultCount: 10) @SetLanguage
+#    filterGroup(id: ID @eq,language: String): FilterGroup @find @SetLanguage
 
+#    propertyDeals(language: String, orderBy: [OrderByClause!] @orderBy): [PropertyDeal] @all @SetLanguage
+#    propertyDealsPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [PropertyDeal] @paginate(defaultCount: 10) @SetLanguage
+#    propertyDeal(id: ID @eq,language: String): PropertyDeal @find @SetLanguage
 
-
-   
-
-    propertyImages(orderBy: [OrderByClause!] @orderBy): [PropertyImage] @all
-    propertyImagesPaginate(orderBy: [OrderByClause!] @orderBy): [PropertyImage] @paginate(defaultCount: 10)
-    propertyImage(id: ID @eq): PropertyImage @find
-
-    filtersValues(language: String, orderBy: [OrderByClause!] @orderBy): [FiltersValue] @all @SetLanguage
-    filtersValuesPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [FiltersValue] @paginate(defaultCount: 10) @SetLanguage
-    filtersValue(id: ID @eq,language: String): FiltersValue @find @SetLanguage
-
-    filters(language: String,orderBy: [OrderByClause!] @orderBy): [Filter] @all @SetLanguage
-    filtersPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [Filter] @paginate(defaultCount: 10) @SetLanguage
-    filter(id: ID @eq,language: String): Filter @find @SetLanguage
-
-    filterGroups(language: String, orderBy: [OrderByClause!] @orderBy): [FilterGroup] @all @SetLanguage
-    filterGroups(language: String, orderBy: [OrderByClause!] @orderBy): [FilterGroup] @paginate(defaultCount: 10) @SetLanguage
-    filterGroup(id: ID @eq,language: String): FilterGroup @find @SetLanguage
-
-    propertyDeals(language: String, orderBy: [OrderByClause!] @orderBy): [PropertyDeal] @all @SetLanguage
-    propertyDealsPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [PropertyDeal] @paginate(defaultCount: 10) @SetLanguage
-    propertyDeal(id: ID @eq,language: String): PropertyDeal @find @SetLanguage
-
-    translateDescription(orderBy: [OrderByClause!] @orderBy): [TranslateDescription] @all 
-    translateDescriptionPaginate(orderBy: [OrderByClause!] @orderBy): [TranslateDescription] @paginate(defaultCount: 10)
-    translateDescription(id: ID @eq): TranslateDescription @find
+#    translateDescription(orderBy: [OrderByClause!] @orderBy): [TranslateDescription] @all
+#    translateDescriptionPaginate(orderBy: [OrderByClause!] @orderBy): [TranslateDescription] @paginate(defaultCount: 10)
+#    translateDescription(id: ID @eq): TranslateDescription @find
 
 
     userFavoriteProperties(language: String, orderBy: [OrderByClause!] @orderBy): [UserFavoriteProperty] @all @SetLanguage
     userFavoritePropertiesPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [UserFavoriteProperty] @paginate(defaultCount: 10) @SetLanguage
     userFavoriteProperty(id: ID @eq,language: String): UserFavoriteProperty @find @SetLanguage
 
-
     saveUserFilters(language: String, orderBy:OrderBy): [SaveUserFilterJson] @middleware(checks: ["auth:api"]) @SetLanguage
     SaveUserFilterById(id:ID!, language: String): SaveUserFilterJson  @middleware(checks: ["auth:api"]) @SetLanguage
 
     #  create new Query
-
     propertyTypeFilterGroup(property_type_id:Int, language: String):String @SetLanguage
     propertyFilterGroupFilters(property_id:Int, language: String):String @SetLanguage
      
+    #Admin
+    adminUsers(input: AdminUserInput @spread) :[User]  @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    adminProperties(input: AdminPropertiesFiltersInput @spread):[Property]  @middleware(checks: ["auth:api","admin"])  @SetLanguage
 
 
 
 
+
+     #test
      test(language: String):String @SetLanguage
 
 
@@ -145,78 +130,63 @@ type Mutation {
     forgotPasswordUser(input: ForgotPasswordInput!  @spread): ForgotPasswordResponse!  @ForgotPasswordInputValidation @SetLanguage
     resetPasswordUser(input: NewPasswordWithCodeInput @spread): ForgotPasswordResponse! @NewPasswordWithCodeInputValidation @SetLanguage
 
-
-
     updateUserProfile(input: updateUserProfileInput @spread): User! @UpdateUserProfileValidation @middleware(checks: ["auth:api"]) @SetLanguage
     deleteUserProfile(password: String!,language: String):Boolean @middleware(checks: ["auth:api"]) @SetLanguage
 
 
+#    createUserType(name: String!): UserType! @create
+#    updateUserType(id:ID!,name: String): UserType! @update
+#    deleteUserType(id:ID!): UserType! @delete
 
-    createUserType(name: String!): UserType! @create
-    updateUserType(id:ID!,name: String): UserType! @update
-    deleteUserType(id:ID!): UserType! @delete
+#    createTranslation(name: String!, translated_name: String!, language_id: Int!): Translation! @create
+#    updateTranslation( id: ID!,name: String, translated_name: String, language_id: Int!): Translation! @update
+#    deleteTranslation(id:ID!): Translation! @delete
 
-    createLanguage(name: String!,code:String!,flag_image:ImageAndType!, language: String): Language! 
-    updateLanguage(id:ID!,name: String,code:String,flag_image:ImageAndType, language: String): Language! 
-    deleteLanguage(id:ID!,language: String): Language! 
+#    createPropertyType(name: String!): PropertyType! @create
+#    updatePropertyType(id:ID!,name: String): PropertyType! @update
+#    deletePropertyType(id:ID!): PropertyType! @delete
 
-    createTranslation(name: String!, translated_name: String!, language_id: Int!): Translation! @create
-    updateTranslation( id: ID!,name: String, translated_name: String, language_id: Int!): Translation! @update
-    deleteTranslation(id:ID!): Translation! @delete
-
-    createPropertyType(name: String!): PropertyType! @create
-    updatePropertyType(id:ID!,name: String): PropertyType! @update
-    deletePropertyType(id:ID!): PropertyType! @delete
-
-    createDealType(name: String!): DealType! @create
-    updateDealType(id:ID!,name: String): DealType! @update
-    deleteDealType(id:ID!): DealType! @delete
+#    createDealType(name: String!): DealType! @create
+#    updateDealType(id:ID!,name: String): DealType! @update
+#    deleteDealType(id:ID!): DealType! @delete
 
     createBuldingType(name: String!): BuldingType! @create
     updateBuldingType(id:ID!,name: String): BuldingType! @update
     deleteBuldingType(id:ID!): BuldingType! @delete
 
-    createFiltersValue(filter_id: Int!, property_id: Int!, value: String!): FiltersValue! @create
-    updateFiltersValue( id: ID!,filter_id: Int, property_id: Int,value: String): FiltersValue! @update
-    deleteFiltersValue(id:ID!): FiltersValue! @delete
+#    createFiltersValue(filter_id: Int!, property_id: Int!, value: String!): FiltersValue! @create
+#    updateFiltersValue( id: ID!,filter_id: Int, property_id: Int,value: String): FiltersValue! @update
+#    deleteFiltersValue(id:ID!): FiltersValue! @delete
 
-    createFilter(name: String!, filter_group_id: Int ): Filter! @create
-    updateFilter(id:ID!,name: String,  filter_group_id: Int): Filter! @update
-    deleteFilter(id:ID!): Filter! @delete
+#    createFilter(name: String!, filter_group_id: Int ): Filter! @create
+#    updateFilter(id:ID!,name: String,  filter_group_id: Int): Filter! @update
+#    deleteFilter(id:ID!): Filter! @delete
 
-    createFilterGroup(name: String!): FilterGroup! @create
-    updateFilterGroup(id:ID!,name: String): FilterGroup! @update
-    deleteFilterGroup(id:ID!): FilterGroup! @delete
+#    createFilterGroup(name: String!): FilterGroup! @create
+#    updateFilterGroup(id:ID!,name: String): FilterGroup! @update
+#    deleteFilterGroup(id:ID!): FilterGroup! @delete
 
 
     createProperty(input: CreatePropertyInput @spread):Property!  @middleware(checks: ["auth:api"]) @SetLanguage
-    updateProperty(input: UpdatePropertyInput @spread): Property  @middleware(checks: ["auth:api"]) 
+    updateProperty(input: UpdatePropertyInput @spread): Property  @middleware(checks: ["auth:api"]) @SetLanguage
     deleteProperty(id:ID!,language: String): Property!  @middleware(checks: ["auth:api"]) @SetLanguage
     deletePropertyImages(images_ids:[Int!]!,language: String): Boolean!  @middleware(checks: ["auth:api"]) @SetLanguage
     propertyImagePosition(images_ids:[Int!]!,language: String): Boolean!  @middleware(checks: ["auth:api"]) @SetLanguage
-
     saveProperty(input: SavePropertyInput @spread):Property!  @middleware(checks: ["auth:api"]) @SetLanguage
 
 
-    createCurrencyType( name: String!, symbol: String!, is_current: Boolean, rate: Float ): CurrencyType! @create
-    updateCurrencyType(id:ID!, name: String, symbol: String, is_current: Boolean, rate: Float): CurrencyType! @update
-    deleteCurrencyType(id:ID!): CurrencyType! @delete
+#    createPropertyDeal( property_id: Int!, deal_type_id: Int!, price: Float!, currency_type_id: Int!): PropertyDeal! @create
+#    updatePropertyDeal(id:ID!,property_id: Int!, deal_type_id: Int!, price: Float!, currency_type_id: Int!): PropertyDeal! @update
+#    deletePropertyDeal(id:ID!): PropertyDeal! @delete
 
 
-    createPropertyDeal( property_id: Int!, deal_type_id: Int!, price: Float!, currency_type_id: Int!): PropertyDeal! @create
-    updatePropertyDeal(id:ID!,property_id: Int!, deal_type_id: Int!, price: Float!, currency_type_id: Int!): PropertyDeal! @update
-    deletePropertyDeal(id:ID!): PropertyDeal! @delete
-
-
-    createTranslateDescription( property_id: Int!, language_id: Int!, description: String!): TranslateDescription! @create
-    updateTranslateDescription(id:ID!,property_id: Int, language_id: Int, description: String): TranslateDescription! @update
-    deleteTranslateDescription(id:ID!): TranslateDescription! @delete
-
+#    createTranslateDescription( property_id: Int!, language_id: Int!, description: String!): TranslateDescription! @create
+#    updateTranslateDescription(id:ID!,property_id: Int, language_id: Int, description: String): TranslateDescription! @update
+#    deleteTranslateDescription(id:ID!): TranslateDescription! @delete
 
     createUserFavoriteProperty(property_id:Int!, language: String): UserFavoriteProperty! @middleware(checks: ["auth:api"]) @SetLanguage
     updateUserFavoriteProperty(id:ID!, property_id:Int!, language: String): UserFavoriteProperty!  @middleware(checks: ["auth:api"]) @SetLanguage
     deleteUserFavoriteProperty(id:ID!): UserFavoriteProperty! @delete  @middleware(checks: ["auth:api"]) @SetLanguage
-
 
     createSaveUserFilter(input: PropertiesPublishedFiltersInput @spread): Int @middleware(checks: ["auth:api"]) @SetLanguage
     updateSaveUserFilter(id:ID! ,input: PropertiesPublishedFiltersInput @spread): Boolean @middleware(checks: ["auth:api"]) @SetLanguage
@@ -224,12 +194,20 @@ type Mutation {
 
 
     # ADMIN
-    AdminPropertiesIsPublicStatus(public_status:[public_status!],language: String): Boolean  @middleware(checks: ["auth:api"]) @SetLanguage
+    adminUpdateUserProfile(input: AdminUpdateUserProfileInput @spread): User! @UpdateUserProfileValidation @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    adminUpdateProperty(input: AdminUpdatePropertyInput @spread): Property @middleware(checks: ["auth:api","admin"])  @SetLanguage
+
+    createLanguage(name: String!,code:String!,flag_image:ImageAndType!, language: String): Language!  @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    updateLanguage(id:ID!,name: String,code:String,flag_image:ImageAndType, language: String): Language!  @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    deleteLanguage(id:ID!,language: String): Language!  @middleware(checks: ["auth:api","admin"])  @SetLanguage
+
+    createCurrencyType( name: String!, symbol: String!, is_current: Boolean, rate: Float ): CurrencyType! @create @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    updateCurrencyType(id:ID!, name: String, symbol: String, is_current: Boolean, rate: Float): CurrencyType! @update @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    deleteCurrencyType(id:ID!): CurrencyType! @delete @middleware(checks: ["auth:api","admin"])  @SetLanguage
 
 
     #  test
     getimage:String
-
     testI(input:TestInput @spread): String
 
 
@@ -246,13 +224,6 @@ input Mytext{
     max: Int,
     my: String
 }
-
-
-
-
-
-
-
 
 
 
@@ -322,8 +293,6 @@ input UpdatePropertyInput{
     translate_descriptions: [TranslateDescriptionInput],
     language: String
 }
-
-
 input SavePropertyInput{
     property_id: Int,
     property_key: String,
@@ -340,8 +309,6 @@ input SavePropertyInput{
     translate_descriptions: [TranslateDescriptionInput],
     language: String
 }
-
-
 input PropertiesPublishedFiltersInput{
       place:[placeInput],
       property_type: String,
@@ -359,13 +326,11 @@ input PropertiesPublishedFiltersInput{
       paginate: PaginateInput,
       language: String,
 }
-
 input placeInput{
     latitude: Float,
     longitude: Float,
     radius: Int
 }
-
 input MinMax{
     min:Int,
     max: Int
@@ -377,23 +342,19 @@ input PriceFilter{
     min: Int,
     max: Int,
 }
-
 input PropertyDealTypes{
     deal_type: String!,
     price: Float!,
     currency_type_id: Int!
 }
-
 input TranslateDescriptionInput{
     language: String!
     description: String!
 }
-
 input ImageAndType{
     type: String!
     image: String!
 }
-
 input PropertyFilterValue{
     filter: String!
     value: String
@@ -402,19 +363,14 @@ input OrderBy{
     field: String!
     order: String!
 }
-
 input PaginateInput{
       first: Int,
       page: Int
       }
-
-
-
 type PropertyPaginate{
     data: [Property]!
     paginatorInfo: PaginatorInfo
 }
-
 type PaginatorInfo {
       count: Int!
       currentPage: Int!
@@ -425,8 +381,6 @@ type PaginatorInfo {
       perPage: Int!
       total: Int!
     }
-
-
 type Phone{
     id: ID!
     number:String!
@@ -436,13 +390,11 @@ type Phone{
     whatsapp: Boolean
     telegram: Boolean
 }
-
 type UserType{
     id: ID!
     name: String!
     users:[User!]!
 }
-
 type User {
     id: ID!
     full_name: String! 
@@ -454,7 +406,6 @@ type User {
     is_admin: Boolean
     is_delete: Boolean
 }
-
 type Language {
     id: ID!
     name: String!
@@ -463,15 +414,12 @@ type Language {
     translations: [Translation!]!
 
 }
-
 type Translation{
     id: ID!
     name: String!
     translated_name: String!
     language: Language!
 }
-
-
 type PropertyType{
     id: ID!
     name: String!
@@ -485,21 +433,17 @@ type CurrencyType{
      is_current: Boolean
      rate: Float
 }
-
 type DealType{
     id: ID!
     name: String!
     properties: [Property!]!
     property_deals: [PropertyDeal!]!
 }
-
 type BuldingType{
     id: ID!
     name: String!
     properties: [Property!]!
 }
-
-
 type PropertyDeal{
     id: ID!
     deal_type:DealType
@@ -507,8 +451,6 @@ type PropertyDeal{
     price: Float!
     currency_type: CurrencyType
 }
-
-
 type Property{
     id: ID!
     property_key: String
@@ -532,27 +474,23 @@ type Property{
     is_public_status: String
     is_save: String
     is_delete: Boolean
-
 }
 type TranslateDescription{
     id: ID!
     property: Property!
     language: Language!
 }
-
 type PropertyImage{
     id:ID!
     property: Property!
     name: String!
     index:Int!
 }
-
 type FiltersValue{
     id: ID!
     filter: Filter!
     property: Property!
     value: String
-
 }
 type FilterPropertyType{
     id: ID!
@@ -564,8 +502,6 @@ type FilterGroup{
     name: String!
     filters: [Filter!]!
 }
-
-
 type Filter{
     id: ID!
     name: String!
@@ -574,7 +510,6 @@ type Filter{
     filter_group_id:ID
     filter_group: FilterGroup
 }
-
 type UserFavoriteProperty{
     id:ID
     user: User
@@ -582,9 +517,6 @@ type UserFavoriteProperty{
     created_at: Date
     updated_at: Date
 }
-
-
-
 
 type SaveUserFilterJson{
       id:ID,
@@ -603,25 +535,21 @@ type SaveUserFilterJson{
       language: String,
 }
 
-
 type placeType{
     latitude: Float,
     longitude: Float,
     radius: Int
 }
-
 type MinMaxType{
     min:Int,
     max: Int
 }
-
 type PriceFilterType{
     currency_type_id: Int!,
     deal_type: String!,
     min: Int,
     max: Int,
 }
-
 type PropertyFilterValueType{
     filter: String!
     value: String
@@ -645,8 +573,67 @@ enum IsPublicStatusEnum {
 }
 
 #ADMIN
+input AdminUpdateUserProfileInput{
+    user_id: Int!
+    image:Upload
+    full_name: String
+    email: String
+    old_password: String
+    password: String
+    password_confirmation: String
+    phone: [NewPhone!]
+    update_phone: [UpdatePhone!]
+    delete_phone: [Int!]
+    language: String
+}
+input AdminUserInput{
+    user_type: String,
+    user_id: Int,
+    full_name: String,
+    email: String,
+    phone_number:String,
+    is_delete: Boolean,
+    order_by: String,
+    paginate: PaginateInput,
+}
 
-input public_status{
-   property_id: Int,
-   status: String
+input AdminPropertiesFiltersInput{
+    public_status: String,
+    is_delete: Boolean,
+    user_id: Int,
+    property_id: Int,
+    place:[placeInput],
+    property_type: String,
+    user_type: String,
+    area: MinMax,
+    number_of_floors_of_the_building:MinMax,
+    apartment_floor:MinMax,
+    number_of_rooms:MinMax,
+    number_of_bathrooms: Int,
+    property_state: String,
+    bulding_type_id: Int,
+    filters:[PropertyFilterValue],
+    price_filters: [PriceFilter],
+    price_order:String,
+    paginate: PaginateInput,
+    language: String,
+}
+input AdminUpdatePropertyInput{
+    id:ID!
+    public_status: String,
+    is_delete: Boolean,
+    property_key: String,
+    property_type: String,
+    property_deal_types:[PropertyDealTypes!],
+    bulding_type_id: Int,
+    latitude: Float,
+    longitude: Float,
+    address: String,
+    postal_code: String,
+    property_state: String,
+    property_images:[Upload],
+    property_images_delete_ids: [Int!],
+    property_filter_values: [PropertyFilterValue!],
+    translate_descriptions: [TranslateDescriptionInput],
+    language: String
 }

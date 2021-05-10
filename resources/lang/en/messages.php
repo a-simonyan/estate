@@ -15,6 +15,7 @@ return [
     'same_password_validation' => 'The password confirmation and password must match',
     'current_password_is_incorrect' => 'Current password is incorrect',
     'not_have_permission'      => 'not have permission',
-    'language_code_wrong'      => 'language code wrong'
+    'language_code_wrong'      => 'language code wrong',
+    'user_not_found'           => 'user not found',
 
 ];

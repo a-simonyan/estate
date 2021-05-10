@@ -16,5 +16,6 @@ return [
     'current_password_is_incorrect' => 'Ընթացիկ գաղտնաբառը սխալ է',
     'not_have_permission'      => 'Թույլտվություն չկա',
     'language_code_wrong'      => 'Լեզվի կոդը սխալ է',
+    'user_not_found'           => 'օգտատերը չի գտնվել',
 
 ];
