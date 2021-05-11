@@ -18,3 +18,15 @@ Route::get('/', function () {
 });
 Route::get('/test','TestController@test');
 Route::get('/json','TestController@json');
+
+Route::get('login/{provider}', 'TestController@redirect');
+Route::get('login/{provider}/callback','TestController@Callback' );
+
+Route::get('/t1', function () {
+    return view('test');
+});
+Route::get('/t2', function () {
+    dd(Session::get('provider'));
+
+    return view('test2');
+});

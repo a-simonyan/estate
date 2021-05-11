@@ -16,6 +16,12 @@ type AuthPayload {
     token_type: String
     user: User
 }
+
+type AuthPayloadUser {
+    access_token: String
+    user: User
+}
+
 type AuthPayloadLogin {
     access_token: String
     refresh_token: String

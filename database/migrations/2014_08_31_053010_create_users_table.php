@@ -21,9 +21,12 @@ class CreateUsersTable extends Migration
             $table->foreignId('user_type_id');
             $table->foreign('user_type_id')->references('id')->on('user_types')->onDelete('cascade');
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
+            $table->string('provider')->nullable();
+            $table->string('provider_id')->nullable();
             $table->rememberToken();
             $table->date('first_time')->nullable();
+            $table->timestamps();
         });
     }
 
