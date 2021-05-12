@@ -19,14 +19,14 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public $url="";
 
-    public $timestamps = false;
+    public $timestamps = true;
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-     'full_name','picture', 'email','user_type_id','password','is_admin','is_delete','first_time'
+     'full_name','picture', 'email','user_type_id','password','is_admin','is_delete','first_time','is_block','block_start','block_end'
     ];
 
     /**

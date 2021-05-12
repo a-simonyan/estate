@@ -8,9 +8,9 @@ scalar Upload @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload
 
 type Query {
 
-    userProfile(language: String):User @middleware(checks: ["auth:api"]) @SetLanguage
-    userProperties(is_public_status: IsPublicStatusEnum, first: Int, page: Int, orderBy:OrderBy, language: String ):[Property] @middleware(checks: ["auth:api"])
-    userSaveProperties(first: Int, page: Int, orderBy:OrderBy, language: String):[Property] @middleware(checks: ["auth:api"])
+    userProfile(language: String):User @middleware(checks: ["auth:api","status"]) @SetLanguage
+    userProperties(is_public_status: IsPublicStatusEnum, first: Int, page: Int, orderBy:OrderBy, language: String ):[Property] @middleware(checks: ["auth:api","status"])
+    userSaveProperties(first: Int, page: Int, orderBy:OrderBy, language: String):[Property] @middleware(checks: ["auth:api","status"])
 
 #    phones(orderBy: [OrderByClause!] @orderBy): [Phone]! @all
 #    phonesPaginate(orderBy: [OrderByClause!] @orderBy): [Phone]! @paginate(defaultCount: 10)
@@ -87,8 +87,8 @@ type Query {
     userFavoritePropertiesPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [UserFavoriteProperty] @paginate(defaultCount: 10) @SetLanguage
     userFavoriteProperty(id: ID @eq,language: String): UserFavoriteProperty @find @SetLanguage
 
-    saveUserFilters(language: String, orderBy:OrderBy): [SaveUserFilterJson] @middleware(checks: ["auth:api"]) @SetLanguage
-    SaveUserFilterById(id:ID!, language: String): SaveUserFilterJson  @middleware(checks: ["auth:api"]) @SetLanguage
+    saveUserFilters(language: String, orderBy:OrderBy): [SaveUserFilterJson] @middleware(checks: ["auth:api","status"]) @SetLanguage
+    SaveUserFilterById(id:ID!, language: String): SaveUserFilterJson  @middleware(checks: ["auth:api","status"]) @SetLanguage
 
     #  create new Query
     propertyTypeFilterGroup(property_type_id:Int, language: String):String @SetLanguage
@@ -120,7 +120,7 @@ type Mutation {
     # forgotPassword(input: ForgotPasswordInput! @spread): ForgotPasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\ForgotPassword@resolve")
     # updateForgottenPassword(input: NewPasswordWithCodeInput @spread): ForgotPasswordResponse! @NewPasswordWithCodeInputValidation @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\ResetPassword@resolve")
     # register(input: RegisterInput @spread): RegisterResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\Register@resolve")
-     socialLogin(input: SocialLoginInput! @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\SocialLogin@resolve")
+    # socialLogin(input: SocialLoginInput! @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\SocialLogin@resolve")
     # verifyEmail(input: VerifyEmailInput! @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\VerifyEmail@resolve")
     # updatePassword(input: UpdatePassword! @spread): UpdatePasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\UpdatePassword@resolve") @guard(with: ["api"])
      
@@ -131,8 +131,8 @@ type Mutation {
     forgotPasswordUser(input: ForgotPasswordInput!  @spread): ForgotPasswordResponse!  @ForgotPasswordInputValidation @SetLanguage
     resetPasswordUser(input: NewPasswordWithCodeInput @spread): ForgotPasswordResponse! @NewPasswordWithCodeInputValidation @SetLanguage
 
-    updateUserProfile(input: updateUserProfileInput @spread): User! @UpdateUserProfileValidation @middleware(checks: ["auth:api"]) @SetLanguage
-    deleteUserProfile(password: String!,language: String):Boolean @middleware(checks: ["auth:api"]) @SetLanguage
+    updateUserProfile(input: updateUserProfileInput @spread): User! @UpdateUserProfileValidation @middleware(checks: ["auth:api","status"]) @SetLanguage
+    deleteUserProfile(password: String!,language: String):Boolean @middleware(checks: ["auth:api","status"]) @SetLanguage
 
 
 #    createUserType(name: String!): UserType! @create
@@ -164,12 +164,12 @@ type Mutation {
 #    deleteFilterGroup(id:ID!): FilterGroup! @delete
 
 
-    createProperty(input: CreatePropertyInput @spread):Property!  @middleware(checks: ["auth:api"]) @SetLanguage
-    updateProperty(input: UpdatePropertyInput @spread): Property  @middleware(checks: ["auth:api"]) @SetLanguage
-    deleteProperty(id:ID!,language: String): Property!  @middleware(checks: ["auth:api"]) @SetLanguage
-    deletePropertyImages(images_ids:[Int!]!,language: String): Boolean!  @middleware(checks: ["auth:api"]) @SetLanguage
-    propertyImagePosition(images_ids:[Int!]!,language: String): Boolean!  @middleware(checks: ["auth:api"]) @SetLanguage
-    saveProperty(input: SavePropertyInput @spread):Property!  @middleware(checks: ["auth:api"]) @SetLanguage
+    createProperty(input: CreatePropertyInput @spread):Property!  @middleware(checks: ["auth:api","status"]) @SetLanguage
+    updateProperty(input: UpdatePropertyInput @spread): Property  @middleware(checks: ["auth:api","status"]) @SetLanguage
+    deleteProperty(id:ID!,language: String): Property!  @middleware(checks: ["auth:api","status"]) @SetLanguage
+    deletePropertyImages(images_ids:[Int!]!,language: String): Boolean!  @middleware(checks: ["auth:api","status"]) @SetLanguage
+    propertyImagePosition(images_ids:[Int!]!,language: String): Boolean!  @middleware(checks: ["auth:api","status"]) @SetLanguage
+    saveProperty(input: SavePropertyInput @spread):Property!  @middleware(checks: ["auth:api","status"]) @SetLanguage
 
 
 #    createPropertyDeal( property_id: Int!, deal_type_id: Int!, price: Float!, currency_type_id: Int!): PropertyDeal! @create
@@ -181,13 +181,13 @@ type Mutation {
 #    updateTranslateDescription(id:ID!,property_id: Int, language_id: Int, description: String): TranslateDescription! @update
 #    deleteTranslateDescription(id:ID!): TranslateDescription! @delete
 
-    createUserFavoriteProperty(property_id:Int!, language: String): UserFavoriteProperty! @middleware(checks: ["auth:api"]) @SetLanguage
-    updateUserFavoriteProperty(id:ID!, property_id:Int!, language: String): UserFavoriteProperty!  @middleware(checks: ["auth:api"]) @SetLanguage
+    createUserFavoriteProperty(property_id:Int!, language: String): UserFavoriteProperty! @middleware(checks: ["auth:api","status"]) @SetLanguage
+    updateUserFavoriteProperty(id:ID!, property_id:Int!, language: String): UserFavoriteProperty!  @middleware(checks: ["auth:api","status"]) @SetLanguage
     deleteUserFavoriteProperty(id:ID!): UserFavoriteProperty! @delete  @middleware(checks: ["auth:api"]) @SetLanguage
 
-    createSaveUserFilter(input: PropertiesPublishedFiltersInput @spread): Int @middleware(checks: ["auth:api"]) @SetLanguage
-    updateSaveUserFilter(id:ID! ,input: PropertiesPublishedFiltersInput @spread): Boolean @middleware(checks: ["auth:api"]) @SetLanguage
-    deleteSaveUserFilter(id:ID!, language: String): Boolean @middleware(checks: ["auth:api"]) @SetLanguage
+    createSaveUserFilter(input: PropertiesPublishedFiltersInput @spread): Int @middleware(checks: ["auth:api","status"]) @SetLanguage
+    updateSaveUserFilter(id:ID! ,input: PropertiesPublishedFiltersInput @spread): Boolean @middleware(checks: ["auth:api","status"]) @SetLanguage
+    deleteSaveUserFilter(id:ID!, language: String): Boolean @middleware(checks: ["auth:api","status"]) @SetLanguage
 
 
     # ADMIN
@@ -406,6 +406,9 @@ type User {
     first_time: Date
     is_admin: Boolean
     is_delete: Boolean
+    is_block: Boolean
+    block_start: Date
+    block_end: Date
 }
 type Language {
     id: ID!
