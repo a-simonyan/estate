@@ -16,10 +16,15 @@ class AdminUsers
     public function __invoke($_, array $args)
     {
         $userClass = User::with('user_type');
-        if(!empty($args['is_delete'])) {
+        if(isset($args['is_delete'])) {
             $userClass = $userClass->where('is_delete', $args['is_delete']);
         } else {
             $userClass = $userClass->where('is_delete', false);
+        }
+        if(isset($args['is_block'])) {
+            $userClass = $userClass->where('is_block', $args['is_block']);
+        } else {
+            $userClass = $userClass->where('is_block', false);
         }
 
         if(!empty($args['user_type'])) {

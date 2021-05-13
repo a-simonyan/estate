@@ -29,6 +29,29 @@ class AdminProperties
         } elseif(empty($args['property_id'])) {
             $propertyClass = $propertyClass->where('is_delete', false);
         }
+        /*search by property user_is_delete status*/
+        if(isset($args['user_is_delete'])) {
+            $user_is_delete = $args['user_is_delete'];
+            $propertyClass = $propertyClass->whereHas('user',function($query) use ($user_is_delete){
+                $query->where('is_delete',$user_is_delete);
+            });
+        } else {
+            $propertyClass = $propertyClass->whereHas('user',function($query){
+                $query->where('is_delete',false);
+            });
+        }
+        /*search by property user_is_block status*/
+        if(isset($args['user_is_block'])) {
+            $user_is_block = $args['user_is_block'];
+            $propertyClass = $propertyClass->whereHas('user',function($query) use ($user_is_block){
+                $query->where('is_block',$user_is_block);
+            });
+        } else {
+            $propertyClass = $propertyClass->whereHas('user',function($query){
+                $query->where('is_block',false);
+            });
+        }
+
         /*search by property public_status*/
         if(!empty($args['public_status'])) {
             $propertyClass = $propertyClass->where('is_public_status', $args['public_status']);

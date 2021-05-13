@@ -25,6 +25,10 @@ class PropertiesPublishedFilters
         $propertyClass = Property::with('filters_values');
         $propertyClass = $propertyClass->where('is_delete', false)->where('is_public_status','published');
 
+        $propertyClass = $propertyClass->whereHas('user',function($query){
+            $query->where('is_delete',false);
+            $query->where('is_block',false);
+        });
 
         /*search by property type*/
          if(!empty($args['property_type'])){

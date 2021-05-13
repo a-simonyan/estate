@@ -4,6 +4,7 @@ namespace App\GraphQL\Queries;
 
 use App\SaveUserFilter;
 use Auth;
+use App\Exceptions\SendException;
 
 
 class SaveUserFilterById
@@ -25,6 +26,11 @@ class SaveUserFilterById
             $properties_filters->id = $saveUserFilter->id;
 
             return $properties_filters;
+        } else{
+            throw new SendException(
+                'error',
+                __('messages.not_have_permission')
+            );
         }
 
     }

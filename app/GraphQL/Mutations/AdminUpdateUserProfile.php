@@ -10,6 +10,7 @@ use App\Phone;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Illuminate\Support\Facades\Hash;
 use App\Exceptions\SendException;
+use Carbon\Carbon;
 
 class AdminUpdateUserProfile
 {
@@ -25,6 +26,20 @@ class AdminUpdateUserProfile
         if($user) {
 
             $update_arr = [];
+            if (isset($args['is_delete'])) {
+                $update_arr['is_delete'] = $args['is_delete'];
+            }
+            if (isset($args['is_block'])) {
+                $update_arr['is_block'] = $args['is_block'];
+                if(isset($args['block_start'])){
+                    $block_start = Carbon::createFromFormat('Y-m-d H:i:s', $args['block_start'])->format('Y-m-d H:i:s');
+                    $update_arr['block_start'] = $block_start;
+                }
+                if(isset($args['block_end'])){
+                    $block_end = Carbon::createFromFormat('Y-m-d H:i:s', $args['block_end'])->format('Y-m-d H:i:s');
+                    $update_arr['block_end'] =  $block_end;
+                }
+            }
 
             if (!empty($args['full_name'])) {
                 $update_arr['full_name'] = $args['full_name'];

@@ -9,8 +9,16 @@ scalar Upload @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload
 type Query {
 
     userProfile(language: String):User @middleware(checks: ["auth:api","status"]) @SetLanguage
-    userProperties(is_public_status: IsPublicStatusEnum, first: Int, page: Int, orderBy:OrderBy, language: String ):[Property] @middleware(checks: ["auth:api","status"])
-    userSaveProperties(first: Int, page: Int, orderBy:OrderBy, language: String):[Property] @middleware(checks: ["auth:api","status"])
+    userProperties(is_public_status: IsPublicStatusEnum, first: Int, page: Int, orderBy:OrderBy, language: String ):[Property] @middleware(checks: ["auth:api","status"]) @SetLanguage
+
+    userSaveProperties(first: Int, page: Int, orderBy:OrderBy, language: String):[Property] @middleware(checks: ["auth:api","status"]) @SetLanguage
+    userSavePropertyById(id:Int, language: String):Property  @middleware(checks: ["auth:api","status"]) @SetLanguage
+
+    userFavoriteProperties(first: Int, page: Int, orderBy:OrderBy, language: String):[UserFavoriteProperty] @middleware(checks: ["auth:api","status"]) @SetLanguage
+    userFavoritePropertyById(id:Int, language: String):UserFavoriteProperty  @middleware(checks: ["auth:api","status"]) @SetLanguage
+
+    saveUserFilters(language: String, orderBy:OrderBy): [SaveUserFilterJson] @middleware(checks: ["auth:api","status"]) @SetLanguage
+    saveUserFilterById(id:ID!, language: String): SaveUserFilterJson  @middleware(checks: ["auth:api","status"]) @SetLanguage
 
 #    phones(orderBy: [OrderByClause!] @orderBy): [Phone]! @all
 #    phonesPaginate(orderBy: [OrderByClause!] @orderBy): [Phone]! @paginate(defaultCount: 10)
@@ -46,8 +54,8 @@ type Query {
 
     # properties
 
-    propertiesPublished(language: String, orderBy:OrderBy):[Property]   @SetLanguage
-    propertiesPublishedPaginate(first: Int, page: Int,language: String, orderBy:OrderBy ):[Property]  @SetLanguage
+#    propertiesPublished(language: String, orderBy:OrderBy):[Property]   @SetLanguage
+#    propertiesPublishedPaginate(first: Int, page: Int,language: String, orderBy:OrderBy ):[Property]  @SetLanguage
 
 #    propertiesRejected(language: String, orderBy:OrderBy): [Property]  @SetLanguage
 #    propertiesRejectedPaginate(first: Int, page: Int, language: String, orderBy:OrderBy ):[Property]  @SetLanguage
@@ -83,12 +91,11 @@ type Query {
 #    translateDescription(id: ID @eq): TranslateDescription @find
 
 
-    userFavoriteProperties(language: String, orderBy: [OrderByClause!] @orderBy): [UserFavoriteProperty] @all @SetLanguage
-    userFavoritePropertiesPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [UserFavoriteProperty] @paginate(defaultCount: 10) @SetLanguage
-    userFavoriteProperty(id: ID @eq,language: String): UserFavoriteProperty @find @SetLanguage
+#    userFavoriteProperties(language: String, orderBy: [OrderByClause!] @orderBy): [UserFavoriteProperty] @all @SetLanguage
+#    userFavoritePropertiesPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [UserFavoriteProperty] @paginate(defaultCount: 10) @SetLanguage
+#    userFavoriteProperty(id: ID @eq,language: String): UserFavoriteProperty @find @SetLanguage
 
-    saveUserFilters(language: String, orderBy:OrderBy): [SaveUserFilterJson] @middleware(checks: ["auth:api","status"]) @SetLanguage
-    SaveUserFilterById(id:ID!, language: String): SaveUserFilterJson  @middleware(checks: ["auth:api","status"]) @SetLanguage
+
 
     #  create new Query
     propertyTypeFilterGroup(property_type_id:Int, language: String):String @SetLanguage
@@ -183,7 +190,7 @@ type Mutation {
 
     createUserFavoriteProperty(property_id:Int!, language: String): UserFavoriteProperty! @middleware(checks: ["auth:api","status"]) @SetLanguage
     updateUserFavoriteProperty(id:ID!, property_id:Int!, language: String): UserFavoriteProperty!  @middleware(checks: ["auth:api","status"]) @SetLanguage
-    deleteUserFavoriteProperty(id:ID!): UserFavoriteProperty! @delete  @middleware(checks: ["auth:api"]) @SetLanguage
+    deleteUserFavoriteProperty(id:ID!): Boolean  @middleware(checks: ["auth:api","status"]) @SetLanguage
 
     createSaveUserFilter(input: PropertiesPublishedFiltersInput @spread): Int @middleware(checks: ["auth:api","status"]) @SetLanguage
     updateSaveUserFilter(id:ID! ,input: PropertiesPublishedFiltersInput @spread): Boolean @middleware(checks: ["auth:api","status"]) @SetLanguage
@@ -407,8 +414,8 @@ type User {
     is_admin: Boolean
     is_delete: Boolean
     is_block: Boolean
-    block_start: Date
-    block_end: Date
+    block_start: DateTime
+    block_end: DateTime
 }
 type Language {
     id: ID!
@@ -579,6 +586,10 @@ enum IsPublicStatusEnum {
 #ADMIN
 input AdminUpdateUserProfileInput{
     user_id: Int!
+    is_delete: Boolean
+    is_block: Boolean
+    block_start: DateTime
+    block_end: DateTime
     image:Upload
     full_name: String
     email: String
@@ -597,6 +608,7 @@ input AdminUserInput{
     email: String,
     phone_number:String,
     is_delete: Boolean,
+    is_block: Boolean,
     order_by: String,
     paginate: PaginateInput,
 }
@@ -604,6 +616,8 @@ input AdminUserInput{
 input AdminPropertiesFiltersInput{
     public_status: String,
     is_delete: Boolean,
+    user_is_delete: Boolean,
+    user_is_block: Boolean,
     user_id: Int,
     property_id: Int,
     place:[placeInput],
