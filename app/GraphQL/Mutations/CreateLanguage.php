@@ -14,9 +14,7 @@ class CreateLanguage
      */
     public function __invoke($_, array $args)
     {
-        if($args['flag_image']['type']=='png'){
-
-        $image = $this->savePicture($args['flag_image']['image'],$args['flag_image']['type']);   
+        $image = $this->savePicture($args['flag_image']);
         if($image){
             $arr=[
                 'name' => $args['name'],
@@ -34,28 +32,21 @@ class CreateLanguage
 
         }
 
-        } else {
-
-            throw new ValidationException([
-                'image' => __('messages.must_be_png_type'),
-            ], 'Validation Error');
-
-        }
-      
     }
 
-    public function savePicture($picture,$picture_type){
-        if($picture&&$picture_type){
-            $imageName = Str::random(10).time().'.'.$picture_type;
-            while(file_exists(storage_path('app/public/language/'.$imageName))){
-                $imageName = Str::random(10).time().$picture_type;
+    public function savePicture($picture){
+        if($picture){
+
+            $fileName_img = Str::random(10).time().'.'.$picture->getClientOriginalExtension();
+            while(file_exists(storage_path('app/public/language/'.$fileName_img))){
+                $fileName_img = Str::random(10).time().'.'.$picture->getClientOriginalExtension();
             };
-            Storage::put('public/language/'.$imageName, base64_decode($picture));
-            if(file_exists(storage_path('app/public/language/'.$imageName))){
-                 return $imageName;
+            $picture->storeAs('public/language',$fileName_img);
+            if(file_exists(storage_path('app/public/language/'.$fileName_img))){
+                return $fileName_img;
             } else {
-                 return null;
-            }   
+                return null;
+            }
         } else {
             return null;
         }

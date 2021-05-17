@@ -18,22 +18,11 @@ class UpdateLanguage
         $language = Language::find($args['id']);
 
         if(!empty($args['flag_image'])){
-            if($args['flag_image']['type']=='png'){
-            $image = $this->savePicture($args['flag_image']['image'],$args['flag_image']['type']);   
+            $language_picture = $language->getOriginal('flag_image');
+            $image = $this->savePicture($args['flag_image'],$language_picture);
             if($image){
                 $args['flag_image']=$image;
-              
-                $image_old = $language->flag_image;
                 $language->update($args);
-
-            
-
-
-                if($image_old&&file_exists(storage_path('app/public/language/'.$image_old))){
-                    unlink(storage_path('app/public/language/'.$image_old));
-                  }
-
-                
 
                 return $language;
 
@@ -43,11 +32,7 @@ class UpdateLanguage
                 ], 'Validation Error');
     
             }
-        } else {
-            throw new ValidationException([
-                'image' => __('messages.must_be_png_type'),
-            ], 'Validation Error');
-          }
+
       } else {
         
         $language->update($args);
@@ -61,20 +46,28 @@ class UpdateLanguage
     }
     
 
-    public function savePicture($picture,$picture_type){
-        if($picture&&$picture_type){
-            $imageName = Str::random(10).time().'.'.$picture_type;
-            while(file_exists(storage_path('app/public/language/'.$imageName))){
-                $imageName = Str::random(10).time().$picture_type;
+    public function savePicture($picture,$language_picture){
+        if($picture){
+
+            $fileName_img = Str::random(10).time().'.'.$picture->getClientOriginalExtension();
+            while(file_exists(storage_path('app/public/language/'.$fileName_img))){
+                $fileName_img = Str::random(10).time().'.'.$picture->getClientOriginalExtension();
             };
-            Storage::put('public/language/'.$imageName, base64_decode($picture));
-            if(file_exists(storage_path('app/public/language/'.$imageName))){
-                 return $imageName;
+
+            $picture->storeAs('public/language',$fileName_img);
+
+            if(file_exists(storage_path('app/public/language/'.$fileName_img))){
+
+                if($language_picture&&file_exists(storage_path('app/public/language/'.$language_picture))){
+                    unlink(storage_path('app/public/language/'.$language_picture));
+                }
+
+                return $fileName_img;
             } else {
-                 return null;
-            }   
+                return $language_picture;
+            }
         } else {
-            return null;
+            return $language_picture;
         }
 
     }

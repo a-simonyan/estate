@@ -10,6 +10,15 @@ class Language extends Model
     protected $table = "languages";
     protected $fillable = ['name','flag_image','code'];
 
+    public function getFlagImageAttribute($value)
+    {
+        if(is_null($value)){
+          return $value;
+        } else {
+          return url('storage/language/'.$value);
+        }
+    }
+
     public function translations(){
         return $this->hasMany('App\Translation','language_id','id');
     }

@@ -100,10 +100,6 @@ class AdminUpdateUserProfile
     public function savePicture($picture, $user_picture){
         if($picture){
 
-            if($user_picture&&file_exists(storage_path('app/public/users/'.$user_picture))){
-                unlink(storage_path('app/public/users/'.$user_picture));
-            }
-
             $fileName_img = Str::random(10).time().'.'.$picture->getClientOriginalExtension();
             while(file_exists(storage_path('app/public/users/'.$fileName_img))){
                 $fileName_img = Str::random(10).time().'.'.$picture->getClientOriginalExtension();

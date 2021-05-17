@@ -201,8 +201,8 @@ type Mutation {
     adminUpdateUserProfile(input: AdminUpdateUserProfileInput @spread): User! @UpdateUserProfileValidation @middleware(checks: ["auth:api","admin"])  @SetLanguage
     adminUpdateProperty(input: AdminUpdatePropertyInput @spread): Property @middleware(checks: ["auth:api","admin"])  @SetLanguage
 
-    createLanguage(name: String!,code:String!,flag_image:ImageAndType!, language: String): Language!  @middleware(checks: ["auth:api","admin"])  @SetLanguage
-    updateLanguage(id:ID!,name: String,code:String,flag_image:ImageAndType, language: String): Language!  @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    createLanguage(name: String!,code:String!,flag_image:Upload!, language: String): Language!  @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    updateLanguage(id:ID!,name: String,code:String,flag_image:Upload, language: String): Language!  @middleware(checks: ["auth:api","admin"])  @SetLanguage
     deleteLanguage(id:ID!,language: String): Language!  @middleware(checks: ["auth:api","admin"])  @SetLanguage
 
     createCurrencyType( name: String!, symbol: String!, is_current: Boolean, rate: Float ): CurrencyType! @create @middleware(checks: ["auth:api","admin"])  @SetLanguage
