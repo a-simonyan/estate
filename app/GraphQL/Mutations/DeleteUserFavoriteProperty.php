@@ -21,9 +21,9 @@ class DeleteUserFavoriteProperty
         if($userFavoriteProperty_user_id ==  $user_id ){
             UserFavoriteProperty::where('id', $userFavoriteProperty_id)->delete();
 
-            return true;
+            return ['status' => true ];
         }
 
-        return false;
+        return  ['status' => false ];;
     }
 }
