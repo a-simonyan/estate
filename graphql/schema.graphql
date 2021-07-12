@@ -644,6 +644,7 @@ input AdminPropertiesFiltersInput{
 input AdminUpdatePropertyInput{
     id:ID!
     public_status: String,
+    review: String,
     is_delete: Boolean,
     property_key: String,
     property_type: String,

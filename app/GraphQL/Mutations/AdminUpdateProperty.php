@@ -29,6 +29,9 @@ class AdminUpdateProperty
             if(!empty($args['public_status'])){
                 $array_property['is_public_status'] = $args['public_status'];
             }
+            if(!empty($args['review'])){
+                $array_property['review'] = $args['review'];
+            }
             if(isset($args['is_delete'])){
                 $array_property['is_delete'] = $args['is_delete'];
             }
