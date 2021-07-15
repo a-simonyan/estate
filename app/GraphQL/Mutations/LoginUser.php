@@ -10,6 +10,7 @@ use Nuwave\Lighthouse\Exceptions\DefinitionException;
 use Illuminate\Http\Request;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\AuthenticationException;
 use App\Exceptions\SendException;
+use App\Events\SendMessage;
 
 
 
@@ -21,7 +22,7 @@ class LoginUser extends BaseAuthResolver
      */
     public function __invoke($_, array $args)
     {
-       
+        
         $user = $this->findUser($args['username']);
      if($user&&$user->email_verified_at&&!$user->is_delete){
          $credentials = $this->buildCredentials($args);
@@ -36,6 +37,8 @@ class LoginUser extends BaseAuthResolver
          $user->update(['first_time' => now()]);
 
        $this->validateUser($user);
+
+       event( new SendMessage($user->id,['login user'=>'true', 'user'=>$user]) );
        
        return array_merge(
            $response,

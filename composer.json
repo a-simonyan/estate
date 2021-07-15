@@ -19,7 +19,8 @@
         "laravel/socialite": "^4.3",
         "laravel/tinker": "^2.0",
         "mll-lab/laravel-graphql-playground": "^2.3",
-        "nuwave/lighthouse": "^4.16"
+        "nuwave/lighthouse": "^4.16",
+        "predis/predis": "^1.1"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

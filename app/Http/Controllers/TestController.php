@@ -24,6 +24,11 @@ class TestController extends Controller
 {
     use GetIdTrait;
 
+    public function test(Request $request){
+        dd( $request::getHost() );
+    }
+
+
     public function redirect($provider)
     {
         return Socialite::driver($provider)->redirect();
