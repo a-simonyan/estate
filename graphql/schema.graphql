@@ -65,6 +65,7 @@ type Query {
 
     property(id: ID @eq,language: String): Property @find @SetLanguage
     propertiesPublishedFilters( input: PropertiesPublishedFiltersInput @spread ):[Property] @SetLanguage
+    notificationProperties(first: Int, page: Int, orderBy:OrderBy, language: String): [NotificationUsersProperties] @middleware(checks: ["auth:api","status"]) @SetLanguage
 
 #    propertyImages(orderBy: [OrderByClause!] @orderBy): [PropertyImage] @all
 #    propertyImagesPaginate(orderBy: [OrderByClause!] @orderBy): [PropertyImage] @paginate(defaultCount: 10)
@@ -103,10 +104,9 @@ type Query {
      
     #Admin
     adminUsers(input: AdminUserInput @spread) :[User]  @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    adminUser(id: ID @eq, language: String) :User @find  @middleware(checks: ["auth:api","admin"])  @SetLanguage
     adminProperties(input: AdminPropertiesFiltersInput @spread):[Property]  @middleware(checks: ["auth:api","admin"])  @SetLanguage
-
-
-
+    adminProperty(id: ID @eq,language: String): Property @find @middleware(checks: ["auth:api","admin"])  @SetLanguage
 
 
      #test
@@ -195,6 +195,10 @@ type Mutation {
     createSaveUserFilter(input: PropertiesPublishedFiltersInput @spread): Int @middleware(checks: ["auth:api","status"]) @SetLanguage
     updateSaveUserFilter(id:ID! ,input: PropertiesPublishedFiltersInput @spread): Boolean @middleware(checks: ["auth:api","status"]) @SetLanguage
     deleteSaveUserFilter(id:ID!, language: String): Boolean @middleware(checks: ["auth:api","status"]) @SetLanguage
+   
+    # Notification
+
+    # SawNotificationProperties( notificationProperties_ids:[Int] ): Boolean @middleware(checks: ["auth:api","status"]) @SetLanguage
 
 
     # ADMIN
@@ -241,6 +245,7 @@ input updateUserProfileInput{
      image:Upload
      full_name: String
      email: String
+     user_type: String
      old_password: String 
      password: String
      password_confirmation: String
@@ -475,8 +480,8 @@ type Property{
     address: String
     postal_code: String
     property_state: String
-    created_at: Date
-    updated_at: Date
+    created_at: DateTime
+    updated_at: DateTime
     property_images:[PropertyImage] 
     property_images_paginat:[PropertyImage] @hasMany(type: "paginator")
     filters_values: [FiltersValue]
@@ -530,8 +535,8 @@ type UserFavoriteProperty{
     id:ID
     user: User
     property: Property
-    created_at: Date
-    updated_at: Date
+    created_at: DateTime
+    updated_at: DateTime
 }
 
 type SaveUserFilterJson{
@@ -571,6 +576,13 @@ type PropertyFilterValueType{
     value: String
 }
 
+type NotificationUsersProperties{
+    id:ID
+    user: User
+    property: Property
+    created_at: DateTime
+    updated_at: DateTime
+}
 
 
 

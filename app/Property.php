@@ -55,6 +55,9 @@ class Property extends Model
    public function user_favorite_properties(){
     return $this->hasMany('App\UserFavoriteProperty','property_id','id');
    }
+   public function notification_users_properties(){
+    return $this->hasMany('App\NotificationUsersProperties','property_id','id');
+   }
 
 
 

@@ -9,10 +9,13 @@ use App\User;
 use App\Phone;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Traits\GetIdTrait;
+use App\UserType;
 
 
 class UpdateUserProfile
 {
+    use GetIdTrait;
     /**
      * @param  null  $_
      * @param  array<string, mixed>  $args
@@ -29,6 +32,10 @@ class UpdateUserProfile
         if(!empty($args['email'])){
             $update_arr['email']=$args['email'];
           }
+
+        if(!empty($args['user_type'])){
+            $update_arr['user_type_id'] = $this->getKeyId(UserType::Class,'name',$args['user_type']); 
+        }  
 
         if(!empty($args['image'])){
             $user_picture  =  $user->getOriginal('picture');

@@ -13,7 +13,6 @@ use App\Exceptions\SendException;
 use App\Events\SendMessage;
 
 
-
 class LoginUser extends BaseAuthResolver
 {
     /**
@@ -39,6 +38,7 @@ class LoginUser extends BaseAuthResolver
        $this->validateUser($user);
 
        event( new SendMessage($user->id,['login user'=>'true', 'user'=>$user]) );
+     
        
        return array_merge(
            $response,

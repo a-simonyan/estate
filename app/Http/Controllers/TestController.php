@@ -14,6 +14,7 @@ use App\PropertyImage;
 // use App\Singleton\RestUrl;
 use App\Http\Traits\GetIdTrait;
 use App\CurrencyType;
+use App\SaveUserFilter;
 
 use Laravel\Socialite\Facades\Socialite;
 
@@ -25,7 +26,12 @@ class TestController extends Controller
     use GetIdTrait;
 
     public function test(Request $request){
-        dd( $request::getHost() );
+        
+        $saveUserFilter = SaveUserFilter::get()->first();
+        $json_p = json_decode($saveUserFilter->properties_filters,true);
+        
+        dd($json_p['price_filters'][0]['min']);
+
     }
 
 

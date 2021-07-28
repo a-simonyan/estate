@@ -13,3 +13,4 @@ PASSPORT_CLIENT_SECRET= ...-->
 php artisan config:clear
 php artisan storage:link
 php artisan serve
+php artisan queue:work

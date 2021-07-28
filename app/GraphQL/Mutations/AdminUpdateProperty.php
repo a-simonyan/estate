@@ -11,6 +11,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Nuwave\Lighthouse\Exceptions\DefinitionException;
 use App\Exceptions\SendException;
+use App\Events\PropertyPublished;
+
 
 class AdminUpdateProperty
 {
@@ -28,6 +30,9 @@ class AdminUpdateProperty
             $array_property = [];
             if(!empty($args['public_status'])){
                 $array_property['is_public_status'] = $args['public_status'];
+               if($property->is_public_status!="published" && $args['public_status']=="published"){
+                  event( new PropertyPublished($property_id) );
+               }
             }
             if(!empty($args['review'])){
                 $array_property['review'] = $args['review'];
