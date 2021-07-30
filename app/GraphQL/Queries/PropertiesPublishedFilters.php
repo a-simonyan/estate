@@ -32,8 +32,13 @@ class PropertiesPublishedFilters
 
         /*search by property type*/
          if(!empty($args['property_type'])){
-            $property_type_id = $this->getKeyId(PropertyType::Class,'name',$args['property_type']);
-            $propertyClass = $propertyClass->where('property_type_id',$property_type_id);
+            $typeArr=[];
+            foreach($args['property_type'] as $property_type){
+               $property_type_id = $this->getKeyId(PropertyType::Class,'name',$property_type);
+               array_push($typeArr,$property_type_id);
+            }
+           
+            $propertyClass = $propertyClass->whereIn('property_type_id',$typeArr);
           }
           /*search by user type*/
           if(!empty($args['user_type'])){

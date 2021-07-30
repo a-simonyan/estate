@@ -18,6 +18,7 @@ use App\Http\Traits\ChangeCurrencyTrait;
 use App\CurrencyType;
 
 use App\NotificationUsersProperties;
+use App\Events\PropertyNotification;
 
 use Storage;
 
@@ -60,6 +61,8 @@ class SendPropertyPublished implements ShouldQueue
                     'user_id'     => $saveUserFilter->user_id,
                     'property_id' => $property_id
                 ]);
+
+                event( new PropertyNotification($saveUserFilter->user_id,['property'=>$property]) );
             };
 
         }
@@ -73,7 +76,7 @@ class SendPropertyPublished implements ShouldQueue
 
 
 
-        $propertyClass = Property::with('filters_values')->where('id',$property_id);
+        $propertyClass = Property::with('filters_values','property_images')->where('id',$property_id);
         $propertyClass = $propertyClass->where('is_delete', false)->where('is_public_status','published');
 
         $propertyClass = $propertyClass->whereHas('user',function($query){
@@ -82,10 +85,15 @@ class SendPropertyPublished implements ShouldQueue
         });
 
         /*search by property type*/
-         if(!empty($args['property_type'])){
-            $property_type_id = $this->getKeyId(PropertyType::Class,'name',$args['property_type']);
-            $propertyClass = $propertyClass->where('property_type_id',$property_type_id);
-          }
+        if(!empty($args['property_type'])){
+         $typeArr=[];
+         foreach($args['property_type'] as $property_type){
+            $property_type_id = $this->getKeyId(PropertyType::Class,'name',$property_type);
+            array_push($typeArr,$property_type_id);
+         }
+        
+         $propertyClass = $propertyClass->whereIn('property_type_id',$typeArr);
+       }
           /*search by user type*/
           if(!empty($args['user_type'])){
             $user_type_id = $this->getKeyId(UserType::Class,'name',$args['user_type']);

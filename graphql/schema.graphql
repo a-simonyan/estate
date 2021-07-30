@@ -324,7 +324,7 @@ input SavePropertyInput{
 }
 input PropertiesPublishedFiltersInput{
       place:[placeInput],
-      property_type: String,
+      property_type: [String],
       user_type: String,
       area: MinMax,
       number_of_floors_of_the_building:MinMax,
