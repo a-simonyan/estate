@@ -26,7 +26,7 @@ type Query {
 
     userTypes(language: String,orderBy: [OrderByClause!] @orderBy): [UserType]! @all  @SetLanguage
     userTypesPaginate(language: String,orderBy: [OrderByClause!] @orderBy): [UserType]! @paginate(defaultCount: 10)  @SetLanguage
-    userType(id: ID @eq, language: String): Phone @find  @SetLanguage
+    userType(id: ID @eq, language: String): UserType @find  @SetLanguage
 
     languages(orderBy: [OrderByClause!] @orderBy): [Language]! @all
     languagesPaginate: [Language] @paginate(defaultCount: 10)
@@ -107,7 +107,8 @@ type Query {
     adminUser(id: ID @eq, language: String) :User @find  @middleware(checks: ["auth:api","admin"])  @SetLanguage
     adminProperties(input: AdminPropertiesFiltersInput @spread):[Property]  @middleware(checks: ["auth:api","admin"])  @SetLanguage
     adminProperty(id: ID @eq,language: String): Property @find @middleware(checks: ["auth:api","admin"])  @SetLanguage
-
+    adminSupport(id: ID @eq,language: String): Support @find  @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    adminSupports(input: AdminSupportInput @spread) :[Support]  @middleware(checks: ["auth:api","admin"])  @SetLanguage
 
      #test
      test(language: String):String @SetLanguage
@@ -190,11 +191,16 @@ type Mutation {
 
     createUserFavoriteProperty(property_id:Int!, language: String): UserFavoriteProperty! @middleware(checks: ["auth:api","status"]) @SetLanguage
     updateUserFavoriteProperty(id:ID!, property_id:Int!, language: String): UserFavoriteProperty!  @middleware(checks: ["auth:api","status"]) @SetLanguage
-    deleteUserFavoriteProperty(id:ID!): DeleteStatus  @middleware(checks: ["auth:api","status"]) @SetLanguage
+    deleteUserFavoriteProperty(id:ID!): Status  @middleware(checks: ["auth:api","status"]) @SetLanguage
 
     createSaveUserFilter(input: PropertiesPublishedFiltersInput @spread): Int @middleware(checks: ["auth:api","status"]) @SetLanguage
     updateSaveUserFilter(id:ID! ,input: PropertiesPublishedFiltersInput @spread): Boolean @middleware(checks: ["auth:api","status"]) @SetLanguage
     deleteSaveUserFilter(id:ID!, language: String): Boolean @middleware(checks: ["auth:api","status"]) @SetLanguage
+
+    #support
+    guestSupport(name:String!, email:String! @rules(apply: ["required","email"]), text:String! ): Status @SetLanguage
+    authSupport(text:String!): Status @middleware(checks: ["auth:api","status"]) @SetLanguage
+
    
     # Notification
 
@@ -204,6 +210,8 @@ type Mutation {
     # ADMIN
     adminUpdateUserProfile(input: AdminUpdateUserProfileInput @spread): User! @UpdateUserProfileValidation @middleware(checks: ["auth:api","admin"])  @SetLanguage
     adminUpdateProperty(input: AdminUpdatePropertyInput @spread): Property @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    
+    adminSupport(id:Int! title:String, body:String!): Status @middleware(checks: ["auth:api","admin"])  @SetLanguage
 
     createLanguage(name: String!,code:String!,flag_image:Upload!, language: String): Language!  @middleware(checks: ["auth:api","admin"])  @SetLanguage
     updateLanguage(id:ID!,name: String,code:String,flag_image:Upload, language: String): Language!  @middleware(checks: ["auth:api","admin"])  @SetLanguage
@@ -422,6 +430,14 @@ type User {
     block_start: DateTime
     block_end: DateTime
 }
+type Support{
+    id: ID
+    user: User
+    name: String
+    email: String
+    text: String
+    is_answered: Boolean
+}
 type Language {
     id: ID!
     name: String!
@@ -492,7 +508,7 @@ type Property{
     is_delete: Boolean
 }
 
-type DeleteStatus{
+type Status{
     status: Boolean
 }
 
@@ -629,6 +645,15 @@ input AdminUserInput{
     order_by: String,
     paginate: PaginateInput,
 }
+input AdminSupportInput{
+    user_id: Int,
+    name: String,
+    email: String,
+    is_answered: Boolean,
+    order_by: String,
+    paginate: PaginateInput,
+}
+
 
 input AdminPropertiesFiltersInput{
     public_status: String,

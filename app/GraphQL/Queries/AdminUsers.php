@@ -51,7 +51,7 @@ class AdminUsers
         }
 
         if(!empty($args['order_by'])) {
-            $userClass = $userClass->orderBy('id', $args['order_by_time']);
+            $userClass = $userClass->orderBy('id', $args['order_by']);
         } else {
             $userClass = $userClass->orderBy('id', 'DESC');
         }

@@ -86,5 +86,8 @@ class User extends Authenticatable implements MustVerifyEmail
     public function notification_users_properties(){
         return $this->hasMany('App\NotificationUsersProperties','user_id','id');
     }
+    public function supports(){
+        return $this->hasMany('App\Support','user_id','id');
+    }
 
 }
