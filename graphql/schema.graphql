@@ -192,6 +192,7 @@ type Mutation {
     createUserFavoriteProperty(property_id:Int!, language: String): UserFavoriteProperty! @middleware(checks: ["auth:api","status"]) @SetLanguage
     updateUserFavoriteProperty(id:ID!, property_id:Int!, language: String): UserFavoriteProperty!  @middleware(checks: ["auth:api","status"]) @SetLanguage
     deleteUserFavoriteProperty(id:ID!): Status  @middleware(checks: ["auth:api","status"]) @SetLanguage
+    deleteUserFavoritePropertys(ids: [Int!]): Status  @middleware(checks: ["auth:api","status"]) @SetLanguage
 
     createSaveUserFilter(input: PropertiesPublishedFiltersInput @spread): Int @middleware(checks: ["auth:api","status"]) @SetLanguage
     updateSaveUserFilter(id:ID! ,input: PropertiesPublishedFiltersInput @spread): Boolean @middleware(checks: ["auth:api","status"]) @SetLanguage
