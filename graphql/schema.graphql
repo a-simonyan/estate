@@ -9,12 +9,12 @@ scalar Upload @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload
 type Query {
 
     userProfile(language: String):User @middleware(checks: ["auth:api","status"]) @SetLanguage
-    userProperties(is_public_status: IsPublicStatusEnum, first: Int, page: Int, orderBy:OrderBy, language: String ):[Property] @middleware(checks: ["auth:api","status"]) @SetLanguage
+    userProperties(is_public_status: [IsPublicStatusEnum],  property_type: [String],  price_order:String, first: Int, page: Int, orderBy:OrderBy, language: String ):[Property] @middleware(checks: ["auth:api","status"]) @SetLanguage
 
     userSaveProperties(first: Int, page: Int, orderBy:OrderBy, language: String):[Property] @middleware(checks: ["auth:api","status"]) @SetLanguage
     userSavePropertyById(id:Int, language: String):Property  @middleware(checks: ["auth:api","status"]) @SetLanguage
 
-    userFavoriteProperties(first: Int, page: Int, orderBy:OrderBy, language: String):[UserFavoriteProperty] @middleware(checks: ["auth:api","status"]) @SetLanguage
+    userFavoriteProperties( property_type: [String],  price_order:String, first: Int, page: Int, orderBy:OrderBy, language: String):[UserFavoriteProperty] @middleware(checks: ["auth:api","status"]) @SetLanguage
     userFavoritePropertyById(id:Int, language: String):UserFavoriteProperty  @middleware(checks: ["auth:api","status"]) @SetLanguage
 
     saveUserFilters(language: String, orderBy:OrderBy): [SaveUserFilterJson] @middleware(checks: ["auth:api","status"]) @SetLanguage

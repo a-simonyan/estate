@@ -21,11 +21,11 @@ class VerifyEmailUser
         $decodedToken = json_decode(base64_decode($args['token']));
         $expiration = decrypt($decodedToken->expiration);
         $email = decrypt($decodedToken->hash);
-        if (Carbon::parse($expiration) < now()) {
-            throw new ValidationException([
-                'token' => __('messages.the_token_is_invalid'),
-            ], 'Validation Error');
-        }
+        // if (Carbon::parse($expiration) < now()) {
+        //     throw new ValidationException([
+        //         'token' => __('messages.the_token_is_invalid'),
+        //     ], 'Validation Error');
+        // }
         $model = app(config('auth.providers.users.model'));
 
         try {
