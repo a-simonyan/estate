@@ -20,6 +20,9 @@ type Query {
     saveUserFilters(language: String, orderBy:OrderBy): [SaveUserFilterJson] @middleware(checks: ["auth:api","status"]) @SetLanguage
     saveUserFilterById(id:ID!, language: String): SaveUserFilterJson  @middleware(checks: ["auth:api","status"]) @SetLanguage
 
+    userSupport(id:Int!, language: String): Support @middleware(checks: ["auth:api","status"]) @SetLanguage
+    userSupports(input: UserSupportInput @spread): [Support] @middleware(checks: ["auth:api","status"]) @SetLanguage
+
 #    phones(orderBy: [OrderByClause!] @orderBy): [Phone]! @all
 #    phonesPaginate(orderBy: [OrderByClause!] @orderBy): [Phone]! @paginate(defaultCount: 10)
 #    phone(id: ID @eq): Phone @find
@@ -132,7 +135,7 @@ type Mutation {
     # verifyEmail(input: VerifyEmailInput! @spread): AuthPayload! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\VerifyEmail@resolve")
     # updatePassword(input: UpdatePassword! @spread): UpdatePasswordResponse! @field(resolver: "Joselfonseca\\LighthouseGraphQLPassport\\GraphQL\\Mutations\\UpdatePassword@resolve") @guard(with: ["api"])
      
-    loginUser(input: LoginInput @spread): AuthPayloadLogin! @LoginInputValidation
+    loginUser(input: LoginInput @spread): AuthPayloadLogin! @LoginInputValidation @SetLanguage
     socialLoginUser(input: SocialLoginInput! @spread): AuthPayloadUser!
     registerUser(input: RegisterInput @spread): RegisterResponse! @RegisterInputValidation @SetLanguage
     verifyEmailUser(input: VerifyEmailInput! @spread): AuthPayload! @VerifyEmailInputValidation @SetLanguage
@@ -199,8 +202,8 @@ type Mutation {
     deleteSaveUserFilter(id:ID!, language: String): Boolean @middleware(checks: ["auth:api","status"]) @SetLanguage
 
     #support
-    guestSupport(name:String!, email:String! @rules(apply: ["required","email"]), text:String! ): Status @SetLanguage
-    authSupport(text:String!): Status @middleware(checks: ["auth:api","status"]) @SetLanguage
+    guestSupport(name:String!, email:String! @rules(apply: ["required","email"]), text:String!, language: String ): Status @SetLanguage
+    authSupport(text:String!, language: String): Status @middleware(checks: ["auth:api","status"]) @SetLanguage
 
    
     # Notification
@@ -212,7 +215,8 @@ type Mutation {
     adminUpdateUserProfile(input: AdminUpdateUserProfileInput @spread): User! @UpdateUserProfileValidation @middleware(checks: ["auth:api","admin"])  @SetLanguage
     adminUpdateProperty(input: AdminUpdatePropertyInput @spread): Property @middleware(checks: ["auth:api","admin"])  @SetLanguage
     
-    adminSupport(id:Int! title:String, body:String!): Status @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    adminSupport(id:Int!, title:String, body:String!, is_support_status:String): Status @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    adminUpdateSupport(id:Int!, is_support_status:String): Status @middleware(checks: ["auth:api","admin"])  @SetLanguage
 
     createLanguage(name: String!,code:String!,flag_image:Upload!, language: String): Language!  @middleware(checks: ["auth:api","admin"])  @SetLanguage
     updateLanguage(id:ID!,name: String,code:String,flag_image:Upload, language: String): Language!  @middleware(checks: ["auth:api","admin"])  @SetLanguage
@@ -437,7 +441,7 @@ type Support{
     name: String
     email: String
     text: String
-    is_answered: Boolean
+    is_support_status: String
 }
 type Language {
     id: ID!
@@ -558,8 +562,8 @@ type UserFavoriteProperty{
 
 type SaveUserFilterJson{
       id:ID,
-      place:placeType,
-      property_type: String,
+      place:[placeType],
+      property_type: [String],
       user_type: String,
       area: MinMaxType,
       number_of_floors_of_the_building:MinMaxType,
@@ -650,11 +654,15 @@ input AdminSupportInput{
     user_id: Int,
     name: String,
     email: String,
-    is_answered: Boolean,
+    is_support_status: [String],
     order_by: String,
     paginate: PaginateInput,
 }
-
+input UserSupportInput{
+    is_support_status: [String],
+    order_by: String,
+    paginate: PaginateInput,
+}
 
 input AdminPropertiesFiltersInput{
     public_status: String,

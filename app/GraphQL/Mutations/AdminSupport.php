@@ -20,7 +20,11 @@ class AdminSupport
         ];
        
         \Mail::to($support->email)->send(new \App\Mail\SupportMail($details));
-        $support->update(['is_answered' => true]);
+        if(empty($args['is_support_status'])){
+          $support->update(['is_support_status' => 'done']);
+        } else {
+          $support->update(['is_support_status' => $args['is_support_status']]);  
+        }
 
         return ['status' => true];
     }

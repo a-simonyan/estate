@@ -20,7 +20,7 @@ class CreateSupportsTable extends Migration
             $table->string('name');
             $table->string('email');
             $table->text('text');
-            $table->boolean('is_answered')->default(false);
+            $table->enum('is_support_status',['new','in_process','done'])->default('new');
             $table->timestamps();
         });
     }

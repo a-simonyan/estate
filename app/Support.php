@@ -8,7 +8,7 @@ class Support extends Model
 {
     protected $table="supports";
 
-    protected $fillable=['user_id', 'name', 'email', 'text', 'is_answered'];
+    protected $fillable=['user_id', 'name', 'email', 'text', 'is_support_status'];
 
 
     public function user(){
