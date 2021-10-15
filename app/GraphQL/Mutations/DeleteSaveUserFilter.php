@@ -21,10 +21,10 @@ class DeleteSaveUserFilter
         if($saveUserFilter_user_id ==  $user_id ){
             SaveUserFilter::where('id', $saveUserFilter_id)->delete();
 
-            return true;
+            return ['status' => true ];
         }
 
-       return false;
+        return ['status' => false ];
 
     }
 }

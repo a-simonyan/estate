@@ -1,19 +1,27 @@
 <?php
 
 namespace App\GraphQL\Mutations;
+
 use Auth;
 use App\DealType;
 use App\Filter;
 use App\Property;
 use App\PropertyImage;
+Use App\PropertyType;
+use App\FiltersValue;
+use App\TranslateDescription;
+use App\PropertyDeal;
+use App\Language;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Nuwave\Lighthouse\Exceptions\DefinitionException;
 use App\Exceptions\SendException;
+use App\Http\Traits\GetIdTrait;
 
 
 class UpdateProperty
 {
+    use GetIdTrait;
     /**
      * @param  null  $_
      * @param  array<string, mixed>  $args
@@ -32,7 +40,7 @@ class UpdateProperty
             if(!empty($args['property_key'])){
                 $array_property['property_key'] = $args['property_key'];
             }
-            if(!empty($args['property_type_id'])){
+            if(!empty($args['property_type'])){
                 $array_property['property_type_id'] = $this->getKeyId(PropertyType::Class,'name',$args['property_type']);
             }
             if(!empty($args['bulding_type_id'])){

@@ -21,7 +21,9 @@ class CreateSaveUserFilter
                                           'user_id' => $user_id
                                          ]);
         if($saveUserFilter){
-            return $saveUserFilter->id; 
-        };                                   
+           return ['status' => true ]; 
+        };
+        
+        return ['status' => false ];
     }
 }

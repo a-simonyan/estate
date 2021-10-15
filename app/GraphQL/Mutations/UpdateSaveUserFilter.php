@@ -28,10 +28,10 @@ class UpdateSaveUserFilter
                 'properties_filters' => $json_properties_filters
                ]);
 
-            return true;
+               return ['status' => true ];
         } else {
 
-            return false;
+            return ['status' => false ];
         }
 
      
