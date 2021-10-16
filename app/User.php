@@ -60,9 +60,9 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getPictureAttribute($value)
     {        if(is_null($value)){
-                return $value;
+                return [ 'original' => $value, 'min' => $value ];
               } else {
-                return url('storage/users/'.$value);
+                return [ 'original' => url('storage/users/'.$value), 'min' => url('storage/users/min/'.$value) ]; 
               }
     }  
 

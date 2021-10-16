@@ -9,7 +9,7 @@ use App\SaveUserFilter;
 use App\UserType;
 use App\Property;
 use App\Filter;
-Use App\PropertyType;
+use App\PropertyType;
 use App\PropertyDeal;
 use App\DealType;
 use DB;

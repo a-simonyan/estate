@@ -7,7 +7,7 @@ use App\DealType;
 use App\Filter;
 use App\Property;
 use App\PropertyImage;
-Use App\PropertyType;
+use App\PropertyType;
 use App\FiltersValue;
 use App\TranslateDescription;
 use App\PropertyDeal;

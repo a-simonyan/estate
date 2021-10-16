@@ -5,7 +5,7 @@ use App\DealType;
 use App\Filter;
 use App\Property;
 use App\PropertyImage;
-Use App\PropertyType;
+use App\PropertyType;
 use App\FiltersValue;
 use App\TranslateDescription;
 use App\PropertyDeal;
@@ -174,7 +174,7 @@ class CreateProperty
         foreach($property_images_delete_ids as $images_id){
            $propertyImage=PropertyImage::find($images_id);
            if($user_auth->id == $propertyImage->property->user_id){
-               $propertyImage_name = $propertyImage->getOriginal('name');
+               $propertyImage_name = $propertyImage->getRawOriginal('name');
 
                if($propertyImage_name&&file_exists(storage_path('app/public/property/'.$propertyImage_name))){
                    unlink(storage_path('app/public/property/'.$propertyImage_name));

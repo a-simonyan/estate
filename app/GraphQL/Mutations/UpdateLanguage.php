@@ -18,7 +18,7 @@ class UpdateLanguage
         $language = Language::find($args['id']);
 
         if(!empty($args['flag_image'])){
-            $language_picture = $language->getOriginal('flag_image');
+            $language_picture = $language->getRawOriginal('flag_image');
             $image = $this->savePicture($args['flag_image'],$language_picture);
             if($image){
                 $args['flag_image']=$image;

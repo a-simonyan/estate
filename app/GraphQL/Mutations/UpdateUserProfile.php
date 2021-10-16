@@ -11,6 +11,7 @@ use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Traits\GetIdTrait;
 use App\UserType;
+use Image;
 
 
 class UpdateUserProfile
@@ -38,7 +39,7 @@ class UpdateUserProfile
         }  
 
         if(!empty($args['image'])){
-            $user_picture  =  $user->getOriginal('picture');
+            $user_picture  =  $user->getRawOriginal('picture');
             $update_arr['picture'] = $this->savePicture($args['image'],$user_picture);
            
         }
@@ -80,22 +81,31 @@ class UpdateUserProfile
     public function savePicture($picture, $user_picture){
         if($picture){
 
-            if($user_picture&&file_exists(storage_path('app/public/users/'.$user_picture))){
-                unlink(storage_path('app/public/users/'.$user_picture));
-              }
-
               $fileName_img = Str::random(10).time().'.'.$picture->getClientOriginalExtension();
               while(file_exists(storage_path('app/public/users/'.$fileName_img))){
                   $fileName_img = Str::random(10).time().'.'.$picture->getClientOriginalExtension();
               };
   
-            $picture->storeAs('public/users',$fileName_img);
+              $picture->storeAs('public/users',$fileName_img);
+           
 
             if(file_exists(storage_path('app/public/users/'.$fileName_img))){
+                $image = Image::make(storage_path('app/public/users/'.$fileName_img));
+
+                $image->resize(null, 200, function($constraint) {
+                    $constraint->aspectRatio();
+                });
+        
+                $image->save(storage_path('app/public/users/min/'.$fileName_img));
+
 
                 if($user_picture&&file_exists(storage_path('app/public/users/'.$user_picture))){
                     unlink(storage_path('app/public/users/'.$user_picture));
                 }
+
+                if($user_picture&&file_exists(storage_path('app/public/users/min/'.$user_picture))){
+                    unlink(storage_path('app/public/users/min/'.$user_picture));
+                }  
 
                 return $fileName_img;
             } else {

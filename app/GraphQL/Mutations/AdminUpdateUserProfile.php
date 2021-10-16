@@ -49,7 +49,7 @@ class AdminUpdateUserProfile
             }
 
             if (!empty($args['image'])) {
-                $user_picture = $user->getOriginal('picture');
+                $user_picture = $user->getRawOriginal('picture');
                 $update_arr['picture'] = $this->savePicture($args['image'], $user_picture);
 
             }

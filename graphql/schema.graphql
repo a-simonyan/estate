@@ -424,7 +424,7 @@ type UserType{
 type User {
     id: ID!
     full_name: String! 
-    picture: String
+    picture: ImageQuality
     email: String!
     phones:[Phone!]
     user_type:UserType! 
@@ -435,6 +435,12 @@ type User {
     block_start: DateTime
     block_end: DateTime
 }
+
+type ImageQuality {
+    original: String
+    min: String
+}
+
 type Support{
     id: ID
     user: User

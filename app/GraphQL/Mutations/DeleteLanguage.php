@@ -16,7 +16,7 @@ class DeleteLanguage
         
         $language = Language::find($args['id']);
         if($language){
-           $image_old = $language->getOriginal('flag_image');;
+           $image_old = $language->getRawOriginal('flag_image');;
     
            if($image_old&&file_exists(storage_path('app/public/language/'.$image_old))){
                unlink(storage_path('app/public/language/'.$image_old));

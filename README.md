@@ -14,3 +14,9 @@ php artisan config:clear
 php artisan storage:link
 php artisan serve
 php artisan queue:work
+
+<!-- resize images -->
+<!-- composer require intervention/image -->
+<!-- https://hackthestuff.com/article/how-to-resize-and-upload-images-in-laravel-8-using-intervention-image -->
+<!--Error:  GD Library extension not available with this PHP installation -->
+sudo apt-get install php-gd
