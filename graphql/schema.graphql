@@ -9,6 +9,7 @@ scalar Upload @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload
 type Query {
 
     userProfile(language: String):User @middleware(checks: ["auth:api","status"]) @SetLanguage
+    userActiveTime:User @middleware(checks: ["auth:api","status"]) @SetLanguage
     userProperties(is_public_status: [IsPublicStatusEnum],  property_type: [String],  price_order:String, first: Int, page: Int, orderBy:OrderBy, language: String ):[Property] @middleware(checks: ["auth:api","status"]) @SetLanguage
 
     userSaveProperties(first: Int, page: Int, orderBy:OrderBy, language: String):[Property] @middleware(checks: ["auth:api","status"]) @SetLanguage
@@ -432,8 +433,10 @@ type User {
     is_admin: Boolean
     is_delete: Boolean
     is_block: Boolean
+    reason: String
     block_start: DateTime
     block_end: DateTime
+    last_active_time: DateTime
 }
 
 type ImageQuality {
@@ -634,12 +637,12 @@ input AdminUpdateUserProfileInput{
     user_id: Int!
     is_delete: Boolean
     is_block: Boolean
+    reason: String
     block_start: DateTime
     block_end: DateTime
     image:Upload
     full_name: String
     email: String
-    old_password: String
     password: String
     password_confirmation: String
     phone: [NewPhone!]

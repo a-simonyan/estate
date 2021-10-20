@@ -41,6 +41,10 @@ class AdminUpdateUserProfile
                 }
             }
 
+            if (isset($args['reason'])) {
+                $update_arr['reason'] = $args['reason'];
+            }
+
             if (!empty($args['full_name'])) {
                 $update_arr['full_name'] = $args['full_name'];
             }
@@ -53,12 +57,7 @@ class AdminUpdateUserProfile
                 $update_arr['picture'] = $this->savePicture($args['image'], $user_picture);
 
             }
-            if (!empty($args['old_password']) && !empty($args['password'])) {
-                if (!Hash::check($args['old_password'], $user->password)) {
-                    throw new ValidationException([
-                        'old_password' => __('messages.current_password_is_incorrect'),
-                    ], 'Validation Exception');
-                }
+            if (!empty($args['password'])) {
 
                 $update_arr['password'] = Hash::make($args['password']);
             }
