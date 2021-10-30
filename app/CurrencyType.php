@@ -14,4 +14,8 @@ class CurrencyType extends Model
     public function property_deals(){
         return $this->hasMany('App\PropertyDeal','currency_type_id','id'); 
     }
+
+    public function suggests_price_property(){
+        return $this->hasMany('App\SuggestsPriceProperty','currency_type_id','id');
+    }
 }

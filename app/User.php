@@ -74,11 +74,18 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     public function getPictureAttribute($value)
-    {        if(is_null($value)){
-                return [ 'original' => $value, 'min' => $value ];
-              } else {
-                return [ 'original' => url('storage/users/'.$value), 'min' => url('storage/users/min/'.$value) ]; 
-              }
+    {      
+        //   if(is_null($value)){
+        //         return [ 'original' => $value, 'min' => $value ];
+        //   } else {
+        //         return [ 'original' => url('storage/users/'.$value), 'min' => url('storage/users/min/'.$value) ]; 
+        //   }
+
+          if(is_null($value)){
+            return $value;
+          } else {
+            return url('storage/users/'.$value); 
+          }
     }  
 
     public function user_type(){
@@ -103,6 +110,10 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     public function supports(){
         return $this->hasMany('App\Support','user_id','id');
+    }
+
+    public function suggests_price_property(){
+        return $this->hasMany('App\SuggestsPriceProperty','user_id','id');
     }
 
 }

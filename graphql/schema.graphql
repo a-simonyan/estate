@@ -24,6 +24,9 @@ type Query {
     userSupport(id:Int!, language: String): Support @middleware(checks: ["auth:api","status"]) @SetLanguage
     userSupports(input: UserSupportInput @spread): [Support] @middleware(checks: ["auth:api","status"]) @SetLanguage
 
+    # Suggests Price Property
+    propertySuggestsPrice(property_id: ID!, checked: Boolean,  first: Int, page: Int, orderBy:OrderBy, language: String): [SuggestsPriceProperty]  @middleware(checks: ["auth:api","status"]) @SetLanguage
+    userInfo(user_id:ID!, language: String): UserInfo  @SetLanguage
 #    phones(orderBy: [OrderByClause!] @orderBy): [Phone]! @all
 #    phonesPaginate(orderBy: [OrderByClause!] @orderBy): [Phone]! @paginate(defaultCount: 10)
 #    phone(id: ID @eq): Phone @find
@@ -183,6 +186,10 @@ type Mutation {
     propertyImagePosition(images_ids:[Int!]!,language: String): Boolean!  @middleware(checks: ["auth:api","status"]) @SetLanguage
     saveProperty(input: SavePropertyInput @spread):Property!  @middleware(checks: ["auth:api","status"]) @SetLanguage
 
+    # Suggests Price for Property    
+    createSuggestsPriceProperty(property_id:Int!, price: Float!, currency_type_id: Int!, end_time:DateTime , language: String): SuggestsPriceProperty  @middleware(checks: ["auth:api","status"]) @SetLanguage
+
+
 
 #    createPropertyDeal( property_id: Int!, deal_type_id: Int!, price: Float!, currency_type_id: Int!): PropertyDeal! @create
 #    updatePropertyDeal(id:ID!,property_id: Int!, deal_type_id: Int!, price: Float!, currency_type_id: Int!): PropertyDeal! @update
@@ -300,6 +307,7 @@ input CreatePropertyInput{
     property_images_delete_ids: [Int!],
     property_filter_values: [PropertyFilterValue!], 
     translate_descriptions: [TranslateDescriptionInput],
+    email: String
     language: String
 }
 
@@ -314,6 +322,7 @@ input UpdatePropertyInput{
     address: String,
     postal_code: String,
     property_state: String,
+    email: String
     property_images:[Upload],
     property_images_delete_ids: [Int!],
     property_filter_values: [PropertyFilterValue!], 
@@ -332,6 +341,7 @@ input SavePropertyInput{
     postal_code: String,
     property_state: String,
     property_images:[Upload],
+    email: String,
     property_filter_values: [PropertyFilterValue], 
     translate_descriptions: [TranslateDescriptionInput],
     language: String
@@ -425,7 +435,7 @@ type UserType{
 type User {
     id: ID!
     full_name: String! 
-    picture: ImageQuality
+    picture: String
     email: String!
     phones:[Phone!]
     user_type:UserType! 
@@ -436,6 +446,17 @@ type User {
     reason: String
     block_start: DateTime
     block_end: DateTime
+    last_active_time: DateTime
+}
+
+type UserInfo{
+    id: ID!
+    full_name: String! 
+    picture: String
+    email: String!
+    phones:[Phone!]
+    user_type:UserType! 
+    first_time: Date
     last_active_time: DateTime
 }
 
@@ -520,8 +541,9 @@ type Property{
     translate_descriptions: [TranslateDescription]
     review: String
     is_public_status: String
-    is_save: String
+    is_save: Boolean
     is_delete: Boolean
+    email: String
 }
 
 type Status{
@@ -616,6 +638,18 @@ type NotificationUsersProperties{
     updated_at: DateTime
 }
 
+type SuggestsPriceProperty{
+     id:ID,
+     user: User
+     property: Property
+     price: Float!
+     currency_type: CurrencyType
+     is_checked: Boolean
+     is_delete: Boolean
+     end_time: DateTime
+     created_at: DateTime
+     updated_at: DateTime
+}
 
 
 
@@ -712,6 +746,7 @@ input AdminUpdatePropertyInput{
     address: String,
     postal_code: String,
     property_state: String,
+    email: String,
     property_images:[Upload],
     property_images_delete_ids: [Int!],
     property_filter_values: [PropertyFilterValue!],

@@ -61,6 +61,9 @@ class UpdateProperty
             if(!empty($args['property_state'])){
                 $array_property['property_state'] = $args['property_state'];
             }
+            if($user_auth->user_type->name == 'agency' && !empty($args['email'])){
+                $array_property['email'] = $args['email'];
+            }
            
             $property->update($array_property);
 

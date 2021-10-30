@@ -42,6 +42,7 @@ class SaveProperty
                                           'address'          => !empty($args['address'])? $args['address']:null,
                                           'postal_code'      => !empty($args['postal_code'])? $args['postal_code']:null,
                                           'property_state'   => !empty($args['property_state'])? $args['property_state']:null,
+                                          'email'            => ( $user_auth->user_type->name == 'agency' && !empty($args['email']))?  $args['email'] : null,
                                           'is_save'          => true
                                          ]); 
     
@@ -81,6 +82,7 @@ class SaveProperty
                     'address'          => !empty($args['address'])? $args['address']:null,
                     'postal_code'      => !empty($args['postal_code'])? $args['postal_code']:null,
                     'property_state'   => !empty($args['property_state'])? $args['property_state']:null,
+                    'email'            => ( $user_auth->user_type->name == 'agency' && !empty($args['email']))?  $args['email'] : null,
                     'is_save'          => true
                 ]);
 

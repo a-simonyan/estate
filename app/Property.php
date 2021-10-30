@@ -21,6 +21,7 @@ class Property extends Model
                            'is_public_status',
                            'is_save',
                            'is_delete',
+                           'email'
                         ];
 
 
@@ -58,7 +59,9 @@ class Property extends Model
    public function notification_users_properties(){
     return $this->hasMany('App\NotificationUsersProperties','property_id','id');
    }
-
+   public function suggests_price_property(){
+     return $this->hasMany('App\SuggestsPriceProperty','property_id','id');
+   }
 
 
 }

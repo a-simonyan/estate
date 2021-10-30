@@ -71,7 +71,9 @@ class AdminUpdateProperty
             if(!empty($args['property_state'])){
                 $array_property['property_state'] = $args['property_state'];
             }
-
+            if(!empty($args['email'])){
+                $array_property['email'] = $args['email'];
+            }
             $property->update($array_property);
 
 

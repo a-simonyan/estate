@@ -43,6 +43,7 @@ class CreateProperty
                                           'address'          => $args['address'],
                                           'postal_code'      => !empty($args['postal_code'])? $args['postal_code'] : null,
                                           'property_state'   => !empty($args['property_state'])? $args['property_state'] : null,
+                                          'email'            => ( $user_auth->user_type->name == 'agency' && !empty($args['email']))?  $args['email'] : null
                                          ]); 
     
             if($property){                             
@@ -81,6 +82,7 @@ class CreateProperty
                     'address'          => $args['address'],
                     'postal_code'      => !empty($args['postal_code'])? $args['postal_code'] : null,
                     'property_state'   => !empty($args['property_state'])? $args['property_state'] : null,
+                    'email'            => ( $user_auth->user_type->name == 'agency' && !empty($args['email']))?  $args['email'] : null,
                     'is_save'          => false   
                    ]
                 );
