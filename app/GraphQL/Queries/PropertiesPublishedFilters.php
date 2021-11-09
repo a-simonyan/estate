@@ -287,6 +287,14 @@ class PropertiesPublishedFilters
                       $max = $minMax['max'];
                        $query->whereRaw('CAST (value AS INTEGER) <= ?', $max);
                    }
+                  //  if($minMax['min']){
+                  //    $min = $minMax['min'];
+                  //    $query->whereRaw('CONVERT(value , UNSIGNED) >= ?',  $min);
+                  //  }
+                  // if($minMax['max']){
+                  //     $max = $minMax['max'];
+                  //      $query->whereRaw('CONVERT(value , UNSIGNED) <= ?', $max);
+                  //  }
               });
           });
 

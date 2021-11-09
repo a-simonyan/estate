@@ -26,7 +26,8 @@ Route::get('/t1', function () {
     return view('test');
 });
 Route::get('/t2', function () {
-    dd(Session::get('provider'));
+    phpinfo(); 
+    // dd(Session::get('provider'));
 
-    return view('test2');
+    // return view('test2');
 });

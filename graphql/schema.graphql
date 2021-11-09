@@ -435,7 +435,7 @@ type UserType{
 type User {
     id: ID!
     full_name: String! 
-    picture: String
+    picture: ImageQuality
     email: String!
     phones:[Phone!]
     user_type:UserType! 
@@ -452,7 +452,7 @@ type User {
 type UserInfo{
     id: ID!
     full_name: String! 
-    picture: String
+    picture: ImageQuality
     email: String!
     phones:[Phone!]
     user_type:UserType! 
