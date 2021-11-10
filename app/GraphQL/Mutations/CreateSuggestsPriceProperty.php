@@ -4,6 +4,7 @@ namespace App\GraphQL\Mutations;
 
 use Auth;
 use App\SuggestsPriceProperty;
+use App\Events\SendMailSuggestsPrice;
 
 class CreateSuggestsPriceProperty
 {
@@ -24,6 +25,10 @@ class CreateSuggestsPriceProperty
                                     'currency_type_id' => $args['currency_type_id'],
                                     'end_time' => !empty($args['end_time']) ? $args['end_time'] : null 
                                 ]);
+
+        if($suggestsPriceProperty->property->email){
+           event( new SendMailSuggestsPrice($suggestsPriceProperty) );
+        }
 
 
         return  $suggestsPriceProperty;                 

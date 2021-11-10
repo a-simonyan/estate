@@ -16,6 +16,11 @@ class SuggestsPriceProperty extends Model
                           'is_checked',
                           'is_delete' 
                          ];
+    protected $with = [
+       'user',
+       'property',
+       'currency_type' 
+    ];                     
 
      public function user(){
          return $this->belongsTo('App\User','user_id','id');
