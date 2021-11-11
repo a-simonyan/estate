@@ -18,6 +18,7 @@ use Nuwave\Lighthouse\Exceptions\DefinitionException;
 use App\Exceptions\SendException;
 use App\Events\PropertyPublished;
 use App\Http\Traits\GetIdTrait;
+use Image;
 
 
 class AdminUpdateProperty
@@ -146,7 +147,16 @@ class AdminUpdateProperty
                     $fileName_img = Str::random(10).time().'.'.$property_image->getClientOriginalExtension();
                 };
                 $property_image->storeAs('public/property',$fileName_img);
-                if(file_exists(storage_path('app/public/property/'.$property_image))){
+                if(file_exists(storage_path('app/public/property/'.$fileName_img))){
+
+                    $image = Image::make(storage_path('app/public/property/'.$fileName_img));
+
+                    $image->resize(null, 200, function($constraint) {
+                        $constraint->aspectRatio();
+                    });
+            
+                    $image->save(storage_path('app/public/property/min/'.$fileName_img));
+
                     PropertyImage::create([
                         'property_id' => $property_id,
                         'name'        => $fileName_img,
@@ -164,11 +174,16 @@ class AdminUpdateProperty
 
         foreach($property_images_delete_ids as $images_id){
             $propertyImage=PropertyImage::find($images_id);
+            if($propertyImage){
                 $propertyImage_name = $propertyImage->getRawOriginal('name');
                 if($propertyImage_name&&file_exists(storage_path('app/public/property/'.$propertyImage_name))){
                     unlink(storage_path('app/public/property/'. $propertyImage_name));
                 }
+                if($propertyImage_name&&file_exists(storage_path('app/public/property/min/'.$propertyImage_name))){
+                    unlink(storage_path('app/public/property/min/'.$propertyImage_name));
+                }  
                 $propertyImage->delete();
+            }
         }
 
         return true;

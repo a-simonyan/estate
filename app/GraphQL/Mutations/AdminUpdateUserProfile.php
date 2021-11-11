@@ -11,6 +11,7 @@ use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Illuminate\Support\Facades\Hash;
 use App\Exceptions\SendException;
 use Carbon\Carbon;
+use Image;
 
 class AdminUpdateUserProfile
 {
@@ -108,9 +109,21 @@ class AdminUpdateUserProfile
 
             if(file_exists(storage_path('app/public/users/'.$fileName_img))){
 
+                $image = Image::make(storage_path('app/public/users/'.$fileName_img));
+
+                $image->resize(null, 200, function($constraint) {
+                    $constraint->aspectRatio();
+                });
+        
+                $image->save(storage_path('app/public/users/min/'.$fileName_img));
+
                 if($user_picture&&file_exists(storage_path('app/public/users/'.$user_picture))){
                     unlink(storage_path('app/public/users/'.$user_picture));
                 }
+
+                if($user_picture&&file_exists(storage_path('app/public/users/min/'.$user_picture))){
+                    unlink(storage_path('app/public/users/min/'.$user_picture));
+                }  
 
                 return $fileName_img;
             } else {

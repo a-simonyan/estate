@@ -558,7 +558,7 @@ type TranslateDescription{
 type PropertyImage{
     id:ID!
     property: Property!
-    name: String!
+    name: ImageQuality
     index:Int!
 }
 type FiltersValue{

@@ -14,7 +14,7 @@ use Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Traits\GetIdTrait;
-
+use Image;
 
 class CreateProperty
 {
@@ -157,6 +157,16 @@ class CreateProperty
                 };
                 $property_image->storeAs('public/property',$fileName_img);
                 if(file_exists(storage_path('app/public/property/'.$fileName_img))){
+
+                    $image = Image::make(storage_path('app/public/property/'.$fileName_img));
+
+                    $image->resize(null, 200, function($constraint) {
+                        $constraint->aspectRatio();
+                    });
+            
+                    $image->save(storage_path('app/public/property/min/'.$fileName_img));
+    
+
                     PropertyImage::create([
                         'property_id' => $property_id,
                         'name'        => $fileName_img,
@@ -175,12 +185,15 @@ class CreateProperty
 
         foreach($property_images_delete_ids as $images_id){
            $propertyImage=PropertyImage::find($images_id);
-           if($user_auth->id == $propertyImage->property->user_id){
+           if($propertyImage && $user_auth->id == $propertyImage->property->user_id){
                $propertyImage_name = $propertyImage->getRawOriginal('name');
 
                if($propertyImage_name&&file_exists(storage_path('app/public/property/'.$propertyImage_name))){
                    unlink(storage_path('app/public/property/'.$propertyImage_name));
                  }
+               if($propertyImage_name&&file_exists(storage_path('app/public/property/min/'.$propertyImage_name))){
+                    unlink(storage_path('app/public/property/min/'.$propertyImage_name));
+                }  
                  $propertyImage->delete();
            }
    
