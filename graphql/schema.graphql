@@ -185,6 +185,7 @@ type Mutation {
     deletePropertyImages(images_ids:[Int!]!,language: String): Boolean!  @middleware(checks: ["auth:api","status"]) @SetLanguage
     propertyImagePosition(images_ids:[Int!]!,language: String): Boolean!  @middleware(checks: ["auth:api","status"]) @SetLanguage
     saveProperty(input: SavePropertyInput @spread):Property!  @middleware(checks: ["auth:api","status"]) @SetLanguage
+    addViewCount(id:ID!,language: String): Status @SetLanguage
 
     # Suggests Price for Property    
     createSuggestsPriceProperty(property_id:Int!, price: Float!, currency_type_id: Int!, end_time:DateTime , language: String): SuggestsPriceProperty  @middleware(checks: ["auth:api","status"]) @SetLanguage
@@ -544,6 +545,7 @@ type Property{
     is_save: Boolean
     is_delete: Boolean
     email: String
+    view: Int
 }
 
 type Status{

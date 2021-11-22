@@ -66,11 +66,12 @@ class UpdateProperty
                 $array_property['email'] = $args['email'];
             }
            
-            $property->update($array_property);
+          
 
 
              if(!empty($args['property_deal_types'])){
                $this->savePropertyDealTypes($property_id, $args['property_deal_types']);
+               $array_property['is_public_status'] = 'under_review';
              }
              if(!empty($args['property_images'])){
                $this->savePropertyImages($property_id,$args['property_images']);
@@ -85,8 +86,12 @@ class UpdateProperty
              }
              if(!empty($args['translate_descriptions'])){
                $this->saveTranslateDescription($property_id, $args['translate_descriptions']);
+               $array_property['is_public_status'] = 'under_review';
              }
     
+
+             $property->update($array_property);
+
             return  $property;
            
 

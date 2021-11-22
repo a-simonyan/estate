@@ -21,7 +21,8 @@ class Property extends Model
                            'is_public_status',
                            'is_save',
                            'is_delete',
-                           'email'
+                           'email',
+                           'view'
                         ];
 
 
