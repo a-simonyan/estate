@@ -10,11 +10,13 @@ use App\Phone;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Illuminate\Support\Facades\Hash;
 use App\Exceptions\SendException;
+use App\Http\Traits\GetIdTrait;
 use Carbon\Carbon;
 use Image;
 
 class AdminUpdateUserProfile
 {
+    use GetIdTrait;
     /**
      * @param  null  $_
      * @param  array<string, mixed>  $args
@@ -51,6 +53,10 @@ class AdminUpdateUserProfile
             }
             if (!empty($args['email'])) {
                 $update_arr['email'] = $args['email'];
+            }
+
+            if(!empty($args['user_type'])){
+                $update_arr['user_type_id'] = $this->getKeyId(UserType::Class,'name',$args['user_type']); 
             }
 
             if (!empty($args['image'])) {

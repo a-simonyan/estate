@@ -448,6 +448,8 @@ type User {
     block_start: DateTime
     block_end: DateTime
     last_active_time: DateTime
+    provider: String
+    created_at: DateTime
 }
 
 type UserInfo{
@@ -679,6 +681,7 @@ input AdminUpdateUserProfileInput{
     image:Upload
     full_name: String
     email: String
+    user_type: String
     password: String
     password_confirmation: String
     phone: [NewPhone!]
