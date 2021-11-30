@@ -29,10 +29,15 @@ class PropertySuggestsPrice
         };
    
         $suggestsPriceProperty = SuggestsPriceProperty::where('is_delete', false)
-                                                      ->where('is_checked', $checked)
-                                                      ->where('property_id', $args['property_id'])
-                                                      ->orderBy($field, $order)
-                                                      ->paginate($first,['*'],'page', $page);
+                                                      ->where('property_id', $args['property_id']);
+                                                     
+        if(isset($args['checked'])){
+           
+            $suggestsPriceProperty->where('is_checked', $args['checked']);
+        }
+                                            
+        $suggestsPriceProperty = $suggestsPriceProperty->orderBy($field, $order)
+                                                       ->paginate($first,['*'],'page', $page);
 
         
         return $suggestsPriceProperty;                                              

@@ -75,6 +75,9 @@ class AdminUpdateProperty
             if(!empty($args['email'])){
                 $array_property['email'] = $args['email'];
             }
+            if(isset($args['is_address_precise'])){
+                $array_property['is_address_precise'] = $args['is_address_precise'];
+            }
             $property->update($array_property);
 
 

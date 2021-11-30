@@ -30,7 +30,8 @@ class UpdateProperty
     public function __invoke($_, array $args)
     {
         $user_auth   = Auth::user();
-        $user_id     =  $user_auth->id;
+        $user_id     = $user_auth->id;
+        $user_type   = $user_auth->user_type->name;
         $property_id = $args['id'];
 
 
@@ -62,8 +63,11 @@ class UpdateProperty
             if(!empty($args['property_state'])){
                 $array_property['property_state'] = $args['property_state'];
             }
-            if($user_auth->user_type->name == 'agency' && !empty($args['email'])){
+            if($user_type == 'agency' && !empty($args['email'])){
                 $array_property['email'] = $args['email'];
+            }
+            if($user_type == 'agency' && isset($args['is_address_precise'])){
+                $array_property['is_address_precise'] = $args['is_address_precise'];
             }
            
           

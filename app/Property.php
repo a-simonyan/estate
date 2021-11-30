@@ -22,6 +22,7 @@ class Property extends Model
                            'is_save',
                            'is_delete',
                            'email',
+                           'is_address_precise',
                            'view'
                         ];
 

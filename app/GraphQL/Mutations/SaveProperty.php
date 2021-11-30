@@ -31,20 +31,22 @@ class SaveProperty
 
         $user_auth   = Auth::user();
         $user_id     = $user_auth->id;
+        $user_type   = $user_auth->user_type->name;
 
         if(empty($args['property_id'])){
 
-            $property = Property::create(['property_key'     => !empty($args['property_key'])? $args['property_key']:null,
-                                          'property_type_id' => !empty($args['property_type'])? $this->getKeyId(PropertyType::Class,'name',$args['property_type']):null,
-                                          'user_id'          => $user_id,  
-                                          'bulding_type_id'  => !empty($args['bulding_type_id'])? $args['bulding_type_id']:null,
-                                          'latitude'         => !empty($args['latitude'])? $args['latitude']:null,
-                                          'longitude'        => !empty($args['longitude'])? $args['longitude']:null,
-                                          'address'          => !empty($args['address'])? $args['address']:null,
-                                          'postal_code'      => !empty($args['postal_code'])? $args['postal_code']:null,
-                                          'property_state'   => !empty($args['property_state'])? $args['property_state']:null,
-                                          'email'            => ( $user_auth->user_type->name == 'agency' && !empty($args['email']))?  $args['email'] : null,
-                                          'is_save'          => true
+            $property = Property::create(['property_key'       => !empty($args['property_key'])? $args['property_key']:null,
+                                          'property_type_id'   => !empty($args['property_type'])? $this->getKeyId(PropertyType::Class,'name',$args['property_type']):null,
+                                          'user_id'            => $user_id,  
+                                          'bulding_type_id'    => !empty($args['bulding_type_id'])? $args['bulding_type_id']:null,
+                                          'latitude'           => !empty($args['latitude'])? $args['latitude']:null,
+                                          'longitude'          => !empty($args['longitude'])? $args['longitude']:null,
+                                          'address'            => !empty($args['address'])? $args['address']:null,
+                                          'postal_code'        => !empty($args['postal_code'])? $args['postal_code']:null,
+                                          'property_state'     => !empty($args['property_state'])? $args['property_state']:null,
+                                          'email'              => ( $user_type == 'agency' && !empty($args['email']))?  $args['email'] : null,
+                                          'is_address_precise' => ( $user_type == 'agency' && isset($args['is_address_precise'])) ?  $args['is_address_precise'] : true,
+                                          'is_save'            => true
                                          ]); 
     
             if($property){                             
@@ -74,17 +76,18 @@ class SaveProperty
 
             if($property){
                 $property->update([
-                    'property_key'     => !empty($args['property_key'])? $args['property_key']:null,
-                    'property_type_id' => !empty($args['property_type'])? $this->getKeyId(PropertyType::Class,'name',$args['property_type']):null,
-                    'user_id'          => $user_id,  
-                    'bulding_type_id'  => !empty($args['bulding_type_id'])? $args['bulding_type_id']:null,
-                    'latitude'         => !empty($args['latitude'])? $args['latitude']:null,
-                    'longitude'        => !empty($args['longitude'])? $args['longitude']:null,
-                    'address'          => !empty($args['address'])? $args['address']:null,
-                    'postal_code'      => !empty($args['postal_code'])? $args['postal_code']:null,
-                    'property_state'   => !empty($args['property_state'])? $args['property_state']:null,
-                    'email'            => ( $user_auth->user_type->name == 'agency' && !empty($args['email']))?  $args['email'] : null,
-                    'is_save'          => true
+                    'property_key'       => !empty($args['property_key'])? $args['property_key']:null,
+                    'property_type_id'   => !empty($args['property_type'])? $this->getKeyId(PropertyType::Class,'name',$args['property_type']):null,
+                    'user_id'            => $user_id,  
+                    'bulding_type_id'    => !empty($args['bulding_type_id'])? $args['bulding_type_id']:null,
+                    'latitude'           => !empty($args['latitude'])? $args['latitude']:null,
+                    'longitude'          => !empty($args['longitude'])? $args['longitude']:null,
+                    'address'            => !empty($args['address'])? $args['address']:null,
+                    'postal_code'        => !empty($args['postal_code'])? $args['postal_code']:null,
+                    'property_state'     => !empty($args['property_state'])? $args['property_state']:null,
+                    'email'              => ( $user_type == 'agency' && !empty($args['email']))?  $args['email'] : null,
+                    'is_address_precise' => ( $user_type == 'agency' && isset($args['is_address_precise'])) ?  $args['is_address_precise'] : true,
+                    'is_save'            => true
                 ]);
 
             }
