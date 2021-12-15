@@ -401,6 +401,7 @@ input ImageAndType{
 input PropertyFilterValue{
     filter: String!
     value: String
+    deal_type: DealTypeEnum
 }
 input OrderBy{
     field: String!
@@ -640,6 +641,7 @@ type PriceFilterType{
 type PropertyFilterValueType{
     filter: String!
     value: String
+    deal_type: DealTypeEnum
 }
 
 type NotificationUsersProperties{
@@ -676,6 +678,11 @@ enum IsPublicStatusEnum {
   under_review @enum(value: under_review)
   published @enum(value: published)
   rejected @enum(value: rejected)
+}
+
+enum DealTypeEnum {
+  sell @enum(value: sell)
+  rent @enum(value: rent)
 }
 
 #ADMIN

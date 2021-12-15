@@ -8,7 +8,7 @@ class Filter extends Model
 {
     public $timestamps = false;
     protected $table = "filters";
-    protected $fillable = ['name','filter_group_id'];
+    protected $fillable = ['name','filter_group_id','deal_type'];
 
     public function filters_values(){
         return $this->hasMany('App\FiltersValue','filter_id','id');
@@ -21,6 +21,6 @@ class Filter extends Model
     }
     public function filter_group(){
         return $this->belongsTo('App\FilterGroup','filter_group_id','id');
-    }     
+    }
     
 }

@@ -231,7 +231,14 @@ class CreateProperty
         if($property_filter_values){
            foreach($property_filter_values as $property_filter_value){
                
-               $filter_id = $this->getKeyId(Filter::Class,'name',$property_filter_value['filter']);
+               $deal_type = !empty($property_filter_value['deal_type']) ? $property_filter_value['deal_type'] : null;
+               $filter = Filter::where('name', $property_filter_value['filter'])
+                                 ->where('deal_type',  $deal_type)
+                                 ->first();
+               if($filter){
+                    $filter_id = $filter->id;
+                    FiltersValue::where('filter_id',$filter_id)->where('property_id',$property_id)->update(['value' => $property_filter_value['value']]);
+               }                  
                FiltersValue::where('filter_id',$filter_id)->where('property_id',$property_id)->update(['value' => $property_filter_value['value']]);
            }
         }

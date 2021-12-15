@@ -13,9 +13,9 @@ class DealTypeSeeder extends Seeder
     public function run()
     {
         $items = [          
-            ['name' => 'sale'],  
-            ['name' => 'monthly_rental_fee'],
-            ['name' => 'daily_rental_fee'],
+            ['name' => 'sale'],                //1
+            ['name' => 'monthly_rental_fee'],  //2
+            ['name' => 'daily_rental_fee'],    //3
         ];
     
         foreach ($items as $item) {
