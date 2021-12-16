@@ -115,14 +115,36 @@ class AdminProperties
         if(!empty($args['bulding_type_id'])){
             $propertyClass=$propertyClass->where('bulding_type_id',$args['bulding_type_id']);
         }
+        /*search by deal type*/
+        if(!empty($args['deal_types'])){
+            $deal_types=$args['deal_types'];
+            $propertyClass = $propertyClass->whereHas('deal_types' , function ($query) use ($deal_types){
+               $query->whereIn('name',$deal_types);
+            });
+        }
+
         /*search by filters value*/
         if(!empty($args['filters'])){
+            if(empty($args['deal_types'])||count($args['deal_types'])>1){
+                $filterDealTypes = ['sell', 'rent'];
+             } elseif(!empty($args['deal_types'][0])&&$args['deal_types'][0]=='sale') {
+                $filterDealTypes = ['sell'];
+             } elseif(!empty($args['deal_types'][0])&&($args['deal_types'][0]=='monthly_rental_fee'||$args['deal_types'][0]=='daily_rental_fee')){
+                $filterDealTypes = ['rent'];
+             }
+
+
             $filters = $args['filters'];
             foreach($filters as $filter){
-                $filter_id = $this->getKeyId(Filter::Class,'name',$filter['filter']);
-                $propertyClass=$propertyClass->whereHas('filters_values' , function ($query) use ($filter,$filter_id){
-                    $query->where(function ($query) use ($filter,$filter_id) {
-                        $query->where('filter_id',$filter_id);
+                $filter_ids = Filter::where('name',$filter['filter'])
+                ->where(function ($query) use ($filterDealTypes) {
+                             $query->whereIn('deal_type', $filterDealTypes);
+                             $query->orWhereNull('deal_type');
+                 })
+                ->pluck('id');
+                $propertyClass = $propertyClass->whereHas('filters_values' , function ($query) use ($filter,$filter_ids){
+                    $query->where(function ($query) use ($filter,$filter_ids) {
+                        $query->whereIn('filter_id',$filter_ids);
                         $query->where('value',$filter['value']);
                     });
                 });

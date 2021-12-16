@@ -20,3 +20,12 @@ php artisan queue:work
 <!-- https://hackthestuff.com/article/how-to-resize-and-upload-images-in-laravel-8-using-intervention-image -->
 <!--Error:  GD Library extension not available with this PHP installation -->
 sudo apt-get install php-gd
+
+
+<!-- redis socket-->
+<!-- https://www.itsolutionstuff.com/post/real-time-event-broadcasting-with-laravel-6-and-socketioexample.html -->
+<!-- composer require predis/predis -->
+<!-- npm install -g laravel-echo-server -->
+<!-- laravel-echo-server init -->
+<!-- sudo apt install redis-server -->
+<!-- laravel-echo-server start -->

@@ -237,9 +237,9 @@ class CreateProperty
                                  ->first();
                if($filter){
                     $filter_id = $filter->id;
-                    FiltersValue::where('filter_id',$filter_id)->where('property_id',$property_id)->update(['value' => $property_filter_value['value']]);
+                    FiltersValue::where('filter_id',$filter_id)->where('property_id',$property_id)
+                                ->update(['value' => $property_filter_value['value']]);
                }                  
-               FiltersValue::where('filter_id',$filter_id)->where('property_id',$property_id)->update(['value' => $property_filter_value['value']]);
            }
         }
          

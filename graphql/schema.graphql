@@ -357,6 +357,7 @@ input PropertiesPublishedFiltersInput{
       property_type: [String],
       user_type: String,
       area: MinMax,
+      deal_types: [PropertyDealTypesEnum],
       number_of_floors_of_the_building:MinMax,
       apartment_floor:MinMax,
       number_of_rooms:MinMax,
@@ -593,6 +594,7 @@ type FilterGroup{
 type Filter{
     id: ID!
     name: String!
+    deal_type: DealTypeEnum
     filters_values: [FiltersValue!]!
     property_types: [PropertyType!]!
     filter_group_id:ID
@@ -685,6 +687,12 @@ enum DealTypeEnum {
   rent @enum(value: rent)
 }
 
+enum PropertyDealTypesEnum {
+    sale @enum(value: sale)
+    monthly_rental_fee @enum(value: monthly_rental_fee)
+    daily_rental_fee @enum(value: daily_rental_fee)
+}
+  
 #ADMIN
 input AdminUpdateUserProfileInput{
     user_id: Int!
@@ -740,6 +748,7 @@ input AdminPropertiesFiltersInput{
     property_type: String,
     user_type: String,
     area: MinMax,
+    deal_types: [PropertyDealTypesEnum],
     number_of_floors_of_the_building:MinMax,
     apartment_floor:MinMax,
     number_of_rooms:MinMax,
