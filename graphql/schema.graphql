@@ -24,6 +24,8 @@ type Query {
     userSupport(id:Int!, language: String): Support @middleware(checks: ["auth:api","status"]) @SetLanguage
     userSupports(input: UserSupportInput @spread): [Support] @middleware(checks: ["auth:api","status"]) @SetLanguage
 
+    userArchiveProperties(first: Int, page: Int, orderBy:OrderBy, language: String):[Property] @middleware(checks: ["auth:api","status"]) @SetLanguage
+
     # Suggests Price Property
     propertySuggestsPrice(property_id: ID!, checked: Boolean,  first: Int, page: Int, orderBy:OrderBy, language: String): [SuggestsPriceProperty]  @middleware(checks: ["auth:api","status"]) @SetLanguage
     userSuggestsPriceProperty(property_id: ID!, checked: Boolean,  first: Int, page: Int, orderBy:OrderBy, language: String): [SuggestsPriceProperty]  @middleware(checks: ["auth:api","status"]) @SetLanguage
@@ -310,7 +312,8 @@ input CreatePropertyInput{
     property_images_delete_ids: [Int!],
     property_filter_values: [PropertyFilterValue!], 
     translate_descriptions: [TranslateDescriptionInput],
-    email: String
+    email: String,
+    is_bids: Boolean,
     is_address_precise: Boolean
     language: String
 }
@@ -332,6 +335,8 @@ input UpdatePropertyInput{
     property_images_delete_ids: [Int!],
     property_filter_values: [PropertyFilterValue!], 
     translate_descriptions: [TranslateDescriptionInput],
+    is_archive: Boolean
+    is_bids: Boolean,
     language: String
 }
 input SavePropertyInput{
@@ -346,7 +351,9 @@ input SavePropertyInput{
     postal_code: String,
     property_state: String,
     property_images:[Upload],
+    is_archive: Boolean,
     email: String,
+    is_bids: Boolean,
     is_address_precise: Boolean,
     property_filter_values: [PropertyFilterValue], 
     translate_descriptions: [TranslateDescriptionInput],
@@ -554,8 +561,10 @@ type Property{
     is_public_status: String
     is_address_precise: Boolean
     is_save: Boolean
+    is_archive: Boolean
     is_delete: Boolean
     email: String
+    is_bids: Boolean
     view: Int
 }
 
@@ -740,6 +749,7 @@ input UserSupportInput{
 input AdminPropertiesFiltersInput{
     public_status: String,
     is_delete: Boolean,
+    is_archive: Boolean,
     user_is_delete: Boolean,
     user_is_block: Boolean,
     user_id: Int,
@@ -766,6 +776,7 @@ input AdminUpdatePropertyInput{
     public_status: String,
     review: String,
     is_delete: Boolean,
+    is_archive: Boolean,
     property_key: String,
     property_type: String,
     property_deal_types:[PropertyDealTypes!],
@@ -776,6 +787,7 @@ input AdminUpdatePropertyInput{
     postal_code: String,
     property_state: String,
     email: String,
+    is_bids: Boolean,
     is_address_precise: Boolean,
     property_images:[Upload],
     property_images_delete_ids: [Int!],

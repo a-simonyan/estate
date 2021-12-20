@@ -51,7 +51,10 @@ class AdminProperties
                 $query->where('is_block',false);
             });
         }
-
+         /*search by property user_is_block status*/
+        if(isset($args['is_archive'])){
+            $propertyClass = $propertyClass->where('is_archive', $args['is_archive']);
+        }   
         /*search by property public_status*/
         if(!empty($args['public_status'])) {
             $propertyClass = $propertyClass->where('is_public_status', $args['public_status']);

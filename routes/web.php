@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +24,9 @@ Route::get('login/{provider}', 'TestController@redirect');
 Route::get('login/{provider}/callback','TestController@Callback' );
 
 Route::get('/t1', function () {
-    return view('test');
+//    $data = Carbon::parse('2021-12-14 12:40:11')->diffInDays(Carbon::now());
+    $date = Carbon::now();
+    dd($date->addDays(4));
 });
 Route::get('/t2', function () {
     $ipaddress = '';

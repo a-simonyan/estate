@@ -23,7 +23,13 @@ class Property extends Model
                            'is_delete',
                            'email',
                            'is_address_precise',
-                           'view'
+                           'view',
+                           'update_count',
+                           'last_update',
+                           'next_update',
+                           'is_archive',
+                           'is_bids'
+
                         ];
 
 

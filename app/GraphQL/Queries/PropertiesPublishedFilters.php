@@ -23,7 +23,9 @@ class PropertiesPublishedFilters
     public function __invoke($_, array $args)
     {
         $propertyClass = Property::with('filters_values');
-        $propertyClass = $propertyClass->where('is_delete', false)->where('is_public_status','published');
+        $propertyClass = $propertyClass->where('is_delete', false)
+                                       ->where('is_archive', false)
+                                       ->where('is_public_status','published');
 
         $propertyClass = $propertyClass->whereHas('user',function($query){
             $query->where('is_delete',false);

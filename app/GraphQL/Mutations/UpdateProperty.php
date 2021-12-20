@@ -38,7 +38,13 @@ class UpdateProperty
          $property = Property::Find($property_id);                            
 
         if($property&&$property->user->id == $user_id){
-            $array_property = [];   
+            $array_property = [];
+            if(isset($args['is_archive'])){
+                $array_property['is_archive'] = $args['is_archive'];
+                if($args['is_archive'] == false){
+                    $array_property['is_public_status'] = 'under_review';
+                }
+            }   
             if(!empty($args['property_key'])){
                 $array_property['property_key'] = $args['property_key'];
             }
@@ -65,6 +71,9 @@ class UpdateProperty
             }
             if($user_type == 'agency' && !empty($args['email'])){
                 $array_property['email'] = $args['email'];
+            }
+            if($user_type == 'agency' && isset($args['is_bids'])){
+                $array_property['is_bids'] = $args['is_bids'];
             }
             if($user_type == 'agency' && isset($args['is_address_precise'])){
                 $array_property['is_address_precise'] = $args['is_address_precise'];

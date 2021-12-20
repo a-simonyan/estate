@@ -48,6 +48,9 @@ class AdminUpdateProperty
             if(isset($args['is_delete'])){
                 $array_property['is_delete'] = $args['is_delete'];
             }
+            if(isset($args['is_archive'])){
+                $array_property['is_archive'] = $args['is_archive'];
+            }   
             if(!empty($args['property_key'])){
                 $array_property['property_key'] = $args['property_key'];
             }
@@ -74,6 +77,9 @@ class AdminUpdateProperty
             }
             if(!empty($args['email'])){
                 $array_property['email'] = $args['email'];
+            }
+            if(isset($args['is_bids'])){
+                $array_property['is_bids'] = $args['is_bids'];
             }
             if(isset($args['is_address_precise'])){
                 $array_property['is_address_precise'] = $args['is_address_precise'];

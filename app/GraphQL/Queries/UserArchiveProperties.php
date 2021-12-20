@@ -1,9 +1,11 @@
 <?php
 
 namespace App\GraphQL\Queries;
+
+use Auth;
 use App\Property;
 
-class PropertiesPublishedPaginate
+class UserArchiveProperties
 {
     /**
      * @param  null  $_
@@ -11,6 +13,10 @@ class PropertiesPublishedPaginate
      */
     public function __invoke($_, array $args)
     {
+
+        $user_auth   = Auth::user();
+        $user_id     = $user_auth->id;
+
         $first = !empty($args['first']) ? $args['first'] : 10;
         $page  = !empty($args['page']) ? $args['page'] : 1;
 
@@ -23,11 +29,13 @@ class PropertiesPublishedPaginate
             $order = $args['orderBy']['order'];
         };
 
-        $properties = Property::where('is_delete', false)
-                     ->where('is_archive', false)
-                     ->where('is_public_status','published')
-                     ->orderBy($field, $order)->paginate($first,['*'],'page', $page);
+        $properties = Property::where('user_id',$user_id)
+                              ->where('is_delete', false)
+                              ->where('is_archive', true)
+                              ->orderBy($field, $order)
+                              ->paginate($first,['*'],'page', $page);
 
-        return $properties;
+        return $properties;                      
+
     }
 }
