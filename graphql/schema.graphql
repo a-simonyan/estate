@@ -750,6 +750,7 @@ input AdminPropertiesFiltersInput{
     public_status: String,
     is_delete: Boolean,
     is_archive: Boolean,
+    is_save: Boolean,
     user_is_delete: Boolean,
     user_is_block: Boolean,
     user_id: Int,

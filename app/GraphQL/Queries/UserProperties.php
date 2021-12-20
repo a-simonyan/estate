@@ -37,6 +37,7 @@ class UserProperties
 
         $propertyClass = Property::where('user_id',$user_id)
                                  ->where('is_delete', false)
+                                 ->where('is_archive', false)
                                  ->where('is_save', false);
 
          /*search by property type*/

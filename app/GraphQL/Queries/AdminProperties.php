@@ -51,7 +51,13 @@ class AdminProperties
                 $query->where('is_block',false);
             });
         }
-         /*search by property user_is_block status*/
+        /*search by property is_save status*/
+        if(isset($args['is_save'])){
+            $propertyClass = $propertyClass->where('is_save', $args['is_archive']);
+        } else {
+            $propertyClass = $propertyClass->where('is_save', false);
+        }   
+        /*search by property user_is_block status*/
         if(isset($args['is_archive'])){
             $propertyClass = $propertyClass->where('is_archive', $args['is_archive']);
         }   
@@ -181,7 +187,7 @@ class AdminProperties
                            ) + sin( radians(".$place['latitude'].") ) *
                            sin( radians( latitude ) ) )
                        ) AS distance from properties) as properties"))
-                    ->groupBy(DB::raw('id, property_key,property_type_id, user_id, bulding_type_id, latitude, longitude, address, postal_code ,property_state, review, is_public_status, is_save, is_delete, created_at, updated_at, distance'))
+                    ->groupBy(DB::raw('id, property_key,property_type_id, user_id, bulding_type_id, latitude, longitude, address, postal_code ,property_state, review, is_public_status, is_save, is_delete, created_at, updated_at, email, is_address_precise, view, update_count, last_update, next_update, is_archive, is_bids, distance'))
                     ->orderBy("distance")
                     ->get();
 
