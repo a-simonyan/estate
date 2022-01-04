@@ -12,7 +12,7 @@ class PropertiesPublished
      */
     public function __invoke($_, array $args)
     {
-        $field = 'id';
+        $field = 'last_update';
         // ASC or DESC
         $order = 'DESC';
 

@@ -189,6 +189,7 @@ type Mutation {
     propertyImagePosition(images_ids:[Int!]!,language: String): Boolean!  @middleware(checks: ["auth:api","status"]) @SetLanguage
     saveProperty(input: SavePropertyInput @spread):Property!  @middleware(checks: ["auth:api","status"]) @SetLanguage
     addViewCount(id:ID!,language: String): Status @SetLanguage
+    updateTimeProperty(id:ID!,language: String): Status @middleware(checks: ["auth:api","status"]) @SetLanguage
 
     # Suggests Price for Property    
     createSuggestsPriceProperty(property_id:Int!, price: Float!, currency_type_id: Int!, end_time:DateTime , language: String): SuggestsPriceProperty  @middleware(checks: ["auth:api","status"]) @SetLanguage
@@ -558,6 +559,9 @@ type Property{
     filters_values: [FiltersValue]
     translate_descriptions: [TranslateDescription]
     review: String
+    update_count:Int
+    last_update:DateTime
+    next_update:DateTime
     is_public_status: String
     is_address_precise: Boolean
     is_save: Boolean

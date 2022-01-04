@@ -14,7 +14,7 @@ class PropertiesPublishedPaginate
         $first = !empty($args['first']) ? $args['first'] : 10;
         $page  = !empty($args['page']) ? $args['page'] : 1;
 
-        $field = 'id';
+        $field = 'last_update';
         // ASC or DESC
         $order = 'DESC';
 

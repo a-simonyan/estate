@@ -273,7 +273,7 @@ class SendPropertyPublished implements ShouldQueue
 
               $joinProperties=$joinProperties->merge($propertiesFilters);
            }
-           $properties = $joinProperties->unique('id')->sortBy('created_at');
+           $properties = $joinProperties->unique('id')->sortBy('last_update');
          }
 
 

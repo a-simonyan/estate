@@ -19,6 +19,7 @@ use App\Exceptions\SendException;
 use App\Events\PropertyPublished;
 use App\Http\Traits\GetIdTrait;
 use Image;
+use Carbon\Carbon;
 
 
 class AdminUpdateProperty
@@ -41,6 +42,7 @@ class AdminUpdateProperty
                if($property->is_public_status!="published" && $args['public_status']=="published"){
                   event( new PropertyPublished($property_id) );
                }
+               $array_property['last_update'] = Carbon::now();
             }
             if(!empty($args['review'])){
                 $array_property['review'] = $args['review'];
