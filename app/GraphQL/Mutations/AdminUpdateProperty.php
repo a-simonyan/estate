@@ -42,7 +42,9 @@ class AdminUpdateProperty
                if($property->is_public_status!="published" && $args['public_status']=="published"){
                   event( new PropertyPublished($property_id) );
                }
+               $nextUpdateDaysCount = env('Next_UPDATE_DAYS_COUNT',1);
                $array_property['last_update'] = Carbon::now();
+               $array_property['next_update'] = Carbon::now()->addDays($nextUpdateDaysCount);
             }
             if(!empty($args['review'])){
                 $array_property['review'] = $args['review'];

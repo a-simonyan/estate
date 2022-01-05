@@ -190,6 +190,7 @@ type Mutation {
     saveProperty(input: SavePropertyInput @spread):Property!  @middleware(checks: ["auth:api","status"]) @SetLanguage
     addViewCount(id:ID!,language: String): Status @SetLanguage
     updateTimeProperty(id:ID!,language: String): Status @middleware(checks: ["auth:api","status"]) @SetLanguage
+    canceledProperty(id:ID!,language: String): Status @middleware(checks: ["auth:api","status"]) @SetLanguage
 
     # Suggests Price for Property    
     createSuggestsPriceProperty(property_id:Int!, price: Float!, currency_type_id: Int!, end_time:DateTime , language: String): SuggestsPriceProperty  @middleware(checks: ["auth:api","status"]) @SetLanguage
@@ -693,6 +694,7 @@ enum IsPublicStatusEnum {
   under_review @enum(value: under_review)
   published @enum(value: published)
   rejected @enum(value: rejected)
+  canceled @enum(value: canceled)
 }
 
 enum DealTypeEnum {

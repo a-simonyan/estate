@@ -39,6 +39,11 @@ class UpdateProperty
 
         if($property&&$property->user->id == $user_id){
             $array_property = [];
+
+            if($property->is_public_status=='canceled'){
+                $array_property['is_public_status'] = 'under_review';
+            }
+            
             if(isset($args['is_archive'])){
                 $array_property['is_archive'] = $args['is_archive'];
                 if($args['is_archive'] == false){
