@@ -11,6 +11,7 @@ type Query {
     userProfile(language: String):User @middleware(checks: ["auth:api","status"]) @SetLanguage
     userActiveTime:User @middleware(checks: ["auth:api","status"]) @SetLanguage
     userProperties(is_public_status: [IsPublicStatusEnum],  property_type: [String],  price_order:String, first: Int, page: Int, orderBy:OrderBy, language: String ):[Property] @middleware(checks: ["auth:api","status"]) @SetLanguage
+    userProperty(id:ID):Property @middleware(checks: ["auth:api","status"]) @SetLanguage
 
     userSaveProperties(first: Int, page: Int, orderBy:OrderBy, language: String):[Property] @middleware(checks: ["auth:api","status"]) @SetLanguage
     userSavePropertyById(id:Int, language: String):Property  @middleware(checks: ["auth:api","status"]) @SetLanguage
@@ -73,7 +74,7 @@ type Query {
 #    propertiesUnderReview(language: String, orderBy:OrderBy): [Property]  @SetLanguage
 #    propertiesUnderReviewPaginate(first: Int, page: Int, language: String, orderBy:OrderBy ):[Property] @SetLanguage
 
-    property(id: ID @eq,language: String): Property @find @SetLanguage
+    property(id: ID,language: String): Property @SetLanguage
     propertiesPublishedFilters( input: PropertiesPublishedFiltersInput @spread ):[Property] @SetLanguage
     notificationProperties(first: Int, page: Int, orderBy:OrderBy, language: String): [NotificationUsersProperties] @middleware(checks: ["auth:api","status"]) @SetLanguage
 
