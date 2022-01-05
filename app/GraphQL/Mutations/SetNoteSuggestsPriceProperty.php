@@ -5,7 +5,7 @@ namespace App\GraphQL\Mutations;
 use Auth;
 use App\SuggestsPriceProperty;
 
-class DeleteSuggestsPriceProperty
+class SetNoteSuggestsPriceProperty
 {
     /**
      * @param  null  $_
@@ -15,14 +15,13 @@ class DeleteSuggestsPriceProperty
     {
         $user_auth   = Auth::user();
         $user_id     = $user_auth->id;
-        $arrayData   = [];
+
         $suggestsPriceProperty = SuggestsPriceProperty::find($args['id']);
-        if($suggestsPriceProperty->user->id == $user_id || $suggestsPriceProperty->property->user->id == $user_id){
+        if($suggestsPriceProperty->property->user->id == $user_id){
 
-            $suggestsPriceProperty->delete();
-            return ['status' => true ];
+            $suggestsPriceProperty->update(['note' => $args['note']]);
         }
-
-        return ['status' => false ];
+        
+        return $suggestsPriceProperty;
     }
 }

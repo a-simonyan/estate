@@ -31,10 +31,12 @@ class CreateSuggestsPriceProperty
             if($suggestsPriceProperty->property->email){
                event( new SendMailSuggestsPrice($suggestsPriceProperty) );
             }
+
+            return  $suggestsPriceProperty;
         }
 
 
-        return  $suggestsPriceProperty;                 
+        return  null;                 
 
 
     }

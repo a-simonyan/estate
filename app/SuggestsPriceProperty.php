@@ -14,7 +14,7 @@ class SuggestsPriceProperty extends Model
                           'currency_type_id',
                           'end_time',
                           'is_checked',
-                          'is_delete' 
+                          'note'
                          ];
     protected $with = [
        'user',

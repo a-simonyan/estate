@@ -28,8 +28,7 @@ class PropertySuggestsPrice
             $order = $args['orderBy']['order'];
         };
    
-        $suggestsPriceProperty = SuggestsPriceProperty::where('is_delete', false)
-                                                      ->where('property_id', $args['property_id']);
+        $suggestsPriceProperty = SuggestsPriceProperty::where('property_id', $args['property_id']);
                                                      
         if(isset($args['checked'])){
            

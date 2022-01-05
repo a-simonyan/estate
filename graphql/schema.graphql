@@ -77,6 +77,7 @@ type Query {
     property(id: ID,language: String): Property @SetLanguage
     propertiesPublishedFilters( input: PropertiesPublishedFiltersInput @spread ):[Property] @SetLanguage
     notificationProperties(first: Int, page: Int, orderBy:OrderBy, language: String): [NotificationUsersProperties] @middleware(checks: ["auth:api","status"]) @SetLanguage
+    similarProperties(id:ID, language: String): [Property] @SetLanguage
 
 #    propertyImages(orderBy: [OrderByClause!] @orderBy): [PropertyImage] @all
 #    propertyImagesPaginate(orderBy: [OrderByClause!] @orderBy): [PropertyImage] @paginate(defaultCount: 10)
@@ -198,6 +199,7 @@ type Mutation {
     updateSuggestsPriceProperty(id:Int!, property_id:Int, price: Float, currency_type_id: Int, end_time:DateTime , language: String): SuggestsPriceProperty  @middleware(checks: ["auth:api","status"]) @SetLanguage
     deleteSuggestsPriceProperty(id:ID!, language: String): Status  @middleware(checks: ["auth:api","status"]) @SetLanguage
     SetCheckedSuggestsPriceProperty(id:Int!, checked:Boolean!): SuggestsPriceProperty  @middleware(checks: ["auth:api","status"]) @SetLanguage
+    setNoteSuggestsPriceProperty(id:ID!, note:String, language: String): SuggestsPriceProperty  @middleware(checks: ["auth:api","status"]) @SetLanguage
 
 #    createPropertyDeal( property_id: Int!, deal_type_id: Int!, price: Float!, currency_type_id: Int!): PropertyDeal! @create
 #    updatePropertyDeal(id:ID!,property_id: Int!, deal_type_id: Int!, price: Float!, currency_type_id: Int!): PropertyDeal! @update
@@ -676,7 +678,7 @@ type SuggestsPriceProperty{
      price: Float!
      currency_type: CurrencyType
      is_checked: Boolean
-     is_delete: Boolean
+     note: String
      end_time: DateTime
      created_at: DateTime
      updated_at: DateTime

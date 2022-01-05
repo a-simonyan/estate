@@ -29,8 +29,7 @@ class UserSuggestsPriceProperty
         };
 
    
-        $suggestsPriceProperty = SuggestsPriceProperty::where('is_delete', false)
-                                                      ->where('user_id',$user_id)
+        $suggestsPriceProperty = SuggestsPriceProperty::where('user_id',$user_id)
                                                       ->where('property_id', $args['property_id']);
         if(isset($args['checked'])){
             $suggestsPriceProperty->where('is_checked', $args['checked']);
