@@ -20,6 +20,9 @@ use App\Events\PropertyPublished;
 use App\Http\Traits\GetIdTrait;
 use Image;
 use Carbon\Carbon;
+use App\NotificationUsersProperties;
+use App\UserFavoriteProperty;
+
 
 
 class AdminUpdateProperty
@@ -51,6 +54,10 @@ class AdminUpdateProperty
             }
             if(isset($args['is_delete'])){
                 $array_property['is_delete'] = $args['is_delete'];
+
+                if($args['is_delete']){
+                    $this->deletePropertyAllConnection($property_id);
+                }
             }
             if(isset($args['is_archive'])){
                 $array_property['is_archive'] = $args['is_archive'];
@@ -255,6 +262,12 @@ class AdminUpdateProperty
 
     }
 
+    public function deletePropertyAllConnection($property_id){
+        if($property_id){
+            NotificationUsersProperties::where('property_id',$property_id)->delete();
+            UserFavoriteProperty::where('property_id',$property_id)->delete();
+        }
+    }
 
 
 

@@ -232,6 +232,7 @@ type Mutation {
     # ADMIN
     adminUpdateUserProfile(input: AdminUpdateUserProfileInput @spread): User! @UpdateUserProfileValidation @middleware(checks: ["auth:api","admin"])  @SetLanguage
     adminUpdateProperty(input: AdminUpdatePropertyInput @spread): Property @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    adminCreateProperty(input: AdminCreatePropertyInput @spread): Property @middleware(checks: ["auth:api","admin"])  @SetLanguage
     
     adminSupport(id:Int!, title:String, body:String!, is_support_status:String): Status @middleware(checks: ["auth:api","admin"])  @SetLanguage
     adminUpdateSupport(id:Int!, is_support_status:String): Status @middleware(checks: ["auth:api","admin"])  @SetLanguage
@@ -454,11 +455,11 @@ type UserType{
 }
 type User {
     id: ID!
-    full_name: String! 
+    full_name: String 
     picture: ImageQuality
-    email: String!
-    phones:[Phone!]
-    user_type:UserType! 
+    email: String
+    phones:[Phone]
+    user_type:UserType 
     first_time: Date
     is_admin: Boolean
     is_delete: Boolean
@@ -468,7 +469,8 @@ type User {
     block_end: DateTime
     last_active_time: DateTime
     provider: String
-    email_verified_at: DateTime
+    email_verified_at: DateTime,
+    login_phone: String
     created_at: DateTime
 }
 
@@ -730,6 +732,26 @@ input AdminUpdateUserProfileInput{
     delete_phone: [Int!]
     language: String
 }
+input AdminCreatePropertyInput{
+    email: String
+    phone: String
+    password: String
+    password_confirmation: String
+    property_key: String,
+    property_type: String!,
+    property_deal_types:[PropertyDealTypes!]!,
+    bulding_type_id: Int,
+    latitude: Float!,
+    longitude: Float!,
+    address: String!,
+    postal_code: String,
+    property_state: String,
+    property_images:[Upload],
+    property_filter_values: [PropertyFilterValue!], 
+    translate_descriptions: [TranslateDescriptionInput],
+    language: String
+}
+
 input AdminUserInput{
     user_type: String,
     user_id: Int,

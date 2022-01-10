@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use App\Exceptions\SendException;
 use App\NotificationUsersProperties;
+use App\UserFavoriteProperty;
 
 
 
@@ -27,7 +28,7 @@ class DeleteProperty
         if($user_auth->id == $property->user_id){
         
             $property->update(['is_delete'=>true]);
-            NotificationUsersProperties::where('property_id',$property_id)->delete();
+            $this->deletePropertyAllConnection($property_id);
 
             return $property;
 
@@ -37,5 +38,10 @@ class DeleteProperty
                 __('messages.not_have_permission')
               );
         }
+    }
+
+    public function deletePropertyAllConnection($property_id){
+        NotificationUsersProperties::where('property_id',$property_id)->delete();
+        UserFavoriteProperty::where('property_id',$property_id)->delete();
     }
 }

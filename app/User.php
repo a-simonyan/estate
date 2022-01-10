@@ -41,7 +41,8 @@ class User extends Authenticatable implements MustVerifyEmail
      'reason',
      'block_start',
      'block_end',
-     'last_active_time'
+     'last_active_time',
+     'login_phone'
     ];
 
     /**
@@ -62,6 +63,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    public function findForPassport($username) {
+        return $this->orWhere('email', $username)->orWhere('login_phone',$username)->first();
+    }
 
     public function sendEmailVerificationNotification()
     {
