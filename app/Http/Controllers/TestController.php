@@ -15,6 +15,7 @@ use App\PropertyImage;
 use App\Http\Traits\GetIdTrait;
 use App\CurrencyType;
 use App\SaveUserFilter;
+use Image;
 
 use Laravel\Socialite\Facades\Socialite;
 
@@ -27,10 +28,42 @@ class TestController extends Controller
 
     public function test(Request $request){
         
-        $saveUserFilter = SaveUserFilter::get()->first();
-        $json_p = json_decode($saveUserFilter->properties_filters,true);
-        
-        dd($json_p['price_filters'][0]['min']);
+        $picture = $request->picture;
+        $logo = $request->logo;
+
+        $fileName_img ='picture'.Str::random(3).time().'.'.$picture->getClientOriginalExtension();
+        while(file_exists(storage_path('app/public/test/'.$fileName_img))){
+            $fileName_img = Str::random(3).time().'.'.$picture->getClientOriginalExtension();
+        };
+
+        $picture->storeAs('public/test',$fileName_img);
+
+        $fileName_logo ='picture'.Str::random(3).time().'.'.$logo->getClientOriginalExtension();
+        while(file_exists(storage_path('app/public/test/'.$fileName_logo))){
+            $fileName_logo = 'logo'.Str::random(3).time().'.'.$logo->getClientOriginalExtension();
+        };
+
+        $logo->storeAs('public/test',$fileName_logo);
+
+        // $image = Image::make(storage_path('app/public/test/'.$fileName_logo));
+
+        // $image->resize(null, 300, function($constraint) {
+        //     $constraint->aspectRatio();
+        // });
+
+        // unlink(storage_path('app/public/test/'.$fileName_logo));
+        // $image->save(storage_path('app/public/test/'.$fileName_logo));
+
+
+        $img = Image::make(storage_path('app/public/test/'.$fileName_img));
+   
+        /* insert watermark at bottom-right corner with 10px offset */
+        $img->insert(storage_path('app/public/test/'.$fileName_logo), 'center');
+       
+        $new_image = 'new_'.$fileName_img;
+        $img->save(storage_path('app/public/test/'.$new_image)); 
+       
+        return response()->json(["image" => url('storage/test/'.$new_image)]);
 
     }
 

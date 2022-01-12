@@ -15,6 +15,10 @@ class SimilarProperties
     {
         $property_id = $args['id'];
         $property = Property::Find($property_id); 
+        $first = !empty($args['first']) ? $args['first'] : 10;
+        $page  = !empty($args['page']) ? $args['page'] : 1;
+
+
         $radius = 10;
 
         if($property){
@@ -39,7 +43,7 @@ class SimilarProperties
             ->having("distance", "<", $radius)
             ->orderBy("distance");
     
-            return $propertyClass->get();
+            return $propertyClass->paginate($first,['*'],'page', $page);;
         }
 
         return null;

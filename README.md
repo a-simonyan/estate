@@ -14,6 +14,8 @@ php artisan config:clear
 php artisan storage:link
 php artisan serve
 php artisan queue:work
+<!-- php artisan schedule:run -->
+* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
 
 <!-- resize images -->
 <!-- composer require intervention/image -->
@@ -29,3 +31,10 @@ sudo apt-get install php-gd
 <!-- laravel-echo-server init -->
 <!-- sudo apt install redis-server -->
 <!-- laravel-echo-server start -->
+
+
+<!-- php artisan schedule:run
+You can schedule it writing your command using the crontab editor:
+crontab -e
+To see your scheduled commands run:
+crontab -l -->

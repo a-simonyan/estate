@@ -17,7 +17,7 @@ use Carbon\Carbon;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/test','TestController@test');
+// Route::get('/test','TestController@test');
 Route::get('/json','TestController@json');
 
 Route::get('login/{provider}', 'TestController@redirect');

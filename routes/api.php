@@ -18,6 +18,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/test','TestController@test');
+Route::post('/test','TestController@test');
 Route::get('/json','TestController@json');
 Route::post('/image','TestController@image');
