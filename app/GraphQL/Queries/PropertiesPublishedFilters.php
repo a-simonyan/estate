@@ -130,11 +130,11 @@ class PropertiesPublishedFilters
             $first = !empty($args['paginate']['first']) ? $args['paginate']['first'] : 10;
             $page  = !empty($args['paginate']['page']) ? $args['paginate']['page'] : 1;
 
-            return $propertyClass->orderBy('last_update', 'DESC')->paginate($first,['*'],'page', $page);
+            return $propertyClass->orderBy('is_top', 'DESC')->orderBy('last_update', 'DESC')->paginate($first,['*'],'page', $page);
 
         }
        /* order by created date*/
-       $properties = $propertyClass->orderBy('last_update', 'DESC')->get();
+       $properties = $propertyClass->orderBy('is_top', 'DESC')->orderBy('last_update', 'DESC')->get();
        /*search by place*/
         if(!empty($args['place'])){
             $places = $args['place'];

@@ -193,6 +193,7 @@ type Mutation {
     addViewCount(id:ID!,language: String): Status @SetLanguage
     updateTimeProperty(id:ID!,language: String): Status @middleware(checks: ["auth:api","status"]) @SetLanguage
     canceledProperty(id:ID!,language: String): Status @middleware(checks: ["auth:api","status"]) @SetLanguage
+    setPropertyTop(id:ID!,language: String):Property  @middleware(checks: ["auth:api","status"]) @SetLanguage
 
     # Suggests Price for Property    
     createSuggestsPriceProperty(property_id:Int!, price: Float!, currency_type_id: Int!, end_time:DateTime , language: String): SuggestsPriceProperty  @middleware(checks: ["auth:api","status"]) @SetLanguage
@@ -575,7 +576,10 @@ type Property{
     is_delete: Boolean
     email: String
     is_bids: Boolean
-    view: Int
+    view: Int,
+    is_top: Boolean
+    top_start:DateTime
+    top_end:DateTime
 }
 
 type Status{

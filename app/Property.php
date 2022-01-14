@@ -28,7 +28,10 @@ class Property extends Model
                            'last_update',
                            'next_update',
                            'is_archive',
-                           'is_bids'
+                           'is_bids',
+                           'is_top',
+                           'top_start',
+                           'top_end'
 
                         ];
 
