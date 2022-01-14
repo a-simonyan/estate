@@ -24,8 +24,7 @@ Route::get('login/{provider}', 'TestController@redirect');
 Route::get('login/{provider}/callback','TestController@Callback' );
 
 Route::get('/t1', function () {
-      $str = utf8_encode("Միհրան Բալդրյան");
-      dd($str);
+      dd("work");
 });
 Route::get('/t2', function () {
     $ipaddress = '';
