@@ -10,8 +10,7 @@ use App\Notifications\VerifyEmail;
 use App\Notifications\ResetPassword;
 use App\Singleton\RestUrl;
 
-class User extends Authenticatable 
-// implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, Notifiable;
     /**
