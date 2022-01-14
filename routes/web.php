@@ -24,7 +24,7 @@ Route::get('login/{provider}', 'TestController@redirect');
 Route::get('login/{provider}/callback','TestController@Callback' );
 
 Route::get('/t1', function () {
-      dd("work");
+      dd("work 2");
 });
 Route::get('/t2', function () {
     $ipaddress = '';
