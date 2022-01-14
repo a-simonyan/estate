@@ -24,9 +24,8 @@ Route::get('login/{provider}', 'TestController@redirect');
 Route::get('login/{provider}/callback','TestController@Callback' );
 
 Route::get('/t1', function () {
-//    $data = Carbon::parse('2021-12-14 12:40:11')->diffInDays(Carbon::now());
-    $date = Carbon::now();
-    dd($date->addDays(4));
+      $str = utf8_encode("Միհրան Բալդրյան");
+      dd($str);
 });
 Route::get('/t2', function () {
     $ipaddress = '';
