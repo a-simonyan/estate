@@ -117,7 +117,7 @@ type Query {
     #Admin
     adminUsers(input: AdminUserInput @spread) :[User]  @middleware(checks: ["auth:api","admin"])  @SetLanguage
     adminUser(id: ID @eq, language: String) :User @find  @middleware(checks: ["auth:api","admin"])  @SetLanguage
-    adminProperties(input: AdminPropertiesFiltersInput @spread):[Property]  @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    adminProperties(input: AdminPropertiesFiltersInput @spread):PropertiesPaginate  @middleware(checks: ["auth:api","admin"])  @SetLanguage
     adminProperty(id: ID @eq,language: String): Property @find @middleware(checks: ["auth:api","admin"])  @SetLanguage
     adminSupport(id: ID @eq,language: String): Support @find  @middleware(checks: ["auth:api","admin"])  @SetLanguage
     adminSupports(input: AdminSupportInput @spread) :[Support]  @middleware(checks: ["auth:api","admin"])  @SetLanguage
@@ -580,6 +580,11 @@ type Property{
     is_top: Boolean
     top_start:DateTime
     top_end:DateTime
+}
+type PropertiesPaginate{
+   properties: [Property]
+   total: Int
+   lastPage: Int
 }
 
 type Status{

@@ -12,6 +12,8 @@ use DB;
 use App\Http\Traits\GetIdTrait;
 use App\Http\Traits\ChangeCurrencyTrait;
 use App\CurrencyType;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class AdminProperties
 {
@@ -22,6 +24,9 @@ class AdminProperties
      */
     public function __invoke($_, array $args)
     {
+        $total = null;
+        $lastPage = null;
+
         $propertyClass = Property::with('filters_values');
         /*search by property is_delete status*/
         if(isset($args['is_delete'])) {
@@ -165,7 +170,12 @@ class AdminProperties
                 $first = !empty($args['paginate']['first']) ? $args['paginate']['first'] : 10;
                 $page  = !empty($args['paginate']['page']) ? $args['paginate']['page'] : 1;
 
-                return $propertyClass->orderBy('last_update', 'DESC')->paginate($first,['*'],'page', $page);
+                
+                $properties = $propertyClass->orderBy('last_update', 'DESC')->paginate($first,['*'],'page', $page);
+                $total = $properties->total();
+                $lastPage = $properties->lastPage();
+
+                return ['properties' => $properties, 'total' => $total, 'lastPage' => $lastPage];
 
         }
         /* order by created date*/
@@ -187,7 +197,7 @@ class AdminProperties
                            ) + sin( radians(".$place['latitude'].") ) *
                            sin( radians( latitude ) ) )
                        ) AS distance from properties) as properties"))
-                    ->groupBy(DB::raw('id, property_key,property_type_id, user_id, bulding_type_id, latitude, longitude, address, postal_code ,property_state, review, is_public_status, is_save, is_delete, created_at, updated_at, email, is_address_precise, view, update_count, last_update, next_update, is_archive, is_bids, distance'))
+                    ->groupBy(DB::raw('id, property_key,property_type_id, user_id, bulding_type_id, latitude, longitude, address, postal_code ,property_state, review, is_public_status, is_save, is_delete, created_at, updated_at, email, is_address_precise, view, update_count, last_update, next_update, is_archive, is_bids, distance, is_top, top_start, top_end'))
                     ->orderBy("distance")
                     ->get();
 
@@ -327,12 +337,16 @@ class AdminProperties
         if(!empty($args['paginate'])){
             $first = !empty($args['paginate']['first']) ? $args['paginate']['first'] : 10;
             $page  = !empty($args['paginate']['page']) ? $args['paginate']['page'] : 1;
+          
+            $properties = $this->paginate($properties, $first, $page);
+            $total = $properties->total();
+            $lastPage = $properties->lastPage();
 
-            return $properties->forPage($page, $first);
+            return ['properties' => $properties, 'total' => $total, 'lastPage' => $lastPage];
         }
 
 
-        return $properties;
+        return ['properties' => $properties, 'total' => $total, 'lastPage' => $lastPage];
     }
 
 
@@ -363,6 +377,14 @@ class AdminProperties
 
 
         return $propertyClass;
+    }
+
+
+    public function paginate($items, $perPage = 10, $page = null, $options = [])
+    {
+       $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+       $items = $items instanceof Collection ? $items : Collection::make($items);
+       return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 
 
