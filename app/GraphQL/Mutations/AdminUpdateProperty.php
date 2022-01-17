@@ -43,6 +43,7 @@ class AdminUpdateProperty
             if(!empty($args['public_status'])){
                 $array_property['is_public_status'] = $args['public_status'];
                if($property->is_public_status!="published" && $args['public_status']=="published"){
+                  $this->checkSamePlace($property); 
                   event( new PropertyPublished($property_id) );
                }
                $nextUpdateDaysCount = env('Next_UPDATE_DAYS_COUNT',1);
@@ -267,6 +268,22 @@ class AdminUpdateProperty
             NotificationUsersProperties::where('property_id',$property_id)->delete();
             UserFavoriteProperty::where('property_id',$property_id)->delete();
         }
+    }
+
+    public function checkSamePlace(Property $property){
+        $count = Property::where('is_public_status','published')
+                         ->where('is_delete', false)
+                         ->where('is_archive', false)
+                         ->where('is_save', false)
+                         ->where('latitude', $property->latitude)
+                         ->where('longitude', $property->longitude)
+                         ->update(['same_place_group' => $property->latitude.','.$property->longitude]);
+         
+        if($count){
+            $property->update(['same_place_group' => $property->latitude.','.$property->longitude]);
+        } elseif($property->same_place_group){
+            $property->update(['same_place_group' => null]);
+        }        
     }
 
 

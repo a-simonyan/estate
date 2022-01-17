@@ -579,7 +579,8 @@ type Property{
     view: Int,
     is_top: Boolean
     top_start:DateTime
-    top_end:DateTime
+    top_end:DateTime,
+    same_place_group:String
 }
 type PropertiesPaginate{
    properties: [Property]

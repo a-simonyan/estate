@@ -31,7 +31,8 @@ class Property extends Model
                            'is_bids',
                            'is_top',
                            'top_start',
-                           'top_end'
+                           'top_end',
+                           'same_place_group'
 
                         ];
 

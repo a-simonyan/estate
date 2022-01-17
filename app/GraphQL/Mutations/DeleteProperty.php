@@ -1,16 +1,11 @@
 <?php
 
 namespace App\GraphQL\Mutations;
+
 use App\Property;
-use App\PropertyImage;
 use Auth;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
 use App\Exceptions\SendException;
-use App\NotificationUsersProperties;
-use App\UserFavoriteProperty;
-
-
+use App\Events\PropertyDelete;
 
 
 class DeleteProperty
@@ -26,10 +21,9 @@ class DeleteProperty
         $property = Property::find($property_id);
 
         if($user_auth->id == $property->user_id){
-        
             $property->update(['is_delete'=>true]);
-            $this->deletePropertyAllConnection($property_id);
-
+            event( new PropertyDelete($property_id) );
+          
             return $property;
 
         } else {
@@ -40,8 +34,5 @@ class DeleteProperty
         }
     }
 
-    public function deletePropertyAllConnection($property_id){
-        NotificationUsersProperties::where('property_id',$property_id)->delete();
-        UserFavoriteProperty::where('property_id',$property_id)->delete();
-    }
+ 
 }

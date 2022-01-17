@@ -7,7 +7,9 @@ use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 use App\Events\PropertyPublished;
+use App\Events\PropertyDelete;
 use App\Listeners\SendPropertyPublished;
+use App\Listeners\ThingToDoAfterPropertyDelete;
 use App\Events\SendMailSuggestsPrice;
 use App\Listeners\SendMailSuggestsPriceListener;
 
@@ -24,6 +26,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         PropertyPublished::class => [
             SendPropertyPublished::class
+        ],
+        PropertyDelete::class => [
+            ThingToDoAfterPropertyDelete::class
         ],
         SendMailSuggestsPrice::class => [
             SendMailSuggestsPriceListener::class
