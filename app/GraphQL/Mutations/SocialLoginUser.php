@@ -59,6 +59,7 @@ class SocialLoginUser
             $fileName_img = Str::random(10).time().'.jpg';
         };
         Storage::put('public/users/'.$fileName_img, $fileContents);
+        Storage::put('public/users/min/'.$fileName_img, $fileContents);
 
         return $fileName_img;
     }
