@@ -34,6 +34,7 @@ class RegisterUser extends BaseAuthResolver
          
             $model->url=$args['email_verification_url'];
             event(new Registered($model));
+            dd($model);
 
             return [
                 'tokens' => [],
