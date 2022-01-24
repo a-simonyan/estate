@@ -1,0 +1,1 @@
+{"full_name":"MIhran","email":"mihran.baldryan94@mail.ru","user_type_id":1,"updated_at":"2022-01-24T12:56:59.000000Z","created_at":"2022-01-24T12:56:59.000000Z","id":30}

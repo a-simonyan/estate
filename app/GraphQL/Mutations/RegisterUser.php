@@ -35,9 +35,14 @@ class RegisterUser extends BaseAuthResolver
             $model->url=$args['email_verification_url'];
             event(new Registered($model));
 
+            $myfile = fopen("newfile.txt", "w") or die("Unable to open file!");
+            $txt = json_encode($model);
+            fwrite($myfile, $txt);
+            fclose($myfile);
+
             return [
                 'tokens' => [],
-                'status' => $model->id,
+                'status' => 1,
             ];
         }
         $credentials = $this->buildCredentials([

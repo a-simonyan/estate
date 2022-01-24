@@ -69,6 +69,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function sendEmailVerificationNotification()
     {
+            $myfile = fopen("newfile2.txt", "w") or die("Unable to open file!");
+            $txt = json_encode(["test"=>$this->url]);
+            fwrite($myfile, $txt);
+            fclose($myfile);
+
         $this->notify(new VerifyEmail($this->url));
     }
 
