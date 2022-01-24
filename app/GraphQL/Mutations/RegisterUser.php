@@ -34,11 +34,10 @@ class RegisterUser extends BaseAuthResolver
          
             $model->url=$args['email_verification_url'];
             event(new Registered($model));
-            dd(["test"=>"WORK"]);
 
             return [
                 'tokens' => [],
-                'status' => 1,
+                'status' => $model->id,
             ];
         }
         $credentials = $this->buildCredentials([
