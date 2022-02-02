@@ -226,7 +226,7 @@ class AdminUpdateProperty
                 if($filter){
                     $filter_id = $filter->id;
                     FiltersValue::where('filter_id',$filter_id)->where('property_id',$property_id)
-                                ->update(['value' => $property_filter_value['value']]);
+                                ->update(['value' => !empty($property_filter_value['value']) ? $property_filter_value['value'] : NULL ]);
                 }        
             }
         }

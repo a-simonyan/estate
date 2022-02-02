@@ -19,7 +19,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Traits\GetIdTrait;
 use Image;
-
+use UserType;
 
 class AdminCreateProperty
 {
@@ -35,6 +35,7 @@ class AdminCreateProperty
             $arrayData = [];
             $arrayData['password'] = Hash::make($args['password']);
             $arrayData['email_verified_at'] = Carbon::now();
+            $arrayData['user_type_id'] = $this->getKeyId(UserType::Class,'name','individual'); 
             if(!empty($args['email'])){
                 $arrayData['email'] = $args['email'];
             } else {
@@ -191,7 +192,7 @@ class AdminCreateProperty
               if($filter){
                    $filter_id = $filter->id;
                    FiltersValue::where('filter_id',$filter_id)->where('property_id',$property_id)
-                               ->update(['value' => $property_filter_value['value']]);
+                               ->update(['value' => !empty($property_filter_value['value']) ? $property_filter_value['value'] : NULL ]);
               }                  
           }
        }
