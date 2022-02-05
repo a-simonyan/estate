@@ -47,6 +47,8 @@ type Query {
     currencyTypesPaginate: [CurrencyType] @paginate(defaultCount: 10)
     currencyType(id: ID @eq): CurrencyType @find
 
+    getPropertyTypeFilters(property_type:PropertyTypeEnum):[Filter]
+
 #    translations(orderBy: [OrderByClause!] @orderBy): [Translation] @all
 #    translationsPaginate(orderBy: [OrderByClause!] @orderBy): [Translation] @paginate(defaultCount: 10)
 #    translation(id: ID @eq): Translation @find
@@ -564,6 +566,7 @@ type Property{
     property_images:[PropertyImage] 
     property_images_paginat:[PropertyImage] @hasMany(type: "paginator")
     filters_values: [FiltersValue]
+    filters_values_not_null: [FiltersValue]
     translate_descriptions: [TranslateDescription]
     review: String
     update_count:Int
@@ -698,6 +701,12 @@ type SuggestsPriceProperty{
 
 
 
+enum PropertyTypeEnum {
+  apartment @enum(value: apartment)
+  mansion @enum(value: mansion)
+  land_area @enum(value: land_area)
+  commercial_area @enum(value: commercial_area)
+}
 
 enum PropertyStateEnum {
   good @enum(value: good)

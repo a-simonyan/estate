@@ -49,6 +49,9 @@ class Property extends Model
    public function filters_values(){
        return $this->hasMany('App\FiltersValue','property_id','id');
    }
+   public function filters_values_not_null(){
+       return $this->hasMany('App\FiltersValue','property_id','id')->whereNotNull('value');
+   }
    public function property_images(){
        return $this->hasMany('App\PropertyImage','property_id','id')->orderBy('index','asc'); 
    }
