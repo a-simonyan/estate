@@ -73,7 +73,7 @@ $factory->define(Property::class, function(Faker $faker){
     return [
         'property_key'     => $faker->numberBetween($min = 100000, $max = 999999),
         'property_type_id' => $faker->numberBetween($min = 1, $max = 4),
-        'user_id'          => 43,
+        'user_id'          => 1,
         'bulding_type_id'  => $faker->numberBetween($min = 1, $max = 5),
         'latitude'         => $faker->unique()->latitude($min = ($lang * 10000 - rand(0, 1000)) / 10000,
                                                          $max = ($lang * 10000 + rand(0, 1000)) / 10000),
