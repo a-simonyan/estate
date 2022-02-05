@@ -15,18 +15,18 @@ class PropertyImage extends Model
 
    public function getNameAttribute($value)
     {       
+    //   if(is_null($value)){
+    //       return [ 'original' => $value, 'min' => $value ];
+    //   } else {
+    //       return [ 'original' => url('storage/property/'.$value), 'min' => url('storage/property/min/'.$value) ]; 
+    //   }
+      
+      
       if(is_null($value)){
           return [ 'original' => $value, 'min' => $value ];
       } else {
-          return [ 'original' => url('storage/property/'.$value), 'min' => url('storage/property/min/'.$value) ]; 
+          return [ 'original' => $value, 'min' => $value ]; 
       }
-      
-      
-      // if(is_null($value)){
-      //    return $value;
-      //  } else {
-      //    return url('storage/property/'.$value);
-      //  }
     }  
     
 }

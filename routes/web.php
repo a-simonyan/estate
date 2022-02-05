@@ -23,8 +23,9 @@ Route::get('/json','TestController@json');
 Route::get('login/{provider}', 'TestController@redirect');
 Route::get('login/{provider}/callback','TestController@Callback' );
 
-Route::get('/t1', function () {
-      dd("work 2");
+Route::get('/seed', function () {
+    Artisan::call('db:seed');
+    dd("work");
 });
 Route::get('/t2', function () {
     $ipaddress = '';

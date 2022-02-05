@@ -58,12 +58,7 @@ $factory->define(Translation::class, function(Faker $faker){
     ];
 });
 
-// $factory->define(PropertyType::class, function(Faker $faker){
-//     return [
-//         'name' => $faker->unique()->word,
-//         'icon_class' => 'fa fa-home'
-//     ];
-// });
+
 
 $factory->define(BuldingType::class, function(Faker $faker){
     return [
@@ -72,40 +67,39 @@ $factory->define(BuldingType::class, function(Faker $faker){
 });
 
 $factory->define(Property::class, function(Faker $faker){
+    $lang = 40.17759701555847;
+    $long = 44.51264400786771;
+
     return [
         'property_key'     => $faker->numberBetween($min = 100000, $max = 999999),
-        'property_type_id' => 1,
-        'user_id' => $faker->numberBetween($min = 1, $max = 2),
-        'bulding_type_id' => $faker->numberBetween($min = 1, $max = 10),
-        'latitude' => $faker->unique()->latitude($min = -90, $max = 90),
-        'longitude' => $faker->unique()->longitude($min = -180, $max = 180),
-        'address' => $faker->address,
-        'postal_code' => $faker->postcode,
-        'property_state' => $faker->randomElement(['good','average','poor']),
+        'property_type_id' => $faker->numberBetween($min = 1, $max = 4),
+        'user_id'          => 43,
+        'bulding_type_id'  => $faker->numberBetween($min = 1, $max = 5),
+        'latitude'         => $faker->unique()->latitude($min = ($lang * 10000 - rand(0, 1000)) / 10000,
+                                                         $max = ($lang * 10000 + rand(0, 1000)) / 10000),
+        'longitude'        => $faker->unique()->longitude($min = ($long * 10000 - rand(0, 1000)) / 10000,
+                                                          $max = ($long * 10000 + rand(0, 1000)) / 10000),
+        'address'          => $faker->address,
+        'postal_code'      => $faker->postcode,
+        'property_state'   => $faker->randomElement(['good','average','poor']),
+        'last_update'      => now(),
+        'is_public_status' => 'published'
+
     ];
 });
 $factory->define(PropertyDeal::class, function(Faker $faker){
     return [
-        'deal_type_id' => $faker->numberBetween($min = 1, $max = 3),
-        'price' => $faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = 1000)        
+        'deal_type_id'     => $faker->numberBetween($min = 1, $max = 3),
+        'price'            => $faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = 1000),
+        'currency_type_id' => $faker->numberBetween($min = 1, $max = 3),        
     ];
 });
 
-
-
-$factory->define(FiltersValue::class, function(Faker $faker){
-    return [
-        'filter_id' => $faker->numberBetween($min = 1, $max = 10),
-        'property_id' => $faker->numberBetween($min = 1, $max = 4),
-        'value' => $faker->unique()->word,
-    ];
-});
 
 $factory->define(PropertyImage::class, function(Faker $faker){
     static $index = 1; 
     return [
-        'property_id' => $faker->numberBetween($min = 1, $max = 50),
-        'name' => $faker->imageUrl($width = 640, $height = 480),
+        'name'  =>  url('test/test_'.$faker->numberBetween($min = 1, $max = 20).'.jpeg'),
         'index' => $index++
     ];
 });
