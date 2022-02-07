@@ -32,6 +32,7 @@ class CreateProperty
         $user_auth   = Auth::user();
         $user_id     = $user_auth->id;
         $user_type   = $user_auth->user_type->name;
+        $test = $args['address'];
 
         if(empty($args['property_id'])){
 
