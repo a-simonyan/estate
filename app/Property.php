@@ -52,6 +52,11 @@ class Property extends Model
    public function filters_values_not_null(){
        return $this->hasMany('App\FiltersValue','property_id','id')->whereNotNull('value');
    }
+   public function filters_values_speciale(){
+       return $this->hasMany('App\FiltersValue','property_id','id')->whereHas('filter' , function ($query){
+                  $query->whereIn('name',['new_building','area','number_of_floors_of_the_building','apartment_floor','number_of_rooms']);
+               });
+   }
    public function property_images(){
        return $this->hasMany('App\PropertyImage','property_id','id')->orderBy('index','asc'); 
    }

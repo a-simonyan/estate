@@ -567,6 +567,7 @@ type Property{
     property_images_paginat:[PropertyImage] @hasMany(type: "paginator")
     filters_values: [FiltersValue]
     filters_values_not_null: [FiltersValue]
+    filters_values_speciale: [FiltersValue]
     translate_descriptions: [TranslateDescription]
     review: String
     update_count:Int
