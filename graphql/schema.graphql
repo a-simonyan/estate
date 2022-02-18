@@ -546,6 +546,7 @@ type PropertyDeal{
     deal_type:DealType
     property: Property
     price: Float!
+    price_usd: Float
     currency_type: CurrencyType
 }
 type Property{
