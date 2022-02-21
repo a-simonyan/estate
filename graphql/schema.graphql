@@ -292,14 +292,21 @@ input updateUserProfileInput{
 }
 
 input NewPhone{
+    code: String!
     number: String!
     viber: Boolean
     whatsapp: Boolean
     telegram: Boolean
 
 }
+
+input  AttachPhone{
+    attach_phones:[Int]
+    new_phones:[NewPhone]
+}
 input UpdatePhone{
     phone_id: Int
+    code: String!
     number: String!
     viber: Boolean
     whatsapp: Boolean
@@ -322,9 +329,11 @@ input CreatePropertyInput{
     property_filter_values: [PropertyFilterValue!], 
     translate_descriptions: [TranslateDescriptionInput],
     email: String,
+    phone: AttachPhone,
     is_bids: Boolean,
     is_address_precise: Boolean
     language: String
+    
 }
 
 input UpdatePropertyInput{
@@ -339,6 +348,7 @@ input UpdatePropertyInput{
     postal_code: String,
     property_state: String,
     email: String
+    phone: AttachPhone,
     is_address_precise: Boolean
     property_images:[Upload],
     property_images_delete_ids: [Int!],
@@ -362,6 +372,7 @@ input SavePropertyInput{
     property_images:[Upload],
     is_archive: Boolean,
     email: String,
+    phone: AttachPhone,
     is_bids: Boolean,
     is_address_precise: Boolean,
     property_filter_values: [PropertyFilterValue], 
@@ -444,6 +455,7 @@ type PaginatorInfo {
     }
 type Phone{
     id: ID!
+    code:String
     number:String!
     user_id:ID!
     user: User!
@@ -549,6 +561,16 @@ type PropertyDeal{
     price_usd: Float
     currency_type: CurrencyType
 }
+type PropertyAttachPhone{
+    id: ID
+    code: String
+    number:String
+    property_id:ID
+    property: Property
+    viber: Boolean
+    whatsapp: Boolean
+    telegram: Boolean
+}
 type Property{
     id: ID!
     property_key: String
@@ -580,6 +602,7 @@ type Property{
     is_archive: Boolean
     is_delete: Boolean
     email: String
+    property_attach_phones: [PropertyAttachPhone]
     is_bids: Boolean
     view: Int,
     is_top: Boolean
@@ -770,6 +793,7 @@ input AdminCreatePropertyInput{
     property_images:[Upload],
     property_filter_values: [PropertyFilterValue!], 
     translate_descriptions: [TranslateDescriptionInput],
+    phone: AttachPhone,
     language: String
 }
 
@@ -840,6 +864,7 @@ input AdminUpdatePropertyInput{
     postal_code: String,
     property_state: String,
     email: String,
+    phone: AttachPhone,
     is_bids: Boolean,
     is_address_precise: Boolean,
     property_images:[Upload],

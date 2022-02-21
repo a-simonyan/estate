@@ -10,6 +10,7 @@ use App\FiltersValue;
 use App\TranslateDescription;
 use App\PropertyDeal;
 use App\Language;
+use App\PropertyAttachPhone;
 use Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -60,6 +61,9 @@ class CreateProperty
                  if(!empty($args['property_images'])){
                    $this->savePropertyImages($property_id,$args['property_images']);
                  }
+                 if(!empty($args['phone'])){
+                    $this->savePhone($user_auth,$property_id,$args['phone']);
+                  }
                  if(!empty($args['property_filter_values'])){
                    $this->savePropertyFilterValues($property_id, $this->getKeyId(PropertyType::Class,'name',$args['property_type']), $args['property_filter_values']);
                  }
@@ -104,6 +108,10 @@ class CreateProperty
             if(!empty($args['property_images'])){
                 $this->savePropertyImages($property_id,$args['property_images']);
             }
+            if(!empty($args['phone'])){
+                PropertyAttachPhone::where('property_id',$property_id)->delete();
+                $this->savePhone($user_auth,$property_id,$args['phone']);
+              }
             if(!empty($args['property_filter_values'])){
                 FiltersValue::where('property_id',$property_id)->delete();
                 $this->savePropertyFilterValues($property_id, $this->getKeyId(PropertyType::Class,'name',$args['property_type']), $args['property_filter_values']);
@@ -273,6 +281,43 @@ class CreateProperty
 
          return true;
 
+
+    }
+
+    public function savePhone($user_auth,$property_id,$phone){
+         if(!empty($phone['attach_phones'])){
+
+             foreach($phone['attach_phones'] as $key){
+                $userPhones = $user_auth->phones;
+                $attachPhone = $userPhones->where('id',$key)->first();
+                if($attachPhone){
+                    PropertyAttachPhone::create([
+                        'code'        => $attachPhone->code,
+                        'number'      => $attachPhone->number,
+                        'viber'       => $attachPhone->viber,
+                        'whatsapp'    => $attachPhone->whatsapp,
+                        'telegram'    => $attachPhone->telegram,
+                        'property_id' => $property_id
+                    ]);
+                }
+             }
+         }
+         if(!empty($phone['new_phones'])){
+            foreach($phone['new_phones'] as $newPhone){
+                PropertyAttachPhone::create([
+                    'code'        => $newPhone['code'],
+                    'number'      => $newPhone['number'],
+                    'viber'       => !empty($newPhone['viber']) ? $newPhone['viber'] : false,
+                    'whatsapp'    => !empty($newPhone['whatsapp']) ? $newPhone['whatsapp'] : false,
+                    'telegram'    => !empty($newPhone['telegram']) ? $newPhone['telegram'] : false,
+                    'property_id' => $property_id
+                ]);
+            }
+
+
+         }
+
+         return true;
 
     }
 

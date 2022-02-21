@@ -120,8 +120,9 @@ class UpdateUserProfile
     public function savePhone($phones, $user_id){
         foreach($phones as $phone){
             Phone::create([
+                'code'     => $phone['code'],
                 'number'   => $phone['number'],
-                'user_id'  =>  $user_id,
+                'user_id'  => $user_id,
                 'viber'    => !empty($phone['viber']) ? $phone['viber'] : false,
                 'whatsapp' => !empty($phone['whatsapp']) ? $phone['whatsapp'] : false,
                 'telegram' => !empty($phone['telegram']) ? $phone['telegram'] : false,
@@ -137,6 +138,7 @@ class UpdateUserProfile
 
             if($get_phone->user->id == $user_id){
                 $get_phone->update([
+                    'code'     => $phone['code'],
                     'number'   => $phone['number'],
                     'viber'    => !empty($phone['viber']) ? $phone['viber'] : false,
                     'whatsapp' => !empty($phone['whatsapp']) ? $phone['whatsapp'] : false,

@@ -28,24 +28,32 @@ Route::get('/seed', function () {
     dd("work");
 });
 Route::get('/t2', function () {
-    $ipaddress = '';
-    if (isset($_SERVER['HTTP_CLIENT_IP']))
-        $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
-    else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-        $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-    else if(isset($_SERVER['HTTP_X_FORWARDED']))
-        $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
-    else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
-        $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
-    else if(isset($_SERVER['HTTP_FORWARDED']))
-        $ipaddress = $_SERVER['HTTP_FORWARDED'];
-    else if(isset($_SERVER['REMOTE_ADDR']))
-        $ipaddress = $_SERVER['REMOTE_ADDR'];
-    else
-        $ipaddress = 'UNKNOWN';    
+//     $ipaddress = '';
+//     if (isset($_SERVER['HTTP_CLIENT_IP']))
+//         $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+//     else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+//         $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+//     else if(isset($_SERVER['HTTP_X_FORWARDED']))
+//         $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+//     else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
+//         $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+//     else if(isset($_SERVER['HTTP_FORWARDED']))
+//         $ipaddress = $_SERVER['HTTP_FORWARDED'];
+//     else if(isset($_SERVER['REMOTE_ADDR']))
+//         $ipaddress = $_SERVER['REMOTE_ADDR'];
+//     else
+//         $ipaddress = 'UNKNOWN';    
    
-dd($ipaddress);
+// dd($ipaddress);
     // dd(Session::get('provider'));
 
     // return view('test2');
+    $phones = App\User::find(43)->phones->where('id',10)->first();
+//     if(in_array(3,$phones)){
+// dd(true);
+//     } else {
+//        dd(false);
+//     }
+
+return response()->json(['data'=>$phones ]); 
 });

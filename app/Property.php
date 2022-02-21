@@ -82,6 +82,9 @@ class Property extends Model
    public function suggests_price_property(){
      return $this->hasMany('App\SuggestsPriceProperty','property_id','id');
    }
+   public function property_attach_phones(){
+     return $this->hasMany('App\PropertyAttachPhone','property_id','id');
+   }
 
 
 }
