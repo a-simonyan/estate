@@ -14,7 +14,7 @@ class AddCodeToPhonesTable extends Migration
     public function up()
     {
         Schema::table('phones', function (Blueprint $table) {
-            $table->string('code');
+            $table->string('code')->nullable();
         });
     }
 
