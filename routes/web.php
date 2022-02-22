@@ -48,7 +48,7 @@ Route::get('/t2', function () {
     // dd(Session::get('provider'));
 
     // return view('test2');
-    $phones = App\User::find(43)->phones->where('id',10)->first();
+    $phones = App\User::find(null);
 //     if(in_array(3,$phones)){
 // dd(true);
 //     } else {

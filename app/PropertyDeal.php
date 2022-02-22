@@ -32,4 +32,24 @@ class PropertyDeal extends Model
             return round(($this->price*$currencyType->rate)/$usd->rate, 2);
           }
     }
+    public function getPriceSelAttribute(){
+        $currencyId = app('RestCurrency')->currency_id;
+
+        $selCurrencyType = CurrencyType::find($currencyId);
+
+        if(!$selCurrencyType){
+            $selCurrencyType =  CurrencyType::where('name','USD')->first();
+        } 
+
+        if($currencyId == $this->currency_type_id){
+            return ['currency_type' => $selCurrencyType ,'price' => $this->price];
+         } else {
+          
+            $currencyType = CurrencyType::where('id',$this->currency_type_id)->first(['rate']);
+
+            return ['currency_type' =>  $selCurrencyType ,'price' => round(($this->price*$currencyType->rate)/$selCurrencyType->rate, 2)];
+        }
+        
+
+    }
 }

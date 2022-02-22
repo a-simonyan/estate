@@ -76,8 +76,8 @@ type Query {
 #    propertiesUnderReview(language: String, orderBy:OrderBy): [Property]  @SetLanguage
 #    propertiesUnderReviewPaginate(first: Int, page: Int, language: String, orderBy:OrderBy ):[Property] @SetLanguage
 
-    property(id: ID,language: String): Property @SetLanguage
-    propertiesPublishedFilters( input: PropertiesPublishedFiltersInput @spread ):[Property] @SetLanguage
+    property(id: ID, currency_id:Int, language: String): Property @SetCurrency @SetLanguage 
+    propertiesPublishedFilters( input: PropertiesPublishedFiltersInput @spread ):[Property] @SetCurrency @SetLanguage
     notificationProperties(first: Int, page: Int, orderBy:OrderBy, language: String): [NotificationUsersProperties] @middleware(checks: ["auth:api","status"]) @SetLanguage
     similarProperties(id:ID, language: String): [Property] @SetLanguage
 
@@ -120,7 +120,7 @@ type Query {
     adminUsers(input: AdminUserInput @spread) :[User]  @middleware(checks: ["auth:api","admin"])  @SetLanguage
     adminUser(id: ID @eq, language: String) :User @find  @middleware(checks: ["auth:api","admin"])  @SetLanguage
     adminProperties(input: AdminPropertiesFiltersInput @spread):PropertiesPaginate  @middleware(checks: ["auth:api","admin"])  @SetLanguage
-    adminProperty(id: ID @eq,language: String): Property @find @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    adminProperty(id: ID @eq, currency_id:Int, language: String): Property @find @middleware(checks: ["auth:api","admin"])  @SetCurrency  @SetLanguage
     adminSupport(id: ID @eq,language: String): Support @find  @middleware(checks: ["auth:api","admin"])  @SetLanguage
     adminSupports(input: AdminSupportInput @spread) :[Support]  @middleware(checks: ["auth:api","admin"])  @SetLanguage
 
@@ -394,6 +394,7 @@ input PropertiesPublishedFiltersInput{
       filters:[PropertyFilterValue],
       price_filters: [PriceFilter],
       price_order:String,
+      currency_id:Int,
       paginate: PaginateInput,
       language: String,
 }
@@ -426,6 +427,7 @@ input ImageAndType{
     type: String!
     image: String!
 }
+
 input PropertyFilterValue{
     filter: String!
     value: String
@@ -553,12 +555,17 @@ type BuldingType{
     name: String!
     properties: [Property!]!
 }
+type PriceSel{
+    currency_type: CurrencyType,
+    price: Float
+} 
 type PropertyDeal{
     id: ID!
     deal_type:DealType
     property: Property
     price: Float!
     price_usd: Float
+    price_sel: PriceSel
     currency_type: CurrencyType
 }
 type PropertyAttachPhone{

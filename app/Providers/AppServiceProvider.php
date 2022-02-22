@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Singleton\RestUrl;
+use App\Singleton\RestCurrency;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,6 +17,9 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton('RestUrl', function ($app) {
             return new RestUrl($app);
+        });
+        $this->app->singleton('RestCurrency', function ($app) {
+            return new RestCurrency($app);
         });
     }
 
