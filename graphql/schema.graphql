@@ -43,6 +43,8 @@ type Query {
     languagesPaginate: [Language] @paginate(defaultCount: 10)
     language(id: ID @eq): Language @find
 
+    spamPoints(language: String):[SpamPoint] @SetLanguage
+
     currencyTypes(orderBy: [OrderByClause!] @orderBy): [CurrencyType]! @all
     currencyTypesPaginate: [CurrencyType] @paginate(defaultCount: 10)
     currencyType(id: ID @eq): CurrencyType @find
@@ -197,6 +199,8 @@ type Mutation {
     canceledProperty(id:ID!,language: String): Status @middleware(checks: ["auth:api","status"]) @SetLanguage
     setPropertyTop(id:ID!,language: String):Property  @middleware(checks: ["auth:api","status"]) @SetLanguage
 
+    CreateSpam(property_id:Int!, points:[Int], language: String):Spam  @middleware(checks: ["auth:api","status"]) @SetLanguage
+
     # Suggests Price for Property    
     createSuggestsPriceProperty(property_id:Int!, price: Float!, currency_type_id: Int!, end_time:DateTime , language: String): SuggestsPriceProperty  @middleware(checks: ["auth:api","status"]) @SetLanguage
     updateSuggestsPriceProperty(id:Int!, property_id:Int, price: Float, currency_type_id: Int, end_time:DateTime , language: String): SuggestsPriceProperty  @middleware(checks: ["auth:api","status"]) @SetLanguage
@@ -240,6 +244,9 @@ type Mutation {
     adminSupport(id:Int!, title:String, body:String!, is_support_status:String): Status @middleware(checks: ["auth:api","admin"])  @SetLanguage
     adminUpdateSupport(id:Int!, is_support_status:String): Status @middleware(checks: ["auth:api","admin"])  @SetLanguage
 
+    adminCreateSpamPoint(name:String!, translate_point:[TranslateDescriptionInput!]!):SpamPoint  @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    deleteSpamPoint(id:ID!): SpamPoint! @delete @middleware(checks: ["auth:api","admin"])  @SetLanguage
+
     createLanguage(name: String!,code:String!,flag_image:Upload!, language: String): Language!  @middleware(checks: ["auth:api","admin"])  @SetLanguage
     updateLanguage(id:ID!,name: String,code:String,flag_image:Upload, language: String): Language!  @middleware(checks: ["auth:api","admin"])  @SetLanguage
     deleteLanguage(id:ID!,language: String): Language!  @middleware(checks: ["auth:api","admin"])  @SetLanguage
@@ -248,9 +255,9 @@ type Mutation {
     updateCurrencyType(id:ID!, name: String, symbol: String, is_current: Boolean, rate: Float): CurrencyType! @update @middleware(checks: ["auth:api","admin"])  @SetLanguage
     deleteCurrencyType(id:ID!): CurrencyType! @delete @middleware(checks: ["auth:api","admin"])  @SetLanguage
 
-    createBuldingType(name: String!): BuldingType! @create
-    updateBuldingType(id:ID!,name: String): BuldingType! @update
-    deleteBuldingType(id:ID!): BuldingType! @delete
+    createBuldingType(name: String!): BuldingType! @create  @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    updateBuldingType(id:ID!,name: String): BuldingType! @update  @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    deleteBuldingType(id:ID!): BuldingType! @delete  @middleware(checks: ["auth:api","admin"])  @SetLanguage
 
 
     #  test
@@ -486,6 +493,7 @@ type User {
     block_end: DateTime
     last_active_time: DateTime
     provider: String
+    spams: [Spam]
     email_verified_at: DateTime,
     login_phone: String
     created_at: DateTime
@@ -616,7 +624,30 @@ type Property{
     top_start:DateTime
     top_end:DateTime,
     same_place_group:String
+    spams:[Spam]
 }
+
+type Spam{
+     id: ID
+     user: User
+     property: Property
+     spam_points:[SpamPoint]
+    
+}
+
+type SpamPoint{
+      id: ID
+      name: String
+      translate_spam_points: [TranslateSpamPoint]
+      translate_spam_points_by_sel_language: [TranslateSpamPoint]
+}
+type TranslateSpamPoint{
+    id: ID
+    spamPoint: SpamPoint
+    language: Language
+    description:String
+}
+
 type PropertiesPaginate{
    properties: [Property]
    total: Int

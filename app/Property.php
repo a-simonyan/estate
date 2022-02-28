@@ -85,6 +85,9 @@ class Property extends Model
    public function property_attach_phones(){
      return $this->hasMany('App\PropertyAttachPhone','property_id','id');
    }
+   public function spams(){
+     return $this->hasMany('App\Spam','property_id','id'); 
+   }
 
 
 }

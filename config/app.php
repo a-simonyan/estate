@@ -53,6 +53,7 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost:8000'),
+    'front_end_url' => env('FRONT_END_URL', 'https://myestate.am'),
 
     'asset_url' => env('ASSET_URL', null),
 

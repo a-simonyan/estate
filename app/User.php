@@ -120,4 +120,8 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany('App\SuggestsPriceProperty','user_id','id');
     }
 
+    public function spams(){
+        return $this->hasMany('App\Spam','user_id','id');
+    }
+
 }

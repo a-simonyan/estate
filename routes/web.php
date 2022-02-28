@@ -17,6 +17,16 @@ use Carbon\Carbon;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/mail', function () {
+    return view('email',[
+        'level'=>'success',
+        'introLines' => ['Please click the button below to verify your email address.'],
+        'actionUrl' => '/',
+        'actionText' => 'Verify Email Address',
+        'outroLines' => ['If you did not create an account, no further action is required.'],
+
+    ]);
+});
 // Route::get('/test','TestController@test');
 Route::get('/json','TestController@json');
 
