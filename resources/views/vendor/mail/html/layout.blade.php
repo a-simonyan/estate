@@ -6,7 +6,7 @@
 </head>
 <body>
 <style>
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 700px) {
 .inner-body {
 width: 100% !important;
 }
@@ -16,7 +16,7 @@ width: 100% !important;
 }
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 600px) {
 .button {
 width: 100% !important;
 }
@@ -32,7 +32,11 @@ width: 100% !important;
 <!-- Email Body -->
 <tr>
 <td class="body" width="100%" cellpadding="0" cellspacing="0">
-<table class="inner-body" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation">
+<table class="inner-body" align="center" width="670" cellpadding="0" cellspacing="0" role="presentation">
+    <div class="email-top-title"><h2>{{__('email.welcome')}}</h2></div>
+    <div class="box-inline-block box-width" >
+            <img class="email-logo" src="https://myestate.am:446/storage/property/XSA7CrVSzv1645541083.jpg">
+    </div>
 <!-- Body content -->
 <tr>
 <td class="content-cell">

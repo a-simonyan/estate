@@ -1,4 +1,6 @@
+
 @component('mail::message')
+<div class="email-main-content">
 {{-- Greeting --}}
 @if (! empty($greeting))
 # {{ $greeting }}
@@ -6,7 +8,6 @@
 @if ($level === 'error')
 # @lang('Whoops!')
 @else
-# {{__('email.Hello!')}}
 @endif
 @endif
 
@@ -41,14 +42,13 @@
 @if (! empty($salutation))
 {{__('email.'.$salutation)}}
 @else
-{{__('email.Regards')}}
-@lang('Regards'),<br>
-{{ config('app.name') }}
 @endif
 
 {{-- Subcopy --}}
 @isset($actionText)
-@slot('subcopy')
-@endslot
+@component('mail::subcopy')
+{{__('email.copy_and_paste')}} [{{ $actionUrl }}]({{ $actionUrl }})
+@endcomponent
 @endisset
+</div>
 @endcomponent

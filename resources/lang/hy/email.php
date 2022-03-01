@@ -3,10 +3,11 @@
 // resources/lang/en/messages.php
 
 return [
-    'Hello!' => 'Բարև',
-    'Verify Email Address' => 'Հաստատել էլ․ Փոստը',
-    'Please click the button below to verify your email address.' => 'Խնդրում եմ սեխմեկլ ներքևի կնոպկայի վրա Էլ․ հասցեն հաստատելու համար',
-    'If you did not create an account, no further action is required.' => 'եթե դուք չէք սարքել խնդրում էմք բաց թողեք',
-    'Regards,' => 'Հարգանքներով՝'
+    "welcome" => "Welcome!",
+    "confirm_your_account_text" => "We're excited to have get started. First, you need to confirm your account. Just press the button below. hy",
+    "confirm_account_btn" => "Confirm Account hy",
+    "copy_and_paste" => "If that doesn't work, copy and paste the following link in your browser: hy",
+    "address"=>"Armenia, 0018, Yerevan
+    Tigran Metsi Ave., 49 Building"
 
 ];

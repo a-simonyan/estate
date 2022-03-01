@@ -17,9 +17,3 @@
 </td>
 </tr>
 </table>
-<style>
-    a.btn-custom{
-        background-color: rgb(4, 167, 119);
-        border-color: rgb(4, 167, 119);
-    }
-</style>

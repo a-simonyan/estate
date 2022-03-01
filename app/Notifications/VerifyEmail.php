@@ -3,10 +3,12 @@
 namespace App\Notifications;
 
 use Illuminate\Support\Carbon;
+use Illuminate\Notifications\Messages\MailMessage;
 
 class VerifyEmail extends \Illuminate\Auth\Notifications\VerifyEmail
 {
     public $url="";
+    public $fullUrl="";
     /**
      * Get the verification URL for the given notifiable.
      *
@@ -31,4 +33,6 @@ class VerifyEmail extends \Illuminate\Auth\Notifications\VerifyEmail
 
         return $this->url.'?token='.$payload;
     }
+
+  
 }
