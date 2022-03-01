@@ -28,7 +28,7 @@ class RegisterUser extends BaseAuthResolver
         $input['password'] = Hash::make($input['password']);
         $input['user_type_id'] = $this->getKeyId(UserType::Class,'name',$args['user_type']); 
         $model->fill($input);
-        // $model->save();
+        $model->save();
       
         if ($model instanceof MustVerifyEmail) {
          
