@@ -70,16 +70,23 @@ class PropertiesPublishedFilters
             $minMax = $args['number_of_rooms'];
             $propertyClass = $this->filtersMinMax($propertyClass, $minMax, 'number_of_rooms');
          }
+         if(!empty($args['property_height'])){
+            $minMax = $args['property_height'];
+            $propertyClass = $this->filtersMinMax($propertyClass, $minMax, 'property_height');
+         }
         /*search by number of bathrooms*/
          if(!empty($args['number_of_bathrooms'])){
-                    $filter_id = $this->getKeyId(Filter::Class,'name','number_of_bathrooms');
-                    $number_of_bathrooms = $args['number_of_bathrooms'];
-                    $propertyClass=$propertyClass->whereHas('filters_values' , function ($query) use ( $number_of_bathrooms,$filter_id){
-                         $query->where(function ($query) use ($number_of_bathrooms, $filter_id) {
-                            $query->where('filter_id',$filter_id);
-                            $query->where('value',$number_of_bathrooms);
-                        });
-                    });
+            $minMax = $args['number_of_bathrooms'];
+            $propertyClass = $this->filtersMinMax($propertyClass, $minMax, 'number_of_bathrooms');
+
+                  //   $filter_id = $this->getKeyId(Filter::Class,'name','number_of_bathrooms');
+                  //   $number_of_bathrooms = $args['number_of_bathrooms'];
+                  //   $propertyClass=$propertyClass->whereHas('filters_values' , function ($query) use ( $number_of_bathrooms,$filter_id){
+                  //        $query->where(function ($query) use ($number_of_bathrooms, $filter_id) {
+                  //           $query->where('filter_id',$filter_id);
+                  //           $query->where('value',$number_of_bathrooms);
+                  //       });
+                  //   });
          }
         /*search by property state*/
          if(!empty($args['property_state'])){
@@ -306,11 +313,11 @@ class PropertiesPublishedFilters
                   $query->where('filter_id',$filter_id);
                   if($minMax['min']){
                      $min = $minMax['min'];
-                     $query->whereRaw('CAST (value AS INTEGER) >= ?',  $min);
+                     $query->whereRaw('CAST (value AS DOUBLE PRECISION) >= ?',  $min);
                    }
                   if($minMax['max']){
                       $max = $minMax['max'];
-                       $query->whereRaw('CAST (value AS INTEGER) <= ?', $max);
+                       $query->whereRaw('CAST (value AS DOUBLE PRECISION) <= ?', $max);
                    }
                   //  if($minMax['min']){
                   //    $min = $minMax['min'];

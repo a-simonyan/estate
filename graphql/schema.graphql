@@ -395,7 +395,8 @@ input PropertiesPublishedFiltersInput{
       number_of_floors_of_the_building:MinMax,
       apartment_floor:MinMax,
       number_of_rooms:MinMax,
-      number_of_bathrooms: Int,
+      number_of_bathrooms: MinMax,
+      property_height:MinMaxFloat,
       property_state: String,
       bulding_type_id: Int,
       filters:[PropertyFilterValue],
@@ -413,6 +414,10 @@ input placeInput{
 input MinMax{
     min:Int,
     max: Int
+}
+input MinMaxFloat{
+    min: Float,
+    max: Float
 }
 
 input PriceFilter{
