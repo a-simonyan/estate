@@ -402,6 +402,7 @@ input PropertiesPublishedFiltersInput{
       filters:[PropertyFilterValue],
       price_filters: [PriceFilter],
       price_order:String,
+      latest:Boolean,
       currency_id:Int,
       paginate: PaginateInput,
       language: String,

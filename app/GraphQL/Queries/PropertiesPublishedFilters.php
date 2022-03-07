@@ -12,6 +12,7 @@ use DB;
 use App\Http\Traits\GetIdTrait;
 use App\Http\Traits\ChangeCurrencyTrait;
 use App\CurrencyType;
+use Carbon\Carbon;
 
 class PropertiesPublishedFilters
 {
@@ -289,8 +290,14 @@ class PropertiesPublishedFilters
                  $properties = $propertie_plus->merge($propertie_minus);
               }
 
-          }
+              if(!empty($args['latest'])){
+                   $properties = $properties->sortByDesc(function($element) {
+                    return Carbon::parse($element->last_update)->format('d');
+                   });
+               } 
 
+
+          }
 
        /*add paginate*/
        if(!empty($args['paginate'])){
