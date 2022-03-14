@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +19,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/mail', function () {
-  dd("mail");
+  $api_key = env('YANDEX_KEY','5ba341c6-2228-439d-b08c-4bcd1403d6c1');
+  $longLat = '44.513028965607,40.164057816139';
+  $lang = 'ru-RU';  
+  $data =  Http::get('https://geocode-maps.yandex.ru/1.x/?apikey='.$api_key.'&format=json&geocode='.$longLat.'&lang='.$lang.'&results=1');
+  $json = json_decode($data->body(), true);
+//   dd($json['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['metaDataProperty']['GeocoderMetaData']['Address']['formatted']);
+  dd($json['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['metaDataProperty']['GeocoderMetaData']);
+
+//   dd($json->response->GeoObjectCollection);
 });
 // Route::get('/test','TestController@test');
 Route::get('/json','TestController@json');
@@ -27,7 +36,7 @@ Route::get('login/{provider}', 'TestController@redirect');
 Route::get('login/{provider}/callback','TestController@Callback' );
 
 Route::get('/seed', function () {
-    Artisan::call('db:seed');
+    // Artisan::call('db:seed');
     dd("work filter");
 });
 Route::get('/t2', function () {

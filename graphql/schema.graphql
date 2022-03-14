@@ -612,7 +612,9 @@ type Property{
     filters_values: [FiltersValue]
     filters_values_not_null: [FiltersValue]
     filters_values_speciale: [FiltersValue]
-    translate_descriptions: [TranslateDescription]
+    translate_descriptions: [TranslateDescription],
+    translate_property_address: [TranslatePropertyAddress]
+    sel_translate_property_address: [TranslatePropertyAddress]
     review: String
     update_count:Int
     last_update:DateTime
@@ -669,6 +671,17 @@ type TranslateDescription{
     property: Property!
     language: Language!
     description:String
+}
+type TranslatePropertyAddress{
+    id: ID
+    property: Property
+    language: Language
+    addresse: String
+    country: String
+    province: String
+    locality: String
+    street: String
+    house: String
 }
 type PropertyImage{
     id:ID!

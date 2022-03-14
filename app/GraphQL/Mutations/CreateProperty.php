@@ -11,15 +11,17 @@ use App\TranslateDescription;
 use App\PropertyDeal;
 use App\Language;
 use App\PropertyAttachPhone;
+use App\TranslatePropertyAddress;
 use Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Traits\GetIdTrait;
 use Image;
+use Illuminate\Support\Facades\Http;
 
 class CreateProperty
 {
-
+    public $langs = [ ['en_RU', 'en'],['ru-RU','ru'],['hy-AM','hy']];
 
     use GetIdTrait;
     /**
@@ -28,7 +30,9 @@ class CreateProperty
      */
     public function __invoke($_, array $args)
     {
+        // $one = $this->langs;
 
+        // dd( $one[0][1]);
 
         $user_auth   = Auth::user();
         $user_id     = $user_auth->id;
@@ -70,7 +74,9 @@ class CreateProperty
                  if(!empty($args['translate_descriptions'])){
                    $this->saveTranslateDescription($property_id, $args['translate_descriptions']);
                  }
-        
+                 if(!empty($args['longitude'])&&!empty($args['latitude'])){
+                   $this->getAndSaveTranslatePropertyAddress($property_id, $args['longitude'].','.$args['latitude']);
+                 }
                
     
             }
@@ -123,7 +129,9 @@ class CreateProperty
             if(!empty($args['property_images_delete_ids'])){
                 $this->deletePropertyImages($user_auth, $args['property_images_delete_ids']);
             }
-
+            if(!empty($args['longitude'])&&!empty($args['latitude'])){
+                $this->getAndSaveTranslatePropertyAddress($property_id, $args['longitude'].','.$args['latitude']);
+            }
 
 
         }
@@ -260,6 +268,7 @@ class CreateProperty
     public function saveTranslateDescription($property_id,$translate_descriptions){
 
          if($translate_descriptions){
+            TranslateDescription::where('property_id', $property_id)->delete();
 
             foreach($translate_descriptions as $translate_description){
                 $language_code = $translate_description['language'];
@@ -319,6 +328,57 @@ class CreateProperty
 
          return true;
 
+    }
+
+
+    public function  getAndSaveTranslatePropertyAddress($property_id,$longLat){
+        $langs = $this->langs;
+        $api_key = env('YANDEX_KEY','5ba341c6-2228-439d-b08c-4bcd1403d6c1');
+
+        TranslatePropertyAddress::where('property_id', $property_id)->delete();
+
+        foreach($langs as $lang ){
+           
+            $language = Language::where('code', $lang[1])->first();
+            $data =  Http::get('https://geocode-maps.yandex.ru/1.x/?apikey='.$api_key.'&format=json&geocode='.$longLat.'&lang='.$lang[0].'&results=1');
+            $decodeData = json_decode($data->body(), true);
+
+            $transelateData = ['property_id' => $property_id, 'language_id' => $language->id ];
+
+            if(!empty($decodeData['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['metaDataProperty']['GeocoderMetaData']['Address'])){
+             
+                $addresse = $decodeData['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['metaDataProperty']['GeocoderMetaData']['Address'];
+               
+                $transelateData['addresse'] = $addresse['formatted'];
+
+                foreach($addresse['Components'] as $component){
+                    switch ($component['kind']) {
+                        case "country":
+                            $transelateData['country']=$component['name'];
+                          break;
+                        case "province":
+                            $transelateData['province']=$component['name'];
+                          break;
+                        case "locality":
+                            $transelateData['locality']=$component['name'];
+                          break;
+                        case "street":
+                            $transelateData['street']=$component['name'];
+                          break;
+                        case "house":
+                            $transelateData['house']=$component['name'];
+                          break;  
+                        
+                      }
+                }
+
+                TranslatePropertyAddress::create($transelateData);
+
+            }
+        }
+
+      
+       return true;
     }
 
 

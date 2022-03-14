@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App;
 
 
 class Property extends Model
@@ -72,6 +73,16 @@ class Property extends Model
    }
    public function translate_descriptions(){
       return $this->hasMany('App\TranslateDescription','property_id','id'); 
+   }
+   
+   public function translate_property_address(){
+      return $this->hasMany('App\TranslatePropertyAddress','property_id','id'); 
+   }
+   public function sel_translate_property_address(){
+     $selLanguage =App::getLocale();
+     return $this->hasMany('App\TranslatePropertyAddress','property_id','id')->whereHas('language', function($query) use ( $selLanguage ) {
+        $query->where('code', $selLanguage);
+    });; 
    }
    public function user_favorite_properties(){
     return $this->hasMany('App\UserFavoriteProperty','property_id','id');
