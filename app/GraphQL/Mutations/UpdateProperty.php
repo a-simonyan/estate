@@ -19,6 +19,7 @@ use Nuwave\Lighthouse\Exceptions\DefinitionException;
 use App\Exceptions\SendException;
 use App\Http\Traits\GetIdTrait;
 use Image;
+use App\Http\Services\PropertyService;
 
 
 class UpdateProperty
@@ -84,7 +85,9 @@ class UpdateProperty
             if($user_type == 'agency' && isset($args['is_address_precise'])){
                 $array_property['is_address_precise'] = $args['is_address_precise'];
             }
-           
+            if(!empty($args['longitude'])&&!empty($args['latitude'])){
+                PropertyService::getAndSaveTranslatePropertyAddress($property_id, $args['longitude'].','.$args['latitude']);
+            }
           
 
 

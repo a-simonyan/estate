@@ -23,6 +23,7 @@ use Image;
 use Carbon\Carbon;
 use App\NotificationUsersProperties;
 use App\UserFavoriteProperty;
+use App\Http\Services\PropertyService;
 
 
 
@@ -121,6 +122,9 @@ class AdminUpdateProperty
             if(!empty($args['translate_descriptions'])){
                 $this->saveTranslateDescription($property_id, $args['translate_descriptions']);
             }
+            if(!empty($args['longitude'])&&!empty($args['latitude'])){
+                PropertyService::getAndSaveTranslatePropertyAddress($property_id, $args['longitude'].','.$args['latitude']);
+             }
 
             return  $property;
 

@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Traits\GetIdTrait;
 use Image;
 use UserType;
+use App\Http\Services\PropertyService;
 
 class AdminCreateProperty
 {
@@ -85,6 +86,9 @@ class AdminCreateProperty
                  }
                  if(!empty($args['translate_descriptions'])){
                    $this->saveTranslateDescription($property_id, $args['translate_descriptions']);
+                 }
+                 if(!empty($args['longitude'])&&!empty($args['latitude'])){
+                    PropertyService::getAndSaveTranslatePropertyAddress($property_id, $args['longitude'].','.$args['latitude']);
                  }
     
             }
