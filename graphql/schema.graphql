@@ -731,7 +731,7 @@ type SaveUserFilterJson{
       number_of_floors_of_the_building:MinMaxType,
       apartment_floor:MinMaxType,
       number_of_rooms:MinMaxType,
-      number_of_bathrooms: Int,
+      number_of_bathrooms: MinMaxType,
       property_state: String,
       bulding_type_id: Int,
       filters:[PropertyFilterValueType],
