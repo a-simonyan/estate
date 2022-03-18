@@ -34,6 +34,8 @@ class PropertiesPublishedFilters
             $query->where('is_block',false);
         });
 
+
+
         /*search by property type*/
          if(!empty($args['property_type'])){
             $typeArr=[];
@@ -79,15 +81,6 @@ class PropertiesPublishedFilters
          if(!empty($args['number_of_bathrooms'])){
             $minMax = $args['number_of_bathrooms'];
             $propertyClass = $this->filtersMinMax($propertyClass, $minMax, 'number_of_bathrooms');
-
-                  //   $filter_id = $this->getKeyId(Filter::Class,'name','number_of_bathrooms');
-                  //   $number_of_bathrooms = $args['number_of_bathrooms'];
-                  //   $propertyClass=$propertyClass->whereHas('filters_values' , function ($query) use ( $number_of_bathrooms,$filter_id){
-                  //        $query->where(function ($query) use ($number_of_bathrooms, $filter_id) {
-                  //           $query->where('filter_id',$filter_id);
-                  //           $query->where('value',$number_of_bathrooms);
-                  //       });
-                  //   });
          }
         /*search by property state*/
          if(!empty($args['property_state'])){
@@ -134,15 +127,17 @@ class PropertiesPublishedFilters
         }
 
 
-        if(empty($args['place']) && empty($args['price_filters']) && empty($args['price_order']) && !empty($args['paginate'])){
+        if(empty($args['place']) && empty($args['address']) && empty($args['price_filters']) && empty($args['price_order']) && !empty($args['paginate'])){
             $first = !empty($args['paginate']['first']) ? $args['paginate']['first'] : 10;
             $page  = !empty($args['paginate']['page']) ? $args['paginate']['page'] : 1;
 
             return $propertyClass->orderBy('is_top', 'DESC')->orderBy('last_update', 'DESC')->paginate($first,['*'],'page', $page);
 
         }
-       /* order by created date*/
-       $properties = $propertyClass->orderBy('is_top', 'DESC')->orderBy('last_update', 'DESC')->get();
+        if(!empty($args['place']) || empty($args['address'])){
+           /* order by created date*/
+           $properties = $propertyClass->orderBy('is_top', 'DESC')->orderBy('last_update', 'DESC')->get();
+        }
        /*search by place*/
         if(!empty($args['place'])){
             $places = $args['place'];
@@ -170,7 +165,19 @@ class PropertiesPublishedFilters
              }
              $propertyClass = $merge_place;
              $properties = $merge_place->unique('id');
-          }
+
+          } elseif(!empty($args['address'])){
+            
+            /*search by address*/
+           $address = $args['address'];
+           $propertyClass = $propertyClass
+            ->whereHas('translate_property_address',function($query) use ($address){
+               $query->where('addresse','ilike', '%'.$address.'%');
+            })->orderBy('last_update', 'DESC')->get();
+
+            $properties =  $propertyClass;
+
+        } 
 
         /*search by price and deal type*/
          if(!empty($args['price_filters'])){

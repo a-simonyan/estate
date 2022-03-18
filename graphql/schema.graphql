@@ -388,6 +388,7 @@ input SavePropertyInput{
 }
 input PropertiesPublishedFiltersInput{
       place:[placeInput],
+      address: String,
       property_type: [String],
       user_type: String,
       area: MinMax,
