@@ -95,6 +95,11 @@ class AdminProperties
             $minMax = $args['area'];
             $propertyClass = $this->filtersMinMax($propertyClass, $minMax, 'area');
         }
+        /*search by land_area*/
+        if(!empty($args['land_area'])){
+            $minMax = $args['land_area'];
+            $propertyClass = $this->filtersMinMax($propertyClass, $minMax, 'land_area');
+        }
         /*search by number of floors of the building*/
         if(!empty($args['number_of_floors_of_the_building'])){
             $minMax = $args['number_of_floors_of_the_building'];
