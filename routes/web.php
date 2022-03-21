@@ -36,7 +36,7 @@ Route::get('login/{provider}', 'TestController@redirect');
 Route::get('login/{provider}/callback','TestController@Callback' );
 
 Route::get('/seed', function () {
-    Artisan::call('db:seed');
+    // Artisan::call('db:seed');
     dd("work filter land_area");
 });
 Route::get('/t2', function () {

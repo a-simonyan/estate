@@ -21,8 +21,8 @@ class DatabaseSeeder extends Seeder
         // $this->call(BuldingTypeSeeder::class);
         // $this->call(PropertySeeder::class);
         // $this->call(FilterGroupSeeder::class);
-        $this->call(FilterSeeder::class);
-        $this->call(FilterPropertyTypeSeeder::class);
+        // $this->call(FilterSeeder::class);
+        // $this->call(FilterPropertyTypeSeeder::class);
         // $this->call(CurrencyTypeSeeder::class);
         
     }
