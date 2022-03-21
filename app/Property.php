@@ -13,6 +13,7 @@ class Property extends Model
                            'property_type_id',
                            'user_id',
                            'bulding_type_id',
+                           'land_area_type_id',
                            'latitude',
                            'longitude',
                            'address',
@@ -46,7 +47,10 @@ class Property extends Model
    }               
    public function   bulding_type(){
        return $this->belongsTo('App\BuldingType','bulding_type_id','id');
-   }          
+   }         
+   public function   land_area_type(){
+    return $this->belongsTo('App\LandAreaType','land_area_type_id','id');
+   }     
    public function filters_values(){
        return $this->hasMany('App\FiltersValue','property_id','id');
    }

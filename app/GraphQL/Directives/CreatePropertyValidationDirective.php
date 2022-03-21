@@ -13,7 +13,8 @@ class CreatePropertyValidationDirective extends ValidationDirective
         return [
             'property_type'     => ['required','string','in:apartment,mansion,land_area,commercial_area'],
             'deal_type'         => ['string','in:good,average,poor','nullable'],
-            'bulding_type_id'   => ['required'],
+            'bulding_type_id'   => [],
+            'land_area_type_id' => [],
             'latitude'          => ['required','numeric'],
             'longitude'         => ['required','numeric'],
             'address'           => ['required','string'],

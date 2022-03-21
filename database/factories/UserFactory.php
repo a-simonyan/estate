@@ -75,6 +75,7 @@ $factory->define(Property::class, function(Faker $faker){
         'property_type_id' => $faker->numberBetween($min = 1, $max = 4),
         'user_id'          => 1,
         'bulding_type_id'  => $faker->numberBetween($min = 1, $max = 5),
+        'land_area_type_id'=> null,
         'latitude'         => $faker->unique()->latitude($min = ($lang * 10000 - rand(0, 1000)) / 10000,
                                                          $max = ($lang * 10000 + rand(0, 1000)) / 10000),
         'longitude'        => $faker->unique()->longitude($min = ($long * 10000 - rand(0, 1000)) / 10000,

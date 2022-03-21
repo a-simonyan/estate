@@ -67,6 +67,10 @@ type Query {
     buldingTypesPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [BuldingType] @paginate(defaultCount: 10) @SetLanguage
     buldingType(id: ID @eq,language: String): BuldingType @find @SetLanguage
 
+    landAreaTypes(language: String, orderBy: [OrderByClause!] @orderBy): [LandAreaType] @all @SetLanguage
+    landAreaTypesPaginate(language: String, orderBy: [OrderByClause!] @orderBy): [LandAreaType] @paginate(defaultCount: 10) @SetLanguage
+    landAreaType(id: ID @eq,language: String): LandAreaType @find @SetLanguage
+
     # properties
 
 #    propertiesPublished(language: String, orderBy:OrderBy):[Property]   @SetLanguage
@@ -259,6 +263,10 @@ type Mutation {
     updateBuldingType(id:ID!,name: String): BuldingType! @update  @middleware(checks: ["auth:api","admin"])  @SetLanguage
     deleteBuldingType(id:ID!): BuldingType! @delete  @middleware(checks: ["auth:api","admin"])  @SetLanguage
 
+    createLandAreaType(name: String!): LandAreaType! @create  @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    updateLandAreaType(id:ID!,name: String): LandAreaType! @update  @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    deleteLandAreaType(id:ID!): LandAreaType! @delete  @middleware(checks: ["auth:api","admin"])  @SetLanguage
+
 
     #  test
     getimage:String
@@ -326,6 +334,7 @@ input CreatePropertyInput{
     property_type: String!,
     property_deal_types:[PropertyDealTypes!]!,
     bulding_type_id: Int,
+    land_area_type_id: Int,
     latitude: Float!,
     longitude: Float!,
     address: String!,
@@ -349,6 +358,7 @@ input UpdatePropertyInput{
     property_type: String,
     property_deal_types:[PropertyDealTypes!],
     bulding_type_id: Int,
+    land_area_type_id: Int,
     latitude: Float,
     longitude: Float,
     address: String,
@@ -371,6 +381,7 @@ input SavePropertyInput{
     property_type: String,
     property_deal_types:[PropertyDealTypes],
     bulding_type_id: Int,
+    land_area_type_id: Int,
     latitude: Float,
     longitude: Float,
     address: String,
@@ -400,6 +411,7 @@ input PropertiesPublishedFiltersInput{
       property_height:MinMaxFloat,
       property_state: String,
       bulding_type_id: Int,
+      land_area_type_id: Int,
       filters:[PropertyFilterValue],
       price_filters: [PriceFilter],
       price_order:String,
@@ -570,6 +582,11 @@ type BuldingType{
     name: String!
     properties: [Property!]!
 }
+type LandAreaType{
+    id: ID!
+    name: String!
+    properties: [Property!]!
+}
 type PriceSel{
     currency_type: CurrencyType,
     price: Float
@@ -601,6 +618,7 @@ type Property{
     property_deals: [PropertyDeal]
     deal_types: [DealType]
     bulding_type: BuldingType
+    land_area_type: LandAreaType
     latitude: Float
     longitude: Float
     address: String
@@ -735,6 +753,7 @@ type SaveUserFilterJson{
       number_of_bathrooms: MinMaxType,
       property_state: String,
       bulding_type_id: Int,
+      land_area_type_id: Int,
       filters:[PropertyFilterValueType],
       price_filters: [PriceFilterType],
       language: String,
@@ -843,6 +862,7 @@ input AdminCreatePropertyInput{
     property_type: String!,
     property_deal_types:[PropertyDealTypes!]!,
     bulding_type_id: Int,
+    land_area_type_id: Int,
     latitude: Float!,
     longitude: Float!,
     address: String!,
@@ -900,6 +920,7 @@ input AdminPropertiesFiltersInput{
     number_of_bathrooms: Int,
     property_state: String,
     bulding_type_id: Int,
+    land_area_type_id: Int,
     filters:[PropertyFilterValue],
     price_filters: [PriceFilter],
     price_order:String,
@@ -916,6 +937,7 @@ input AdminUpdatePropertyInput{
     property_type: String,
     property_deal_types:[PropertyDealTypes!],
     bulding_type_id: Int,
+    land_area_type_id: Int,
     latitude: Float,
     longitude: Float,
     address: String,

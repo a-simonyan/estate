@@ -58,6 +58,7 @@ class AdminCreateProperty
                                           'property_type_id'   => $this->getKeyId(PropertyType::Class,'name',$args['property_type']),
                                           'user_id'            => $user_id,  
                                           'bulding_type_id'    => $args['bulding_type_id'],
+                                          'land_area_type_id'  => $args['land_area_type_id'],
                                           'latitude'           => $args['latitude'],
                                           'longitude'          => $args['longitude'],
                                           'address'            => $args['address'],

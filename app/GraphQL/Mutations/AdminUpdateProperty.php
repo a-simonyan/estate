@@ -74,6 +74,9 @@ class AdminUpdateProperty
             if(!empty($args['bulding_type_id'])){
                 $array_property['bulding_type_id'] = $args['bulding_type_id'];
             }
+            if(!empty($args['land_area_type_id'])){
+                $array_property['land_area_type_id'] = $args['land_area_type_id'];
+            }
             if(!empty($args['latitude'])){
                 $array_property['latitude'] = $args['latitude'];
             }
