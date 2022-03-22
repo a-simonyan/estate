@@ -10,10 +10,10 @@ type Query {
 
     userProfile(language: String):User @middleware(checks: ["auth:api","status"]) @SetLanguage
     userActiveTime:User @middleware(checks: ["auth:api","status"]) @SetLanguage
-    userProperties(is_public_status: [IsPublicStatusEnum],  property_type: [String],  price_order:String, first: Int, page: Int, orderBy:OrderBy, language: String ):[Property] @middleware(checks: ["auth:api","status"]) @SetLanguage
+    userProperties(is_public_status: [IsPublicStatusEnum],  property_type: [String],  price_order:String, first: Int, page: Int, orderBy:OrderBy, language: String ):PropertiesPaginate @middleware(checks: ["auth:api","status"]) @SetLanguage
     userProperty(id:ID):Property @middleware(checks: ["auth:api","status"]) @SetLanguage
 
-    userSaveProperties(first: Int, page: Int, orderBy:OrderBy, language: String):[Property] @middleware(checks: ["auth:api","status"]) @SetLanguage
+    userSaveProperties(first: Int, page: Int, orderBy:OrderBy, language: String):PropertiesPaginate @middleware(checks: ["auth:api","status"]) @SetLanguage
     userSavePropertyById(id:Int, language: String):Property  @middleware(checks: ["auth:api","status"]) @SetLanguage
 
     userFavoriteProperties( property_type: [String],  price_order:String, first: Int, page: Int, orderBy:OrderBy, language: String):[UserFavoriteProperty] @middleware(checks: ["auth:api","status"]) @SetLanguage
@@ -25,7 +25,7 @@ type Query {
     userSupport(id:Int!, language: String): Support @middleware(checks: ["auth:api","status"]) @SetLanguage
     userSupports(input: UserSupportInput @spread): [Support] @middleware(checks: ["auth:api","status"]) @SetLanguage
 
-    userArchiveProperties(first: Int, page: Int, orderBy:OrderBy, language: String):[Property] @middleware(checks: ["auth:api","status"]) @SetLanguage
+    userArchiveProperties(first: Int, page: Int, orderBy:OrderBy, language: String):PropertiesPaginate @middleware(checks: ["auth:api","status"]) @SetLanguage
 
     # Suggests Price Property
     propertySuggestsPrice(property_id: ID!, checked: Boolean,  first: Int, page: Int, orderBy:OrderBy, language: String): [SuggestsPriceProperty]  @middleware(checks: ["auth:api","status"]) @SetLanguage

@@ -8,6 +8,7 @@ use App\Http\Traits\ChangeCurrencyTrait;
 use App\CurrencyType;
 use App\PropertyType;
 use App\DealType;
+use App\Http\Services\PropertyService;
 
 
 class UserProperties
@@ -21,6 +22,8 @@ class UserProperties
     {
         $user_auth   = Auth::user();
         $user_id     = $user_auth->id;
+        $total = null;
+        $lastPage = null;
        
         $is_public_status = !empty($args['is_public_status'])? $args['is_public_status']:['published'];
         $first = !empty($args['first']) ? $args['first'] : 10;
@@ -99,17 +102,22 @@ class UserProperties
                $propertie_minus = $propertie_minus->sortByDesc('price_order'); 
                $properties = $propertie_plus->merge($propertie_minus);
             }
+            $properties = PropertyService::paginate($properties, $first, $page);
+            $total = $properties->total();
+            $lastPage = $properties->lastPage();
 
-            return $properties->forPage($page, $first);
+            return ['properties' => $properties, 'total' => $total, 'lastPage' => $lastPage];
         
            } else {
 
 
             $properties = $propertyClass->orderBy($field, $order)
                                         ->paginate($first,['*'],'page', $page);
+            $total = $properties->total();
+            $lastPage = $properties->lastPage();                            
 
            }
 
-        return $properties;
+        return ['properties' => $properties, 'total' => $total, 'lastPage' => $lastPage];
     }
 }

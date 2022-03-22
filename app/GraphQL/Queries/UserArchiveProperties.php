@@ -16,6 +16,8 @@ class UserArchiveProperties
 
         $user_auth   = Auth::user();
         $user_id     = $user_auth->id;
+        $total = null;
+        $lastPage = null;
 
         $first = !empty($args['first']) ? $args['first'] : 10;
         $page  = !empty($args['page']) ? $args['page'] : 1;
@@ -34,8 +36,10 @@ class UserArchiveProperties
                               ->where('is_archive', true)
                               ->orderBy($field, $order)
                               ->paginate($first,['*'],'page', $page);
+        $total = $properties->total();
+        $lastPage = $properties->lastPage(); 
 
-        return $properties;                      
+        return ['properties' => $properties, 'total' => $total, 'lastPage' => $lastPage];                
 
     }
 }

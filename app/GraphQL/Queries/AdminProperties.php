@@ -14,6 +14,7 @@ use App\Http\Traits\ChangeCurrencyTrait;
 use App\CurrencyType;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Http\Services\PropertyService;
 
 class AdminProperties
 {
@@ -346,7 +347,7 @@ class AdminProperties
             $first = !empty($args['paginate']['first']) ? $args['paginate']['first'] : 10;
             $page  = !empty($args['paginate']['page']) ? $args['paginate']['page'] : 1;
           
-            $properties = $this->paginate($properties, $first, $page);
+            $properties =  PropertyService::paginate($properties, $first, $page);
             $total = $properties->total();
             $lastPage = $properties->lastPage();
 
@@ -387,13 +388,6 @@ class AdminProperties
         return $propertyClass;
     }
 
-
-    public function paginate($items, $perPage = 10, $page = null, $options = [])
-    {
-       $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
-       $items = $items instanceof Collection ? $items : Collection::make($items);
-       return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
-    }
 
 
 }
