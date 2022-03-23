@@ -5,6 +5,9 @@ namespace App\Http\Services;
 use App\Language;
 use App\TranslatePropertyAddress;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 
 class PropertyService {
 
