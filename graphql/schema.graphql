@@ -339,7 +339,7 @@ input CreatePropertyInput{
     longitude: Float!,
     address: String!,
     postal_code: String,
-    property_state: String,
+    property_state: PropertyStateEnum,
     property_images:[Upload],
     property_images_delete_ids: [Int!],
     property_filter_values: [PropertyFilterValue!], 
@@ -363,7 +363,7 @@ input UpdatePropertyInput{
     longitude: Float,
     address: String,
     postal_code: String,
-    property_state: String,
+    property_state: PropertyStateEnum,
     email: String
     phone: AttachPhone,
     is_address_precise: Boolean
@@ -386,7 +386,7 @@ input SavePropertyInput{
     longitude: Float,
     address: String,
     postal_code: String,
-    property_state: String,
+    property_state: PropertyStateEnum,
     property_images:[Upload],
     is_archive: Boolean,
     email: String,
@@ -410,7 +410,7 @@ input PropertiesPublishedFiltersInput{
       number_of_rooms:MinMax,
       number_of_bathrooms: MinMax,
       property_height:MinMaxFloat,
-      property_state: String,
+      property_state: PropertyStateEnum,
       bulding_type_id: Int,
       land_area_type_id: Int,
       filters:[PropertyFilterValue],
@@ -816,6 +816,8 @@ enum PropertyStateEnum {
   good @enum(value: good)
   average @enum(value: average)
   poor @enum(value: poor)
+  renovated  @enum(value: renovated)
+  zero_condition  @enum(value: zero_condition)
 }
 
 enum IsPublicStatusEnum {
@@ -869,7 +871,7 @@ input AdminCreatePropertyInput{
     longitude: Float!,
     address: String!,
     postal_code: String,
-    property_state: String,
+    property_state: PropertyStateEnum,
     property_images:[Upload],
     property_filter_values: [PropertyFilterValue!], 
     translate_descriptions: [TranslateDescriptionInput],
@@ -921,7 +923,7 @@ input AdminPropertiesFiltersInput{
     apartment_floor:MinMax,
     number_of_rooms:MinMax,
     number_of_bathrooms: Int,
-    property_state: String,
+    property_state: PropertyStateEnum,
     bulding_type_id: Int,
     land_area_type_id: Int,
     filters:[PropertyFilterValue],
@@ -945,7 +947,7 @@ input AdminUpdatePropertyInput{
     longitude: Float,
     address: String,
     postal_code: String,
-    property_state: String,
+    property_state: PropertyStateEnum,
     email: String,
     phone: AttachPhone,
     is_bids: Boolean,
