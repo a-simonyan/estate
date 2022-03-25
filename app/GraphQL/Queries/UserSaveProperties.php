@@ -3,6 +3,7 @@
 namespace App\GraphQL\Queries;
 use App\Property;
 use Auth;
+use App\Http\Services\PropertyService;
 
 class UserSaveProperties
 {

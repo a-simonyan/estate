@@ -4,6 +4,7 @@ namespace App\GraphQL\Queries;
 
 use Auth;
 use App\Property;
+use App\Http\Services\PropertyService;
 
 class UserArchiveProperties
 {

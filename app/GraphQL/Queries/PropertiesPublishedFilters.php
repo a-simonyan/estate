@@ -13,6 +13,7 @@ use App\Http\Traits\GetIdTrait;
 use App\Http\Traits\ChangeCurrencyTrait;
 use App\CurrencyType;
 use Carbon\Carbon;
+use App\Http\Services\PropertyService;
 
 class PropertiesPublishedFilters
 {
@@ -23,6 +24,9 @@ class PropertiesPublishedFilters
      */
     public function __invoke($_, array $args)
     {
+        $total = null;
+        $lastPage = null;
+
         $propertyClass = Property::with('filters_values');
         $propertyClass = $propertyClass->where('is_delete', false)
                                        ->where('is_archive', false)
@@ -139,7 +143,13 @@ class PropertiesPublishedFilters
             $first = !empty($args['paginate']['first']) ? $args['paginate']['first'] : 10;
             $page  = !empty($args['paginate']['page']) ? $args['paginate']['page'] : 1;
 
-            return $propertyClass->orderBy('is_top', 'DESC')->orderBy('last_update', 'DESC')->paginate($first,['*'],'page', $page);
+            $properties = $propertyClass->orderBy('is_top', 'DESC')->orderBy('last_update', 'DESC')->paginate($first,['*'],'page', $page);
+          
+            $total = $properties->total();
+            $lastPage = $properties->lastPage(); 
+
+            return ['properties' => $properties, 'total' => $total, 'lastPage' => $lastPage];
+
 
         }
         if(!empty($args['place']) || empty($args['address'])){
@@ -319,11 +329,15 @@ class PropertiesPublishedFilters
            $first = !empty($args['paginate']['first']) ? $args['paginate']['first'] : 10;
            $page  = !empty($args['paginate']['page']) ? $args['paginate']['page'] : 1;
 
-           return $properties->forPage($page, $first);
+           $properties =  PropertyService::paginate($properties, $first, $page);
+           $total = $properties->total();
+           $lastPage = $properties->lastPage();
+
+           return ['properties' => $properties, 'total' => $total, 'lastPage' => $lastPage];
        }
 
 
-        return $properties;
+       return ['properties' => $properties, 'total' => $total, 'lastPage' => $lastPage];
   }
 
    

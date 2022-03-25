@@ -83,7 +83,7 @@ type Query {
 #    propertiesUnderReviewPaginate(first: Int, page: Int, language: String, orderBy:OrderBy ):[Property] @SetLanguage
 
     property(id: ID, currency_id:Int, language: String): Property @SetCurrency @SetLanguage 
-    propertiesPublishedFilters( input: PropertiesPublishedFiltersInput @spread ):[Property] @SetCurrency @SetLanguage
+    propertiesPublishedFilters( input: PropertiesPublishedFiltersInput @spread ):PropertiesPaginate @SetCurrency @SetLanguage
     notificationProperties(first: Int, page: Int, orderBy:OrderBy, language: String): [NotificationUsersProperties] @middleware(checks: ["auth:api","status"]) @SetLanguage
     similarProperties(id:ID, language: String): [Property] @SetLanguage
 
