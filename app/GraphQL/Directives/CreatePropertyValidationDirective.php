@@ -18,7 +18,7 @@ class CreatePropertyValidationDirective extends ValidationDirective
             'latitude'          => ['required','numeric'],
             'longitude'         => ['required','numeric'],
             'address'           => ['required','string'],
-            'property_images.*' => ['image','max:2048','mimes:jpeg,jpg,png,svg,gif','nullable']
+            'property_images.*' => ['image','max:10240','mimes:jpeg,jpg,png,svg,gif','nullable']
             // 'property_images.0' => ['required','image','mimes:jpeg,jpg,png,svg,gif'],
         ];
     }
