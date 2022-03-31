@@ -192,7 +192,7 @@ type Mutation {
 #    deleteFilterGroup(id:ID!): FilterGroup! @delete
 
 
-    createProperty(input: CreatePropertyInput @spread):Property!  @middleware(checks: ["auth:api","status"]) @SetLanguage
+    createProperty(input: CreatePropertyInput @spread):Property! @CreatePropertyValidation  @middleware(checks: ["auth:api","status"]) @SetLanguage
     updateProperty(input: UpdatePropertyInput @spread): Property  @middleware(checks: ["auth:api","status"]) @SetLanguage
     deleteProperty(id:ID!,language: String): Property!  @middleware(checks: ["auth:api","status"]) @SetLanguage
     deletePropertyImages(images_ids:[Int!]!,language: String): Boolean!  @middleware(checks: ["auth:api","status"]) @SetLanguage
