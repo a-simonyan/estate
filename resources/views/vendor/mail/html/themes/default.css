@@ -301,6 +301,13 @@ img {
 .box-width{
   width: 670px;
 }
+.box-p{
+    padding-right: 30px;
+}
+.box-position{
+  position: relative;
+  top: -30px;
+}
 .email-main-content{
   background-color: white;
   padding: 12px 16px;
@@ -353,7 +360,7 @@ a.footer-logo img{
       height: 60px;
   }
   @media only screen and (max-width: 700px) {
-   .email-header .box-width{
+    .box-width{
       width: 100% !important;
     }
   }
