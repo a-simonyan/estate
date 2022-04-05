@@ -26,6 +26,8 @@ class SaveUserFilters
 
         $saveUserFilters = SaveUserFilter::where('user_id',$user_id)->orderBy($field, $order)->get();
 
+        $saveUserFilterJson=[];
+        
         foreach($saveUserFilters as $saveUserFilter){
             $properties_filters = json_decode($saveUserFilter->properties_filters);
             $properties_filters->id = $saveUserFilter->id;
