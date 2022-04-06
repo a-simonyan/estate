@@ -33,7 +33,7 @@ class AdminCreateProperty
     public function __invoke($_, array $args)
     {   
         $user_id = null;
-        if((!empty($args['email'])||!empty($args['phone'])) && !empty($args['password'])){
+        if(empty($args['user_id'])&&((!empty($args['email'])||!empty($args['phone'])) && !empty($args['password'])) ){
             $arrayData = [];
             $arrayData['password'] = Hash::make($args['password']);
             $arrayData['email_verified_at'] = Carbon::now();
