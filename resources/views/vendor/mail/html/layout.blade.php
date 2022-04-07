@@ -35,7 +35,7 @@ width: 100% !important;
 <div class="inner-body" align="center" cellpadding="0" cellspacing="0" role="presentation">
     <div class="email-top-title"><h2>{{__('email.welcome')}}</h2></div>
     <div class="box-inline-block box-width-100" >
-            <img class="email-logo" src="https://myestate.am:446/storage/property/XSA7CrVSzv1645541083.jpg">
+            <img class="email-logo" src="{{asset('img/undraw_mail_sent.png')}}">
     </div>
 <!-- Body content -->
 

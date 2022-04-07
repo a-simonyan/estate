@@ -5,13 +5,13 @@
 <td class="content-cell" align="center">
     <div class="box-inline-block" >
         <a href="" class="footer-logo" >
-            <img  src="https://myestate.am:446/storage/property/XSA7CrVSzv1645541083.jpg">
+            <img  src="{{asset('img/call.png')}}">
         </a>
         <a href="" class="footer-logo" >
-            <img  src="https://myestate.am:446/storage/property/XSA7CrVSzv1645541083.jpg">
+            <img  src="{{asset('img/message.png')}}">
         </a>
         <a href="" class="footer-logo" >
-            <img  src="https://myestate.am:446/storage/property/XSA7CrVSzv1645541083.jpg">
+            <img  src="{{asset('img/facebook.png')}}">
         </a>
     </div>
 </td>
