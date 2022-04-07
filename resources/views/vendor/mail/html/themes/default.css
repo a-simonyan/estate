@@ -27,8 +27,8 @@ blockquote {
     text-align: left;
 }
 
-a, .ii a[href] {
-    color: #04a777;
+.link-color{
+    color: #04a777 !important;
 }
 
 
