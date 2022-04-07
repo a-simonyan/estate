@@ -407,6 +407,7 @@ input SavePropertyInput{
     language: String
 }
 input PropertiesPublishedFiltersInput{
+      ids:[Int],
       place:[placeInput],
       address: String,
       property_type: [String],

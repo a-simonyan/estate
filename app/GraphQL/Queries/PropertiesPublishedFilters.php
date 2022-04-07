@@ -57,6 +57,10 @@ class PropertiesPublishedFilters
                                                          $query->where('user_type_id',$user_type_id);
                                                       });
           }
+        /*search by ids*/
+        if(!empty($args['ids'])){
+         $propertyClass = $propertyClass->whereIn('property_type_id',$args['ids']);
+         } 
         /*search by area*/
         if(!empty($args['area'])){
              $minMax = $args['area'];
