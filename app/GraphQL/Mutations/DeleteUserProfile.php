@@ -6,6 +6,7 @@ use App\Phone;
 use App\Property;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Illuminate\Support\Facades\Hash;
+use Auth;
 
 class DeleteUserProfile
 {
