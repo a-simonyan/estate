@@ -47,7 +47,9 @@
 {{-- Subcopy --}}
 @isset($actionText)
 @component('mail::subcopy')
-{{__('email.copy_and_paste')}} [{{ $actionUrl }}]({{ $actionUrl }})
+<p>{{__('email.copy_and_paste')}}</p> [{{ $actionUrl }}]({{ $actionUrl }})  <p class="margin-top">{{__('email.have_any_questions')}}</p>
+<p class="margin-top-30">{{__('email.thank_you')}}</p>
+<p>{{__('email.choosing_us')}}</p>
 @endcomponent
 @endisset
 </div>
