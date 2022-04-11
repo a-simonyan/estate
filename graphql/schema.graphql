@@ -453,8 +453,8 @@ input PriceFilter{
 }
 input PropertyDealTypes{
     deal_type: String!,
-    price: Float!,
-    currency_type_id: Int!
+    price: Float,
+    currency_type_id: Int
 }
 input TranslateDescriptionInput{
     language: String!

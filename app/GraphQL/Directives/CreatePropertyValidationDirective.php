@@ -34,7 +34,24 @@ class CreatePropertyValidationDirective extends ValidationDirective
                     }
                 }
               
-            }] 
+            }],
+            'property_deal_types' => ['array','nullable'],
+            'property_deal_types.*.price' => [function ($attribute, $value, $fail) {
+                $arr = explode('.', $attribute);
+                $index = $arr[1];
+                $filterValue = $this->args['property_deal_types'][$index]['currency_type_id'];
+                if(!is_null($filterValue)&&is_null($value)){
+                    $fail(__('price can not be empty'));
+                }
+             }],
+             'property_deal_types.*.currency_type_id' => [function ($attribute, $value, $fail) {
+                $arr = explode('.', $attribute);
+                $index = $arr[1];
+                $filterValue = $this->args['property_deal_types'][$index]['price'];
+                if(!is_null($filterValue)&&is_null($value)){
+                    $fail(__('currency type can not be empty'));
+                }
+             }],
             // 'property_images.0' => ['required','image','mimes:jpeg,jpg,png,svg,gif'],
         ];
     }
