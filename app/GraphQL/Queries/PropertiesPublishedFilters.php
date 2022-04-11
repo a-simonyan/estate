@@ -59,7 +59,7 @@ class PropertiesPublishedFilters
           }
         /*search by ids*/
         if(!empty($args['ids'])){
-         $propertyClass = $propertyClass->whereIn('property_type_id',$args['ids']);
+         $propertyClass = $propertyClass->whereIn('id',$args['ids']);
          } 
         /*search by area*/
         if(!empty($args['area'])){
