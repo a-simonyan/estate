@@ -193,11 +193,11 @@ type Mutation {
 
 
     createProperty(input: CreatePropertyInput @spread):Property! @CreatePropertyValidation  @middleware(checks: ["auth:api","status"]) @SetLanguage
-    updateProperty(input: UpdatePropertyInput @spread): Property  @middleware(checks: ["auth:api","status"]) @SetLanguage
+    updateProperty(input: UpdatePropertyInput @spread): Property @UpdatePropertyValidation @middleware(checks: ["auth:api","status"]) @SetLanguage
     deleteProperty(id:ID!,language: String): Property!  @middleware(checks: ["auth:api","status"]) @SetLanguage
     deletePropertyImages(images_ids:[Int!]!,language: String): Boolean!  @middleware(checks: ["auth:api","status"]) @SetLanguage
     propertyImagePosition(images_ids:[Int!]!,language: String): Boolean!  @middleware(checks: ["auth:api","status"]) @SetLanguage
-    saveProperty(input: SavePropertyInput @spread):Property!  @middleware(checks: ["auth:api","status"]) @SetLanguage
+    saveProperty(input: SavePropertyInput @spread):Property! @UpdatePropertyValidation @middleware(checks: ["auth:api","status"]) @SetLanguage
     addViewCount(id:ID!,language: String): Status @SetLanguage
     updateTimeProperty(id:ID!,language: String): Status @middleware(checks: ["auth:api","status"]) @SetLanguage
     canceledProperty(id:ID!,language: String): Status @middleware(checks: ["auth:api","status"]) @SetLanguage
@@ -243,8 +243,8 @@ type Mutation {
     # ADMIN
     adminCreateUser(input: AdminRegisterInput @spread): Status  @AdminRegisterInputValidation @middleware(checks: ["auth:api","admin"]) @SetLanguage
     adminUpdateUserProfile(input: AdminUpdateUserProfileInput @spread): User! @UpdateUserProfileValidation @middleware(checks: ["auth:api","admin"])  @SetLanguage
-    adminUpdateProperty(input: AdminUpdatePropertyInput @spread): Property @middleware(checks: ["auth:api","admin"])  @SetLanguage
-    adminCreateProperty(input: AdminCreatePropertyInput @spread): Property @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    adminUpdateProperty(input: AdminUpdatePropertyInput @spread): Property @UpdatePropertyValidation @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    adminCreateProperty(input: AdminCreatePropertyInput @spread): Property @CreatePropertyValidation @middleware(checks: ["auth:api","admin"])  @SetLanguage
     
     adminSupport(id:Int!, title:String, body:String!, is_support_status:String): Status @middleware(checks: ["auth:api","admin"])  @SetLanguage
     adminUpdateSupport(id:Int!, is_support_status:String): Status @middleware(checks: ["auth:api","admin"])  @SetLanguage

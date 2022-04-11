@@ -5,19 +5,19 @@ namespace App\GraphQL\Directives;
 use Illuminate\Validation\Rule;
 use Nuwave\Lighthouse\Schema\Directives\ValidationDirective;
 
-class CreatePropertyValidationDirective extends ValidationDirective 
+class UpdatePropertyValidationDirective extends ValidationDirective 
 {
     public function rules(): array
     {
         
         return [
-            'property_type'     => ['required','string','in:apartment,mansion,land_area,commercial_area'],
-            'deal_type'         => ['string','in:good,average,poor,renovated,zero_condition','nullable'],
+            'property_type'     => ['string','in:apartment,mansion,land_area,commercial_area','nullable'],
+            'deal_type'         => ['string','in:good,average,poor,renovated,zero_condition','nullable','nullable'],
             'bulding_type_id'   => [],
             'land_area_type_id' => [],
-            'latitude'          => ['required','numeric'],
-            'longitude'         => ['required','numeric'],
-            'address'           => ['required','string'],
+            'latitude'          => ['numeric','nullable'],
+            'longitude'         => ['numeric','nullable'],
+            'address'           => ['string', 'nullable'],
             'property_images.*' => ['image','max:10240','mimes:jpeg,jpg,png,svg,gif','nullable'],
             'property_filter_values' => ['array','nullable'],
             'property_filter_values.*.filter' => [function ($attribute, $value, $fail) {
