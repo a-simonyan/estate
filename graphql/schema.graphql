@@ -86,6 +86,7 @@ type Query {
     propertiesPublishedFilters( input: PropertiesPublishedFiltersInput @spread ):PropertiesPaginate @SetCurrency @SetLanguage
     notificationProperties(first: Int, page: Int, orderBy:OrderBy, language: String): [NotificationUsersProperties] @middleware(checks: ["auth:api","status"]) @SetLanguage
     similarProperties(id:ID, language: String): [Property] @SetLanguage
+    getPropertiesByUserId(id:ID,first: Int, page: Int, language: String):PropertiesPaginate @SetLanguage
 
 #    propertyImages(orderBy: [OrderByClause!] @orderBy): [PropertyImage] @all
 #    propertyImagesPaginate(orderBy: [OrderByClause!] @orderBy): [PropertyImage] @paginate(defaultCount: 10)
