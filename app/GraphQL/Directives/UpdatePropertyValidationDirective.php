@@ -24,7 +24,7 @@ class UpdatePropertyValidationDirective extends ValidationDirective
                 $arr = explode('.', $attribute);
                 $index = $arr[1];
                 $filterValue = $this->args['property_filter_values'][$index]['value'];
-                if($value == 'property_height'||$value == 'area'||$value == 'number_of_floors_of_the_building'||$value == 'apartment_floor'||$value == 'number_of_rooms'||$value == 'land_area'){
+                if($value == 'property_height'||$value =='number_of_bathrooms'||$value == 'area'||$value == 'number_of_floors_of_the_building'||$value == 'apartment_floor'||$value == 'number_of_rooms'||$value == 'land_area'){
                     if(!is_null($filterValue) && !is_numeric($filterValue)){
                         $fail(__($value.' filter value wrong'));
                     }
