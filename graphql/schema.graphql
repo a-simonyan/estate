@@ -88,6 +88,8 @@ type Query {
     similarProperties(id:ID, language: String): [Property] @SetLanguage
     getPropertiesByUserId(id:ID,first: Int, page: Int, language: String):PropertiesPaginate @SetLanguage
 
+    getPrivacyPolicy(language: String):[Translation]
+
 #    propertyImages(orderBy: [OrderByClause!] @orderBy): [PropertyImage] @all
 #    propertyImagesPaginate(orderBy: [OrderByClause!] @orderBy): [PropertyImage] @paginate(defaultCount: 10)
 #    propertyImage(id: ID @eq): PropertyImage @find
@@ -268,6 +270,8 @@ type Mutation {
     createLandAreaType(name: String!): LandAreaType! @create  @middleware(checks: ["auth:api","admin"])  @SetLanguage
     updateLandAreaType(id:ID!,name: String): LandAreaType! @update  @middleware(checks: ["auth:api","admin"])  @SetLanguage
     deleteLandAreaType(id:ID!): LandAreaType! @delete  @middleware(checks: ["auth:api","admin"])  @SetLanguage
+
+    adminUpdatePrivacyPolicy(privacy_policy:[TranslateDescriptionInput!]):Status @middleware(checks: ["auth:api","admin"])  @SetLanguage
 
 
     #  test
