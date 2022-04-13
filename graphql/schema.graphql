@@ -513,7 +513,7 @@ type UserType{
     users:[User!]!
 }
 type User {
-    id: ID!
+    id: ID
     full_name: String 
     picture: ImageQuality
     email: String
@@ -536,13 +536,14 @@ type User {
 }
 
 type UserInfo{
-    id: ID!
-    full_name: String! 
+    id: ID
+    full_name: String 
     picture: ImageQuality
-    email: String!
-    phones:[Phone!]
-    user_type:UserType! 
+    email: String
+    phones:[Phone]
+    user_type:UserType 
     first_time: Date
+    login_phone: String
     last_active_time: DateTime
 }
 
