@@ -18,7 +18,7 @@ class UpdatePropertyValidationDirective extends ValidationDirective
             'latitude'          => ['numeric','nullable'],
             'longitude'         => ['numeric','nullable'],
             'address'           => ['string', 'nullable'],
-            'property_images.*' => ['image','max:10240','mimes:jpeg,jpg,png,svg,gif','nullable'],
+            'property_images.*' => ['max:10240','nullable'],
             'property_filter_values' => ['array','nullable'],
             'property_filter_values.*.filter' => [function ($attribute, $value, $fail) {
                 $arr = explode('.', $attribute);
