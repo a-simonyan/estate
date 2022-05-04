@@ -168,13 +168,13 @@ class UpdateProperty
        }
 
        foreach($property_images as $property_image){
-          
+
           $fileName_img = Str::random(10).time().'.'.$property_image->getClientOriginalExtension();
           while(file_exists(storage_path('app/public/property/'.$fileName_img))){
               $fileName_img = Str::random(10).time().'.'.$property_image->getClientOriginalExtension();
           };
           $property_image->storeAs('public/property',$fileName_img);
-               if(file_exists(storage_path('app/public/property/'.$property_image))){
+               if(file_exists(storage_path('app/public/property/'.$fileName_img))){
 
                 $image = Image::make(storage_path('app/public/property/'.$fileName_img));
 
