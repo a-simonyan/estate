@@ -12,6 +12,7 @@ type Query {
     userActiveTime:User @middleware(checks: ["auth:api","status"]) @SetLanguage
     userProperties(is_public_status: [IsPublicStatusEnum],  property_type: [String],  price_order:String, first: Int, page: Int, orderBy:OrderBy, language: String ):PropertiesPaginate @middleware(checks: ["auth:api","status"]) @SetLanguage
     userProperty(id:ID):Property @middleware(checks: ["auth:api","status"]) @SetLanguage
+    propertyStatistics(id:ID!):String
 
     userSaveProperties(first: Int, page: Int, orderBy:OrderBy, language: String):PropertiesPaginate @middleware(checks: ["auth:api","status"]) @SetLanguage
     userSavePropertyById(id:Int, language: String):Property  @middleware(checks: ["auth:api","status"]) @SetLanguage
@@ -635,6 +636,7 @@ type Property{
     user: User
     property_deals: [PropertyDeal]
     deal_types: [DealType]
+    property_type_id: Int
     bulding_type: BuldingType
     land_area_type: LandAreaType
     latitude: Float
