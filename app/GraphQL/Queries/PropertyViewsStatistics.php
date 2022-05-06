@@ -6,9 +6,7 @@ use App\PropertyClientIp;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
-use DatePeriod;
-use DateTime;
-use DateInterval;
+
 
 class PropertyViewsStatistics
 {
@@ -18,15 +16,14 @@ class PropertyViewsStatistics
      */
     public function __invoke($_, array $args)
     {
-       $start = !empty($args['start']) ? $args['start'] : now()->subDays(30)->endOfDay();
+       $start = !empty($args['start']) ? $args['start'] : Carbon::now()->subDays(30)->format('Y-m-d');
        $end = !empty($args['end']) ? $args['end'] : Carbon::now()->format('Y-m-d') ;
        $period = CarbonPeriod::create($start, $end);
        $data = [];
+
        foreach($period as $date){
            array_push($data, [ 'date' => $date->format("Y-m-d"), 'views' => 0]);
        }
-
-
 
         $dbData = PropertyClientIp::select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as views'))
                                ->where('property_id', $args['id'])
