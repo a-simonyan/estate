@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {   
 
-         $this->call(PropertySeeder::class);
+        // $this->call(PropertySeeder::class);
         // $this->call(UserTypeSeeder::class);
         // $this->call(UserSeeder::class);
         // $this->call(LanguageSeeder::class);
