@@ -618,7 +618,7 @@ type PropertyDeal{
     id: ID!
     deal_type:DealType
     property: Property
-    price: Float!
+    price: Float
     price_usd: Float
     price_sel: PriceSel
     currency_type: CurrencyType
