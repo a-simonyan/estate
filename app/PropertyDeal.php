@@ -22,32 +22,41 @@ class PropertyDeal extends Model
         return $this->belongsTo('App\CurrencyType','currency_type_id','id');
     }
     public function getPriceUsdAttribute(){
+        if($this->currency_type_id){
+          
           $usd =  CurrencyType::where('name','USD')->first(['id','rate']);
           if($usd&&$usd->id == $this->currency_type_id){
              return $this->price;
           } else {
-            
-            $currencyType = CurrencyType::where('id',$this->currency_type_id)->first(['rate']);
-
-            return round(($this->price*$currencyType->rate)/$usd->rate, 2);
-          }
+               $currencyType = CurrencyType::where('id',$this->currency_type_id)->first(['rate']);
+   
+               return round(($this->price*$currencyType->rate)/$usd->rate, 2);
+           
+          } 
+        } else {
+            return null;
+        }
     }
     public function getPriceSelAttribute(){
-        $currencyId = app('RestCurrency')->currency_id;
+        if($this->currency_type_id){
 
-        $selCurrencyType = CurrencyType::find($currencyId);
-
-        if(!$selCurrencyType){
-            $selCurrencyType =  CurrencyType::where('name','USD')->first();
-        } 
-
-        if($currencyId == $this->currency_type_id){
-            return ['currency_type' => $selCurrencyType ,'price' => $this->price];
-         } else {
-          
-            $currencyType = CurrencyType::where('id',$this->currency_type_id)->first(['rate']);
-
-            return ['currency_type' =>  $selCurrencyType ,'price' => round(($this->price*$currencyType->rate)/$selCurrencyType->rate, 2)];
+            $currencyId = app('RestCurrency')->currency_id;
+    
+            $selCurrencyType = CurrencyType::find($currencyId);
+    
+            if(!$selCurrencyType){
+                $selCurrencyType =  CurrencyType::where('name','USD')->first();
+            } 
+            if($currencyId == $this->currency_type_id){
+                return ['currency_type' => $selCurrencyType ,'price' => $this->price];
+            } else {
+              
+                $currencyType = CurrencyType::where('id',$this->currency_type_id)->first(['rate']);
+    
+                return ['currency_type' =>  $selCurrencyType ,'price' => round(($this->price*$currencyType->rate)/$selCurrencyType->rate, 2)];
+            }
+        } else {
+            return null;
         }
         
 
