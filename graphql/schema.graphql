@@ -12,6 +12,8 @@ type Query {
     userActiveTime:User @middleware(checks: ["auth:api","status"]) @SetLanguage
     userProperties(is_public_status: [IsPublicStatusEnum],  property_type: [String],  price_order:String, first: Int, page: Int, orderBy:OrderBy, language: String ):PropertiesPaginate @middleware(checks: ["auth:api","status"]) @SetLanguage
     userProperty(id:ID):Property @middleware(checks: ["auth:api","status"]) @SetLanguage
+    propertyViewsStatistics(id:ID!, start:Date, end:Date): Statistics
+    propertyShareStatistics(id:ID!, start:Date, end:Date): Statistics
 
     userSaveProperties(first: Int, page: Int, orderBy:OrderBy, language: String):PropertiesPaginate @middleware(checks: ["auth:api","status"]) @SetLanguage
     userSavePropertyById(id:Int, language: String):Property  @middleware(checks: ["auth:api","status"]) @SetLanguage
@@ -202,6 +204,7 @@ type Mutation {
     propertyImagePosition(images_ids:[Int!]!,language: String): Boolean!  @middleware(checks: ["auth:api","status"]) @SetLanguage
     saveProperty(input: SavePropertyInput @spread):Property! @UpdatePropertyValidation @middleware(checks: ["auth:api","status"]) @SetLanguage
     addViewCount(id:ID!,language: String): Status @SetLanguage
+    shareProperty(id:ID!): Status
     updateTimeProperty(id:ID!,language: String): Status @middleware(checks: ["auth:api","status"]) @SetLanguage
     canceledProperty(id:ID!,language: String): Status @middleware(checks: ["auth:api","status"]) @SetLanguage
     setPropertyTop(id:ID!,language: String):Property  @middleware(checks: ["auth:api","status"]) @SetLanguage
@@ -470,6 +473,8 @@ input ImageAndType{
     image: String!
 }
 
+
+
 input PropertyFilterValue{
     filter: String!
     value: String
@@ -613,7 +618,7 @@ type PropertyDeal{
     id: ID!
     deal_type:DealType
     property: Property
-    price: Float!
+    price: Float
     price_usd: Float
     price_sel: PriceSel
     currency_type: CurrencyType
@@ -635,6 +640,7 @@ type Property{
     user: User
     property_deals: [PropertyDeal]
     deal_types: [DealType]
+    property_type_id: Int
     bulding_type: BuldingType
     land_area_type: LandAreaType
     latitude: Float
@@ -670,6 +676,16 @@ type Property{
     top_end:DateTime,
     same_place_group:String
     spams:[Spam]
+}
+type Statistics {
+    start: Date,
+    end: Date,
+    views: [Views]
+}
+
+type  Views{
+    date: Date
+    views: Int
 }
 
 type Spam{

@@ -19,7 +19,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/mail', function () {
-  dd("mail new update");
+  dd("mail new price");
   $api_key = env('YANDEX_KEY','5ba341c6-2228-439d-b08c-4bcd1403d6c1');
   $longLat = '44.513028965607,40.164057816139';
   $lang = 'ru-RU';  
@@ -37,7 +37,7 @@ Route::get('login/{provider}', 'TestController@redirect');
 Route::get('login/{provider}/callback','TestController@Callback' );
 
 Route::get('/seed', function () {
-    // Artisan::call('db:seed');
+    //  Artisan::call('db:seed');
     dd("work filter land_area");
 });
 Route::get('/t2', function () {
