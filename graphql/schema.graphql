@@ -851,6 +851,9 @@ enum PropertyStateEnum {
   poor @enum(value: poor)
   renovated  @enum(value: renovated)
   zero_condition  @enum(value: zero_condition)
+  overhauled @enum(value: overhauled)
+  euro_renovated @enum(value: euro_renovated)
+  sufficient @enum(value: sufficient)
 }
 
 enum IsPublicStatusEnum {
