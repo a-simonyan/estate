@@ -49,14 +49,18 @@ class PropertiesPublishedFilters
             }
            
             $propertyClass = $propertyClass->whereIn('property_type_id',$typeArr);
-          }
-          /*search by user type*/
-          if(!empty($args['user_type'])){
+         }
+         /*search by user type*/
+         if(!empty($args['user_type'])){
             $user_type_id = $this->getKeyId(UserType::Class,'name',$args['user_type']);
             $propertyClass = $propertyClass->whereHas('user',function ($query) use ($user_type_id){
                                                          $query->where('user_type_id',$user_type_id);
                                                       });
-          }
+         }
+         /*search by with picture*/
+         if(!empty($args['with_picture'])){
+            $propertyClass = $propertyClass->whereHas('property_images');
+         }
         /*search by ids*/
         if(!empty($args['ids'])){
          $propertyClass = $propertyClass->whereIn('id',$args['ids']);
@@ -65,7 +69,7 @@ class PropertiesPublishedFilters
         if(!empty($args['area'])){
              $minMax = $args['area'];
              $propertyClass = $this->filtersMinMax($propertyClass, $minMax, 'area');
-          }
+         }
         /*search by land_area*/
         if(!empty($args['land_area'])){
             $minMax = $args['land_area'];
