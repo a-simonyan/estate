@@ -731,6 +731,7 @@ type TranslatePropertyAddress{
     property: Property
     language: Language
     addresse: String
+    reverse_address: String
     country: String
     province: String
     locality: String
