@@ -247,6 +247,7 @@ type Mutation {
 
 
     # ADMIN
+    loginAdmin(input: LoginInput @spread): AuthPayloadLogin! @LoginInputValidation @SetLanguage
     adminCreateUser(input: AdminRegisterInput @spread): Status  @AdminRegisterInputValidation @middleware(checks: ["auth:api","admin"]) @SetLanguage
     adminUpdateUserProfile(input: AdminUpdateUserProfileInput @spread): User! @UpdateUserProfileValidation @middleware(checks: ["auth:api","admin"])  @SetLanguage
     adminUpdateProperty(input: AdminUpdatePropertyInput @spread): Property @UpdatePropertyValidation @middleware(checks: ["auth:api","admin"])  @SetLanguage
