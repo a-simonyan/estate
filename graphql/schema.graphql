@@ -207,9 +207,13 @@ type Mutation {
     shareProperty(id:ID!): Status
     updateTimeProperty(id:ID!,language: String): Status @middleware(checks: ["auth:api","status"]) @SetLanguage
     canceledProperty(id:ID!,language: String): Status @middleware(checks: ["auth:api","status"]) @SetLanguage
-    setPropertyTop(id:ID!,language: String):Property  @middleware(checks: ["auth:api","status"]) @SetLanguage
 
     CreateSpam(property_id:Int!, points:[Int], language: String):Spam  @middleware(checks: ["auth:api","status"]) @SetLanguage
+
+    #Paymant
+    registerPropertyInTop(input: RegisterPropertyInTopInput @spread):RegisterPropertyInTop  @middleware(checks: ["auth:api","status"]) @SetLanguage
+    checkAndSetPropertyInTop(id:ID!, order_id:String, language: String):Property  @middleware(checks: ["auth:api","status"]) @SetLanguage
+
 
     # Suggests Price for Property    
     createSuggestsPriceProperty(property_id:Int!, price: Float!, currency_type_id: Int!, end_time:DateTime , language: String): SuggestsPriceProperty  @middleware(checks: ["auth:api","status"]) @SetLanguage
@@ -475,9 +479,6 @@ input ImageAndType{
     type: String!
     image: String!
 }
-
-
-
 input PropertyFilterValue{
     filter: String!
     value: String
@@ -491,6 +492,11 @@ input PaginateInput{
       first: Int,
       page: Int
       }
+input RegisterPropertyInTopInput{
+    id: ID!
+    return_url: String!
+    page_view: PageViewEnum!
+}
 type PropertyPaginate{
     data: [Property]!
     paginatorInfo: PaginatorInfo
@@ -840,6 +846,12 @@ type SuggestsPriceProperty{
      updated_at: DateTime
 }
 
+type  RegisterPropertyInTop{
+      error:Boolean,
+      errorMessage: String,
+      orderId: String,
+      formUrl: String
+}
 
 
 enum PropertyTypeEnum {
@@ -876,6 +888,11 @@ enum PropertyDealTypesEnum {
     sale @enum(value: sale)
     monthly_rental_fee @enum(value: monthly_rental_fee)
     daily_rental_fee @enum(value: daily_rental_fee)
+}
+
+enum PageViewEnum {
+    DESKTOP @enum(value: DESKTOP)
+    MOBILE @enum(value: MOBILE)
 }
   
 #ADMIN
