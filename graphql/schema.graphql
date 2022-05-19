@@ -207,9 +207,13 @@ type Mutation {
     shareProperty(id:ID!): Status
     updateTimeProperty(id:ID!,language: String): Status @middleware(checks: ["auth:api","status"]) @SetLanguage
     canceledProperty(id:ID!,language: String): Status @middleware(checks: ["auth:api","status"]) @SetLanguage
-    setPropertyTop(id:ID!,language: String):Property  @middleware(checks: ["auth:api","status"]) @SetLanguage
 
     CreateSpam(property_id:Int!, points:[Int], language: String):Spam  @middleware(checks: ["auth:api","status"]) @SetLanguage
+
+    #Paymant
+    registerPropertyInTop(input: RegisterPropertyInTopInput @spread):RegisterPropertyInTop  @middleware(checks: ["auth:api","status"]) @SetLanguage
+    checkAndSetPropertyInTop(id:ID!, order_id:String, language: String):Property  @middleware(checks: ["auth:api","status"]) @SetLanguage
+
 
     # Suggests Price for Property    
     createSuggestsPriceProperty(property_id:Int!, price: Float!, currency_type_id: Int!, end_time:DateTime , language: String): SuggestsPriceProperty  @middleware(checks: ["auth:api","status"]) @SetLanguage
@@ -247,6 +251,7 @@ type Mutation {
 
 
     # ADMIN
+    loginAdmin(input: LoginInput @spread): AuthPayloadLogin! @LoginInputValidation @SetLanguage
     adminCreateUser(input: AdminRegisterInput @spread): Status  @AdminRegisterInputValidation @middleware(checks: ["auth:api","admin"]) @SetLanguage
     adminUpdateUserProfile(input: AdminUpdateUserProfileInput @spread): User! @UpdateUserProfileValidation @middleware(checks: ["auth:api","admin"])  @SetLanguage
     adminUpdateProperty(input: AdminUpdatePropertyInput @spread): Property @UpdatePropertyValidation @middleware(checks: ["auth:api","admin"])  @SetLanguage
@@ -434,6 +439,8 @@ input PropertiesPublishedFiltersInput{
       filters:[PropertyFilterValue],
       price_filters: [PriceFilter],
       price_order:String,
+      with_picture:Boolean,
+      is_negotiable:Boolean,
       latest:Boolean,
       currency_id:Int,
       paginate: PaginateInput,
@@ -472,9 +479,6 @@ input ImageAndType{
     type: String!
     image: String!
 }
-
-
-
 input PropertyFilterValue{
     filter: String!
     value: String
@@ -488,6 +492,11 @@ input PaginateInput{
       first: Int,
       page: Int
       }
+input RegisterPropertyInTopInput{
+    id: ID!
+    return_url: String!
+    page_view: PageViewEnum!
+}
 type PropertyPaginate{
     data: [Property]!
     paginatorInfo: PaginatorInfo
@@ -730,6 +739,7 @@ type TranslatePropertyAddress{
     property: Property
     language: Language
     addresse: String
+    reverse_address: String
     country: String
     province: String
     locality: String
@@ -836,6 +846,12 @@ type SuggestsPriceProperty{
      updated_at: DateTime
 }
 
+type  RegisterPropertyInTop{
+      error:Boolean,
+      errorMessage: String,
+      orderId: String,
+      formUrl: String
+}
 
 
 enum PropertyTypeEnum {
@@ -851,6 +867,9 @@ enum PropertyStateEnum {
   poor @enum(value: poor)
   renovated  @enum(value: renovated)
   zero_condition  @enum(value: zero_condition)
+  overhauled @enum(value: overhauled)
+  euro_renovated @enum(value: euro_renovated)
+  sufficient @enum(value: sufficient)
 }
 
 enum IsPublicStatusEnum {
@@ -869,6 +888,11 @@ enum PropertyDealTypesEnum {
     sale @enum(value: sale)
     monthly_rental_fee @enum(value: monthly_rental_fee)
     daily_rental_fee @enum(value: daily_rental_fee)
+}
+
+enum PageViewEnum {
+    DESKTOP @enum(value: DESKTOP)
+    MOBILE @enum(value: MOBILE)
 }
   
 #ADMIN
@@ -946,9 +970,10 @@ input AdminPropertiesFiltersInput{
     user_is_delete: Boolean,
     user_is_block: Boolean,
     user_id: Int,
-    property_id: Int,
+    ids:[Int],
     place:[placeInput],
-    property_type: String,
+    address: String,
+    property_type: [String],
     user_type: String,
     area: MinMax,
     land_area: MinMax, 
@@ -956,13 +981,17 @@ input AdminPropertiesFiltersInput{
     number_of_floors_of_the_building:MinMax,
     apartment_floor:MinMax,
     number_of_rooms:MinMax,
-    number_of_bathrooms: Int,
+    number_of_bathrooms: MinMax,
+    property_height:MinMaxFloat,
     property_state: PropertyStateEnum,
     bulding_type_id: Int,
     land_area_type_id: Int,
     filters:[PropertyFilterValue],
     price_filters: [PriceFilter],
     price_order:String,
+    with_picture:Boolean,
+    is_negotiable:Boolean,
+    latest:Boolean,
     paginate: PaginateInput,
     language: String,
 }

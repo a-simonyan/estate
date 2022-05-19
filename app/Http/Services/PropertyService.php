@@ -55,6 +55,45 @@ class PropertyService {
                       }
                 }
 
+                $reverseAddress = '';
+                if(!empty($transelateData['province'])&&!empty($transelateData['locality'])&&($transelateData['province']==$transelateData['locality'])){
+                  $reverseAddressArr = explode(", ",$transelateData['addresse'], 3);
+                
+                  //mine address
+                  if(!empty($reverseAddressArr[2])){
+                    $reverseAddress .= $reverseAddressArr[2].", ";
+                  }
+                  //province
+                  if(!empty($reverseAddressArr[1])){
+                    $reverseAddress .= $reverseAddressArr[1].", ";
+                  }
+                  //country
+                  if(!empty($reverseAddressArr[0])){
+                    $reverseAddress .= $reverseAddressArr[0];
+                  }
+                } else {
+                  $reverseAddressArr = explode(", ",$transelateData['addresse'], 4);
+                  //mine address
+                  if(!empty($reverseAddressArr[3])){
+                    $reverseAddress .= $reverseAddressArr[3].", ";
+                  }
+                  //province
+                  if(!empty($reverseAddressArr[2])){
+                    $reverseAddress .= $reverseAddressArr[2].", ";
+                  }
+                  //locality
+                  if(!empty($reverseAddressArr[1])){
+                    $reverseAddress .= $reverseAddressArr[1].", ";
+                  }
+                  //country
+                  if(!empty($reverseAddressArr[0])){
+                    $reverseAddress .= $reverseAddressArr[0];
+                  }
+
+                }
+
+                $transelateData['reverse_address'] =  $reverseAddress;
+
                 TranslatePropertyAddress::create($transelateData);
 
             }

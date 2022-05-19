@@ -13,7 +13,7 @@ use App\Exceptions\SendException;
 use App\Events\SendMessage;
 
 
-class LoginUser extends BaseAuthResolver
+class LoginAdmin extends BaseAuthResolver
 {
     /**
      * @param  null  $_
@@ -23,7 +23,7 @@ class LoginUser extends BaseAuthResolver
     {
         
         $user = $this->findUser($args['username']);
-     if($user&&$user->email_verified_at&&!$user->is_delete){
+     if($user&&$user->is_admin&&!$user->is_delete){
          $credentials = $this->buildCredentials($args);
          $response = $this->makeRequest($credentials);
 
@@ -50,15 +50,21 @@ class LoginUser extends BaseAuthResolver
            ]
        );
      } else {
-          if($user&&!$user->email_verified_at){
+         if($user&&!$user->is_admin){
+             throw new SendException(
+                 'error',
+                 __('this user does not have an admin permission')
+             );
+         } elseif($user&&$user->is_delete){
            throw new SendException(
              'error',
-             __('messages.error_email_verification')
+             __('user is deleted')
            );
-          } else {
+          }
+          else {
             throw new SendException(
                 'error',
-                __('messages.Incorrect_username_or_password')
+                __('Incorrect username or password')
             );          
       
           }

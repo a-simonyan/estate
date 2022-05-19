@@ -12,7 +12,7 @@ class UpdatePropertyValidationDirective extends ValidationDirective
         
         return [
             'property_type'     => ['string','in:apartment,mansion,land_area,commercial_area','nullable'],
-            'deal_type'         => ['string','in:good,average,poor,renovated,zero_condition','nullable','nullable'],
+            // 'property_state'    => ['string','in:good,average,poor,renovated,zero_condition,,overhauled,euro_renovated,renovated','nullable'],
             'bulding_type_id'   => [],
             'land_area_type_id' => [],
             'latitude'          => ['numeric','nullable'],

@@ -15,6 +15,7 @@ use App\CurrencyType;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Http\Services\PropertyService;
+use Carbon\Carbon;
 
 class AdminProperties
 {
@@ -75,14 +76,19 @@ class AdminProperties
         if(!empty($args['user_id'])) {
             $propertyClass = $propertyClass->where('user_id', $args['user_id']);
         }
-        /*search by property id*/
-        if(!empty($args['property_id'])) {
-            $propertyClass = $propertyClass->where('id', $args['property_id']);
-        }
+        /*search by ids*/
+        if(!empty($args['ids'])){
+            $propertyClass = $propertyClass->whereIn('id',$args['ids']);
+        } 
         /*search by property type*/
         if(!empty($args['property_type'])){
-            $property_type_id = $this->getKeyId(PropertyType::Class,'name',$args['property_type']);
-            $propertyClass = $propertyClass->where('property_type_id',$property_type_id);
+            $typeArr=[];
+            foreach($args['property_type'] as $property_type){
+               $property_type_id = $this->getKeyId(PropertyType::Class,'name',$property_type);
+               array_push($typeArr,$property_type_id);
+            }
+           
+            $propertyClass = $propertyClass->whereIn('property_type_id',$typeArr);
         }
         /*search by user type*/
         if(!empty($args['user_type'])){
@@ -90,6 +96,10 @@ class AdminProperties
             $propertyClass = $propertyClass->whereHas('user',function ($query) use ($user_type_id){
                 $query->where('user_type_id',$user_type_id);
             });
+        }
+        /*search by with picture*/
+        if(!empty($args['with_picture'])){
+           $propertyClass = $propertyClass->whereHas('property_images');
         }
         /*search by area*/
         if(!empty($args['area'])){
@@ -118,14 +128,12 @@ class AdminProperties
         }
         /*search by number of bathrooms*/
         if(!empty($args['number_of_bathrooms'])){
-            $filter_id = $this->getKeyId(Filter::Class,'name','number_of_bathrooms');
-            $number_of_bathrooms = $args['number_of_bathrooms'];
-            $propertyClass=$propertyClass->whereHas('filters_values' , function ($query) use ( $number_of_bathrooms,$filter_id){
-                $query->where(function ($query) use ($number_of_bathrooms, $filter_id) {
-                    $query->where('filter_id',$filter_id);
-                    $query->where('value',$number_of_bathrooms);
-                });
-            });
+            $minMax = $args['number_of_bathrooms'];
+            $propertyClass = $this->filtersMinMax($propertyClass, $minMax, 'number_of_bathrooms');
+        }
+        if(!empty($args['property_height'])){
+            $minMax = $args['property_height'];
+            $propertyClass = $this->filtersMinMax($propertyClass, $minMax, 'property_height');
         }
         /*search by property state*/
         if(!empty($args['property_state'])){
@@ -143,6 +151,12 @@ class AdminProperties
             $deal_types=$args['deal_types'];
             $propertyClass = $propertyClass->whereHas('deal_types' , function ($query) use ($deal_types){
                $query->whereIn('name',$deal_types);
+            });
+        }
+        /*search by is_negotiable*/
+        if(!empty($args['is_negotiable'])){
+            $propertyClass = $propertyClass->whereHas('property_deals' , function ($query){
+                $query->whereNull('price');
             });
         }
 
@@ -187,8 +201,16 @@ class AdminProperties
                 return ['properties' => $properties, 'total' => $total, 'lastPage' => $lastPage];
 
         }
-        /* order by created date*/
-        $properties = $propertyClass->orderBy('last_update', 'DESC')->get();
+
+        if(!empty($args['place']) || empty($args['address'])){
+            /* order by created date*/
+            $properties = $propertyClass->orderBy('is_top', 'DESC')->orderBy('last_update', 'DESC')->get();
+         }
+
+         if(!empty($args['place']) || empty($args['address'])){
+            /* order by created date*/
+            $properties = $propertyClass->orderBy('is_top', 'DESC')->orderBy('last_update', 'DESC')->get();
+         }
 
 
 
@@ -219,7 +241,18 @@ class AdminProperties
             }
             $propertyClass = $merge_place;
             $properties = $merge_place->unique('id');
-        }
+        } elseif(!empty($args['address'])){
+            
+            /*search by address*/
+           $address = $args['address'];
+           $propertyClass = $propertyClass
+            ->whereHas('translate_property_address',function($query) use ($address){
+               $query->where('addresse','ilike', '%'.$address.'%');
+            })->orderBy('last_update', 'DESC')->get();
+
+            $properties =  $propertyClass;
+
+        } 
 
         /*search by price and deal type*/
         if(!empty($args['price_filters'])){
@@ -339,6 +372,12 @@ class AdminProperties
                 $properties = $propertie_plus->merge($propertie_minus);
             }
 
+            if(!empty($args['latest'])){
+                $properties = $properties->sortByDesc(function($element) {
+                 return Carbon::parse($element->last_update)->format('d');
+                });
+            } 
+
         }
 
 
@@ -367,11 +406,11 @@ class AdminProperties
                 $query->where('filter_id',$filter_id);
                 if($minMax['min']){
                     $min = $minMax['min'];
-                    $query->whereRaw('CAST (value AS INTEGER) >= ?',  $min);
+                    $query->whereRaw('CAST (value AS DOUBLE PRECISION) >= ?',  $min);
                 }
                 if($minMax['max']){
                     $max = $minMax['max'];
-                    $query->whereRaw('CAST (value AS INTEGER) <= ?', $max);
+                    $query->whereRaw('CAST (value AS DOUBLE PRECISION) <= ?', $max);
                 }
                  //  if($minMax['min']){
                   //    $min = $minMax['min'];
