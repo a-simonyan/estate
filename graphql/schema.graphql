@@ -360,7 +360,7 @@ input CreatePropertyInput{
     latitude: Float!,
     longitude: Float!,
     address: String!,
-    region:  String!,
+    region:  RegionEnum!,
     postal_code: String,
     property_state: PropertyStateEnum,
     property_images:[Upload],
@@ -385,7 +385,7 @@ input UpdatePropertyInput{
     latitude: Float,
     longitude: Float,
     address: String,
-    region: String,
+    region: RegionEnum,
     postal_code: String,
     property_state: PropertyStateEnum,
     email: String
@@ -409,7 +409,7 @@ input SavePropertyInput{
     latitude: Float,
     longitude: Float,
     address: String,
-    region: String,
+    region: RegionEnum,
     postal_code: String,
     property_state: PropertyStateEnum,
     property_images:[Upload],
@@ -659,7 +659,7 @@ type Property{
     latitude: Float
     longitude: Float
     address: String
-    region: String
+    region: RegionEnum
     postal_code: String
     property_state: String
     created_at: DateTime
@@ -959,7 +959,7 @@ input AdminCreatePropertyInput{
     latitude: Float!,
     longitude: Float!,
     address: String!,
-    region: String!,
+    region: RegionEnum!,
     postal_code: String,
     property_state: PropertyStateEnum,
     property_images:[Upload],
@@ -1005,7 +1005,7 @@ input AdminPropertiesFiltersInput{
     ids:[Int],
     place:[placeInput],
     address: String,
-    region: String,
+    region: RegionEnum,
     property_type: [String],
     user_type: String,
     area: MinMax,
@@ -1042,7 +1042,7 @@ input AdminUpdatePropertyInput{
     latitude: Float,
     longitude: Float,
     address: String,
-    region: String,
+    region: RegionEnum,
     postal_code: String,
     property_state: PropertyStateEnum,
     email: String,
