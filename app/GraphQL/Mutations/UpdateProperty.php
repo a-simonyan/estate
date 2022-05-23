@@ -73,6 +73,9 @@ class UpdateProperty
             if(!empty($args['address'])){
                 $array_property['address'] = $args['address'];
             }
+            if(!empty($args['region'])){
+                $array_property['region'] = $args['region'];
+            }
             if(!empty($args['postal_code'])){
                 $array_property['postal_code'] = $args['postal_code'];
             }

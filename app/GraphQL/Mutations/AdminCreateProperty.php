@@ -62,6 +62,7 @@ class AdminCreateProperty
                                           'latitude'           => $args['latitude'],
                                           'longitude'          => $args['longitude'],
                                           'address'            => $args['address'],
+                                          'region'             => $args['region'],
                                           'postal_code'        => !empty($args['postal_code'])? $args['postal_code'] : null,
                                           'property_state'     => !empty($args['property_state'])? $args['property_state'] : null,
                                           'email'              => null,

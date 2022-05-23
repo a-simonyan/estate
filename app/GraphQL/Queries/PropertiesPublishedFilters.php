@@ -103,6 +103,10 @@ class PropertiesPublishedFilters
          if(!empty($args['property_state'])){
             $propertyClass=$propertyClass->where('property_state',$args['property_state']);
          }
+        /*search by region*/
+        if(!empty($args['region'])){
+            $propertyClass=$propertyClass->where('region','ilike', '%'.$args['region'].'%');
+        }
         /*search by bulding type*/
          if(!empty($args['bulding_type_id'])){
             $propertyClass=$propertyClass->where('bulding_type_id',$args['bulding_type_id']);
