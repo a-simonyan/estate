@@ -19,6 +19,7 @@ use App\Http\Traits\GetIdTrait;
 use Image;
 use Illuminate\Support\Facades\Http;
 use App\Http\Services\PropertyService;
+use Carbon\Carbon;
 
 class CreateProperty
 {
@@ -138,7 +139,14 @@ class CreateProperty
 
         }
 
+        //Property during 22:00 to 8:00 must be automatically published.
+        $now = Carbon::now();
+        $start = Carbon::createFromTimeString('22:00');
+        $end = Carbon::createFromTimeString('08:00')->addDay();
 
+        if ($now->between($start, $end)) {
+            $property->update(['is_public_status' => 'published']);
+        }
 
 
 
