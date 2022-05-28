@@ -103,6 +103,10 @@ class PropertiesPublishedFilters
          if(!empty($args['property_state'])){
             $propertyClass=$propertyClass->where('property_state',$args['property_state']);
          }
+        /*search by region*/
+        if(!empty($args['region'])){
+            $propertyClass=$propertyClass->where('region','ilike', '%'.$args['region'].'%');
+        }
         /*search by bulding type*/
          if(!empty($args['bulding_type_id'])){
             $propertyClass=$propertyClass->where('bulding_type_id',$args['bulding_type_id']);
@@ -184,7 +188,7 @@ class PropertiesPublishedFilters
                            ) + sin( radians(".$place['latitude'].") ) *
                            sin( radians( latitude ) ) )
                        ) AS distance from properties) as properties"))
-                       ->groupBy(DB::raw('id, property_key,property_type_id, user_id, bulding_type_id, land_area_type_id, latitude, longitude, address, postal_code ,property_state, review, is_public_status, is_save, is_delete, created_at, updated_at, email, is_address_precise, view, update_count, last_update, next_update, is_archive, is_bids, distance, is_top, top_start, top_end, same_place_group'))
+                       ->groupBy(DB::raw('id, property_key,property_type_id, user_id, bulding_type_id, land_area_type_id, latitude, longitude, address, region, postal_code ,property_state, review, is_public_status, is_save, is_delete, created_at, updated_at, email, is_address_precise, view, update_count, last_update, next_update, is_archive, is_bids, distance, is_top, top_start, top_end, same_place_group'))
                        ->orderBy("distance")
                        ->get();
                    

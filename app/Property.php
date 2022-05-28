@@ -17,6 +17,7 @@ class Property extends Model
                            'latitude',
                            'longitude',
                            'address',
+                           'region',
                            'postal_code',
                            'property_state',
                            'review',

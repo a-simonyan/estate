@@ -7,6 +7,7 @@ use App\Property;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use App;
+use App\Order;
 
 class RegisterPropertyInTop
 {
@@ -36,6 +37,16 @@ class RegisterPropertyInTop
             $currency = '051';
 
             $orderNumber = random_int(1000, 9999).'-'.time();
+            while(Order::where('uuid',$orderNumber)->exists()){
+                $orderNumber = random_int(1000, 9999).'-'.time();
+            }
+
+            $order = Order::create([
+                'uuid'     => $orderNumber,
+                'user_id'  => $user_auth->id,
+                'amount'   => $amount,
+                'currency' => $currency
+            ]);
 
             $jsonParams = json_encode(['property_id' => $property->id, 'order_type'=>'in_top' ]);
 
@@ -56,6 +67,7 @@ class RegisterPropertyInTop
 
 
             if ($data && !empty($data['orderId']) && !$data['error']) {
+                $order->update(['payment_order_id' => $data['orderId']]);
                 return ['error'=>false, 'errorMessage' => null, 'orderId' => $data['orderId'], 'formUrl'=> $data['formUrl']];
             } elseif($data) {
                 return ['error'=>true, 'errorMessage' => $data['errorMessage'], 'orderId' => null, 'formUrl'=> null];

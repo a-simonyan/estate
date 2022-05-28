@@ -360,6 +360,7 @@ input CreatePropertyInput{
     latitude: Float!,
     longitude: Float!,
     address: String!,
+    region:  RegionEnum!,
     postal_code: String,
     property_state: PropertyStateEnum,
     property_images:[Upload],
@@ -384,6 +385,7 @@ input UpdatePropertyInput{
     latitude: Float,
     longitude: Float,
     address: String,
+    region: RegionEnum,
     postal_code: String,
     property_state: PropertyStateEnum,
     email: String
@@ -407,6 +409,7 @@ input SavePropertyInput{
     latitude: Float,
     longitude: Float,
     address: String,
+    region: RegionEnum,
     postal_code: String,
     property_state: PropertyStateEnum,
     property_images:[Upload],
@@ -423,6 +426,7 @@ input PropertiesPublishedFiltersInput{
       ids:[Int],
       place:[placeInput],
       address: String,
+      region: RegionEnum,
       property_type: [String],
       user_type: String,
       area: MinMax,
@@ -655,6 +659,7 @@ type Property{
     latitude: Float
     longitude: Float
     address: String
+    region: RegionEnum
     postal_code: String
     property_state: String
     created_at: DateTime
@@ -894,6 +899,32 @@ enum PageViewEnum {
     DESKTOP @enum(value: DESKTOP)
     MOBILE @enum(value: MOBILE)
 }
+
+enum RegionEnum {
+    yerevan @enum(value: yerevan)
+    aragatsotn @enum(value: aragatsotn)
+    ararat @enum(value: ararat)
+    armavir @enum(value: armavir)
+    gegharkunik @enum(value: gegharkunik)
+    kotayk @enum(value: kotayk)
+    lori @enum(value: lori)
+    shirak @enum(value: shirak)
+    syunik @enum(value: syunik)
+    tavush @enum(value: tavush)
+    vayotsdzor @enum(value: vayotsdzor)
+    yerevan_ajapnyak @enum(value: yerevan_ajapnyak)
+    yerevan_avan @enum(value: yerevan_avan)
+    yerevan_arabkir @enum(value: yerevan_arabkir)
+    yerevan_davtashen @enum(value: yerevan_davtashen)
+    yerevan_erebuni @enum(value: yerevan_erebuni)
+    yerevan_kentron @enum(value: yerevan_kentron)
+    yerevan_malatia @enum(value: yerevan_malatia)
+    yerevan_nornork @enum(value: yerevan_nornork)
+    yerevan_norkmarash @enum(value: yerevan_norkmarash)
+    yerevan_nubarashen @enum(value: yerevan_nubarashen)
+    yerevan_shengavit @enum(value: yerevan_shengavit)
+    yerevan_zeytun @enum(value: yerevan_zeytun)
+}
   
 #ADMIN
 input AdminUpdateUserProfileInput{
@@ -928,6 +959,7 @@ input AdminCreatePropertyInput{
     latitude: Float!,
     longitude: Float!,
     address: String!,
+    region: RegionEnum!,
     postal_code: String,
     property_state: PropertyStateEnum,
     property_images:[Upload],
@@ -973,6 +1005,7 @@ input AdminPropertiesFiltersInput{
     ids:[Int],
     place:[placeInput],
     address: String,
+    region: RegionEnum,
     property_type: [String],
     user_type: String,
     area: MinMax,
@@ -1009,6 +1042,7 @@ input AdminUpdatePropertyInput{
     latitude: Float,
     longitude: Float,
     address: String,
+    region: RegionEnum,
     postal_code: String,
     property_state: PropertyStateEnum,
     email: String,
