@@ -606,6 +606,7 @@ type CurrencyType{
      symbol: String!
      is_current: Boolean
      rate: Float
+     updated_at: DateTime
 }
 type DealType{
     id: ID!
