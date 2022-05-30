@@ -1026,6 +1026,7 @@ input AdminPropertiesFiltersInput{
     with_picture:Boolean,
     is_negotiable:Boolean,
     latest:Boolean,
+    under_review_order:IsPublicStatusEnum,
     paginate: PaginateInput,
     language: String,
 }
