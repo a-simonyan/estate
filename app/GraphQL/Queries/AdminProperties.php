@@ -30,6 +30,10 @@ class AdminProperties
         $lastPage = null;
 
         $propertyClass = Property::with('filters_values');
+        /*Order by  under_review*/
+        if(!empty($args['order_public_status'])) {
+            $propertyClass = $propertyClass->orderByRaw("is_public_status = '".$args['order_public_status']."' DESC");
+        }
         /*search by property is_delete status*/
         if(isset($args['is_delete'])) {
             $propertyClass = $propertyClass->where('is_delete', $args['is_delete']);
