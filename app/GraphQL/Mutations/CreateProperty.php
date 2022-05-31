@@ -53,7 +53,8 @@ class CreateProperty
                                           'property_state'     => !empty($args['property_state'])? $args['property_state'] : null,
                                           'email'              => ( $user_type == 'agency' && !empty($args['email'])) ?  $args['email'] : null,
                                           'is_bids'            => ( $user_type == 'agency' && isset($args['is_bids'])) ? $args['is_bids'] : false,     
-                                          'is_address_precise' => ( $user_type == 'agency' && isset($args['is_address_precise'])) ?  $args['is_address_precise'] : true
+                                          'is_address_precise' => ( $user_type == 'agency' && isset($args['is_address_precise'])) ?  $args['is_address_precise'] : true,
+                                          'last_update'        => Carbon::now()
                                          ]); 
     
             if($property){                             
@@ -101,7 +102,8 @@ class CreateProperty
                     'property_state'     => !empty($args['property_state'])? $args['property_state'] : null,
                     'email'              => ( $user_type == 'agency' && !empty($args['email']))?  $args['email'] : null,
                     'is_address_precise' => ( $user_type == 'agency' && isset($args['is_address_precise'])) ?  $args['is_address_precise'] : true,
-                    'is_save'            => false   
+                    'is_save'            => false,
+                    'last_update'        => Carbon::now()
                    ]
                 );
 
