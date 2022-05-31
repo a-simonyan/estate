@@ -198,7 +198,7 @@ class AdminProperties
                 $page  = !empty($args['paginate']['page']) ? $args['paginate']['page'] : 1;
 
                 
-                $properties = $propertyClass->orderBy('last_update', 'DESC')->paginate($first,['*'],'page', $page);
+                $properties = $propertyClass->orderByRaw("CASE WHEN last_update IS NULL THEN 0 ELSE 1 END DESC")->orderBy('last_update', 'DESC')->paginate($first,['*'],'page', $page);
                 $total = $properties->total();
                 $lastPage = $properties->lastPage();
 
