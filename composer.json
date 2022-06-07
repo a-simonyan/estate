@@ -21,7 +21,8 @@
         "laravel/tinker": "^2.0",
         "mll-lab/laravel-graphql-playground": "^2.3",
         "nuwave/lighthouse": "^4.16",
-        "predis/predis": "^1.1"
+        "predis/predis": "^1.1",
+        "socialiteproviders/apple": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
