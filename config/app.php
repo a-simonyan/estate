@@ -178,7 +178,7 @@ return [
 
         Laravel\Socialite\SocialiteServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-//        \SocialiteProviders\Manager\ServiceProvider::class,
+        \SocialiteProviders\Manager\ServiceProvider::class,
 
     ],
 
