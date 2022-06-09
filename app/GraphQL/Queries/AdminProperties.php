@@ -198,7 +198,7 @@ class AdminProperties
                 $page  = !empty($args['paginate']['page']) ? $args['paginate']['page'] : 1;
 
                 
-                $properties = $propertyClass->orderByRaw("CASE WHEN last_update IS NULL THEN 0 ELSE 1 END DESC")->orderBy('last_update', 'DESC')->paginate($first,['*'],'page', $page);
+                $properties = $propertyClass->orderByRaw("CASE WHEN last_update IS NULL THEN 0 ELSE 1 END DESC")->orderBy('updated_at', 'DESC')->paginate($first,['*'],'page', $page);
                 $total = $properties->total();
                 $lastPage = $properties->lastPage();
 
@@ -208,12 +208,12 @@ class AdminProperties
 
         if(!empty($args['place']) || empty($args['address'])){
             /* order by created date*/
-            $properties = $propertyClass->orderBy('is_top', 'DESC')->orderBy('last_update', 'DESC')->get();
+            $properties = $propertyClass->orderBy('is_top', 'DESC')->orderBy('updated_at', 'DESC')->get();
          }
 
          if(!empty($args['place']) || empty($args['address'])){
             /* order by created date*/
-            $properties = $propertyClass->orderBy('is_top', 'DESC')->orderBy('last_update', 'DESC')->get();
+            $properties = $propertyClass->orderBy('is_top', 'DESC')->orderBy('updated_at', 'DESC')->get();
          }
 
 
@@ -252,7 +252,7 @@ class AdminProperties
            $propertyClass = $propertyClass
             ->whereHas('translate_property_address',function($query) use ($address){
                $query->where('addresse','ilike', '%'.$address.'%');
-            })->orderBy('last_update', 'DESC')->get();
+            })->orderBy('updated_at', 'DESC')->get();
 
             $properties =  $propertyClass;
 
@@ -316,7 +316,7 @@ class AdminProperties
 
                 $joinProperties=$joinProperties->merge($propertiesFilters);
             }
-            $properties = $joinProperties->unique('id')->sortBy('last_update');
+            $properties = $joinProperties->unique('id')->sortBy('updated_at');
         }
 
 
