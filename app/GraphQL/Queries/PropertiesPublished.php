@@ -23,7 +23,7 @@ class PropertiesPublished
 
 
 
-        $properties = Property::where('is_delete', false)->where('is_public_status','published')->orderBy($field, $order)->get();
+        $properties = Property::whereNull('deleted_at')->where('is_public_status','published')->orderBy($field, $order)->get();
 
         return $properties;
     }

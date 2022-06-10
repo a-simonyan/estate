@@ -35,7 +35,10 @@ class Property extends Model
                            'is_top',
                            'top_start',
                            'top_end',
-                           'same_place_group'
+                           'same_place_group',
+                           'saved_at',
+                           'archived_at',
+                           'deleted_at'
 
                         ];
 

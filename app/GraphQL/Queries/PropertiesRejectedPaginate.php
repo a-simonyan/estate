@@ -24,7 +24,7 @@ class PropertiesRejectedPaginate
             $order = $args['orderBy']['order'];
         };
 
-        $properties = Property::where('is_delete', false)->where('is_public_status','rejected')->paginate($first,['*'],'page', $page);
+        $properties = Property::whereNull('deleted_at')->where('is_public_status','rejected')->paginate($first,['*'],'page', $page);
 
         return $properties;
     }

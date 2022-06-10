@@ -691,7 +691,10 @@ type Property{
     top_start:DateTime
     top_end:DateTime,
     same_place_group:String
-    spams:[Spam]
+    spams:[Spam],
+    saved_at:DateTime,
+    archived_at:DateTime,
+    deleted_at:DateTime
 }
 type Statistics {
     start: Date,

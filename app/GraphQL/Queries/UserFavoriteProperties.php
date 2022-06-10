@@ -35,8 +35,8 @@ class UserFavoriteProperties
 
         $userFavoritePropertiesClass = UserFavoriteProperty::with('property')
         ->whereHas('property' , function ($query) {
-            $query->where('is_delete', false);
-            $query->where('is_save', false);
+            $query->whereNull('deleted_at');
+            $query->whereNull('saved_at');
         })
         ->where('user_id',$user_id);
 

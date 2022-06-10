@@ -23,8 +23,8 @@ class PropertiesPublishedPaginate
             $order = $args['orderBy']['order'];
         };
 
-        $properties = Property::where('is_delete', false)
-                     ->where('is_archive', false)
+        $properties = Property::whereNull('deleted_at')
+                     ->whereNull('archived_at')
                      ->where('is_public_status','published')
                      ->orderBy($field, $order)->paginate($first,['*'],'page', $page);
 

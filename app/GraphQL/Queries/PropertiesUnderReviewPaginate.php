@@ -24,7 +24,7 @@ class PropertiesUnderReviewPaginate
             $order = $args['orderBy']['order'];
         };
 
-        $properties = Property::where('is_delete', false)->where('is_public_status','under_review')
+        $properties = Property::whereNull('deleted_at')->where('is_public_status','under_review')
                                 ->orderBy($field, $order)->paginate($first,['*'],'page', $page);
 
         return $properties;

@@ -17,9 +17,9 @@ class GetPropertiesByUserId
         $user_id = $args['id'];
         
         $properties = Property::where('user_id',$user_id)
-                              ->where('is_delete', false)
-                              ->where('is_archive', false)
-                              ->where('is_save', false)
+                              ->whereNull('deleted_at')
+                              ->whereNull('archived_at')
+                              ->whereNull('saved_at')
                               ->where('is_public_status','published')
                               ->orderBy('last_update','DESC')
                               ->paginate($first,['*'],'page', $page);

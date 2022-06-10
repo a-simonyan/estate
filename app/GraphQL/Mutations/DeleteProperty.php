@@ -6,6 +6,7 @@ use App\Property;
 use Auth;
 use App\Exceptions\SendException;
 use App\Events\PropertyDelete;
+use Carbon\Carbon;
 
 
 class DeleteProperty
@@ -21,7 +22,7 @@ class DeleteProperty
         $property = Property::find($property_id);
 
         if($user_auth->id == $property->user_id){
-            $property->update(['is_delete'=>true]);
+            $property->update(['deleted_at'=>Carbon::now()]);
             event( new PropertyDelete($property_id) );
           
             return $property;

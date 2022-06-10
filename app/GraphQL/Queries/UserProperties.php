@@ -39,9 +39,9 @@ class UserProperties
         };
 
         $propertyClass = Property::where('user_id',$user_id)
-                                 ->where('is_delete', false)
-                                 ->where('is_archive', false)
-                                 ->where('is_save', false);
+                                 ->whereNull('deleted_at')
+                                 ->whereNull('archived_at')
+                                 ->whereNull('saved_at');
 
          /*search by property type*/
          if(!empty($args['property_type'])){

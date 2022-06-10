@@ -16,7 +16,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Traits\GetIdTrait;
 use Image;
-
+use Carbon\Carbon;
 
 class SaveProperty
 {
@@ -49,7 +49,7 @@ class SaveProperty
                                           'property_state'     => !empty($args['property_state'])? $args['property_state']:null,
                                           'email'              => ( $user_type == 'agency' && !empty($args['email']))?  $args['email'] : null,
                                           'is_address_precise' => ( $user_type == 'agency' && isset($args['is_address_precise'])) ?  $args['is_address_precise'] : true,
-                                          'is_save'            => true
+                                          'saved_at'           => Carbon::now()
                                          ]); 
     
             if($property){                             
@@ -95,7 +95,7 @@ class SaveProperty
                     'property_state'     => !empty($args['property_state'])? $args['property_state']:null,
                     'email'              => ( $user_type == 'agency' && !empty($args['email']))?  $args['email'] : null,
                     'is_address_precise' => ( $user_type == 'agency' && isset($args['is_address_precise'])) ?  $args['is_address_precise'] : true,
-                    'is_save'            => true
+                    'saved_at'            => Carbon::now()
                 ]);
 
             }
