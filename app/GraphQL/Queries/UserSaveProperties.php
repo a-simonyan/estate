@@ -32,7 +32,7 @@ class UserSaveProperties
 
         $properties = Property::where('user_id',$user_id)
                               ->whereNull('deleted_at')
-                              ->where('is_save',true)
+                              ->whereNotNull('saved_at')
                               ->orderBy($field, $order)
                               ->paginate($first,['*'],'page', $page);
 

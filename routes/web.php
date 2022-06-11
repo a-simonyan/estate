@@ -20,8 +20,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/mail', function () {
-    dd("test deleted_at, archived_at,  saved_at");
-    $data = Carbon::yesterday()->format('Y-m-d');
+    dd("command deleted_at, archived_at,  saved_at");
+    $date = Carbon::now()->subYear()->format('Y-m-d');
+//    $properties = Property::whereNull('deleted_at')
+//        ->whereNull('archived_at')
+//        ->whereNull('saved_at')
+//        ->whereDate('last_update', '>=', $date)
+//        ->update(['archived_at' => Carbon::now()]);
+
+//    dd($properties);
 });
 Route::get('/changetype', function () {
 

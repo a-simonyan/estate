@@ -14,6 +14,9 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\UpdateCurrencyTypeRate::class,
+        Commands\CheckLastUpdate::class,
+        Commands\CheckArchivedAt::class,
+        Commands\CheckSavedAt::class,
     ];
 
     /**
@@ -25,6 +28,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('currency:rate')->daily();
+        $schedule->command('last:update')->daily();
+        $schedule->command('archived:at')->daily();
+        $schedule->command('saved:at')->daily();
     }
 
     /**

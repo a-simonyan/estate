@@ -30,7 +30,7 @@ class PropertiesPublishedFilters
         $propertyClass = Property::with('filters_values');
         $propertyClass = $propertyClass->whereNull('deleted_at')
                                        ->whereNull('archived_at')
-                                       ->where('is_save', false)
+                                       ->whereNull('saved_at')
                                        ->where('is_public_status','published');
 
         $propertyClass = $propertyClass->whereHas('user',function($query){

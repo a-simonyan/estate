@@ -680,9 +680,6 @@ type Property{
     next_update:DateTime
     is_public_status: String
     is_address_precise: Boolean
-    is_save: Boolean
-    is_archive: Boolean
-    is_delete: Boolean
     email: String
     property_attach_phones: [PropertyAttachPhone]
     is_bids: Boolean
