@@ -69,10 +69,12 @@ class AdminProperties
             $propertyClass = $propertyClass->whereNull('saved_at');
         }   
         /*search by property user_is_block status*/
-        if(isset($args['is_archive'])&&$args['is_archive']){
-            $propertyClass = $propertyClass->whereNotNull('archived_at');
-        } else {
-            $propertyClass = $propertyClass->whereNull('archived_at');
+        if(isset($args['is_archive'])) {
+            if ($args['is_archive']) {
+                $propertyClass = $propertyClass->whereNotNull('archived_at');
+            } else {
+                $propertyClass = $propertyClass->whereNull('archived_at');
+            }
         }
         /*search by property public_status*/
         if(!empty($args['public_status'])) {
