@@ -7,6 +7,7 @@ use App\Property;
 use Joselfonseca\LighthouseGraphQLPassport\Exceptions\ValidationException;
 use Illuminate\Support\Facades\Hash;
 use Auth;
+use Carbon\Carbon;
 
 class DeleteUserProfile
 {
@@ -33,7 +34,7 @@ class DeleteUserProfile
                         'is_delete' => true 
                        ]);
 
-        Property::where('user_id',$user_id)->update(['is_delete' => true]);
+        Property::where('user_id',$user_id)->update(['deleted_at'=>Carbon::now()]);
 
        
        

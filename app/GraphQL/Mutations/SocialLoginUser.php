@@ -53,15 +53,18 @@ class SocialLoginUser
 
 
     function getSocialAvatar($file){
-        $fileContents = file_get_contents($file);
-        $fileName_img = Str::random(10).time().'.jpg';
-        while(file_exists(storage_path('app/public/users/'.$fileName_img))){
-            $fileName_img = Str::random(10).time().'.jpg';
-        };
-        Storage::put('public/users/'.$fileName_img, $fileContents);
-        Storage::put('public/users/min/'.$fileName_img, $fileContents);
+        if($file) {
+            $fileContents = file_get_contents($file);
+            $fileName_img = Str::random(10) . time() . '.jpg';
+            while (file_exists(storage_path('app/public/users/' . $fileName_img))) {
+                $fileName_img = Str::random(10) . time() . '.jpg';
+            };
+            Storage::put('public/users/' . $fileName_img, $fileContents);
+            Storage::put('public/users/min/' . $fileName_img, $fileContents);
 
-        return $fileName_img;
+            return $fileName_img;
+        }
+        return null;
     }
 
 

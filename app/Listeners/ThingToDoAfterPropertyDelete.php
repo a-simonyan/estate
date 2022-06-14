@@ -43,9 +43,9 @@ class ThingToDoAfterPropertyDelete
 
     public function checkSamePlace(Property $property){
         $properties = Property::where('is_public_status','published')
-                              ->where('is_delete', false)
-                              ->where('is_archive', false)
-                              ->where('is_save', false)
+                              ->whereNull('deleted_at')
+                              ->whereNull('archived_at')
+                              ->whereNull('saved_at')
                               ->where('latitude', $property->latitude)
                               ->where('longitude', $property->longitude);
          

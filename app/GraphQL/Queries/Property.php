@@ -15,7 +15,7 @@ class Property
         $property_id = $args['id'];
         $property = PropertyModel::Find($property_id);                            
 
-        if($property&&!$property->is_delete&&$property->is_public_status == 'published'){
+        if($property&&!$property->deleted_at&&$property->is_public_status == 'published'){
             return $property;
         } 
 

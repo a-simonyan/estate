@@ -20,7 +20,7 @@ class CreateUserFavoriteProperty
         
         $property = Property::find($property_id);
 
-        if($property&&!$property->is_delete){
+        if($property&&!$property->deleted_at){
             $userFavoriteProperty = UserFavoriteProperty::create([
                 'user_id'     => $user_id,
                 'property_id' => $property_id

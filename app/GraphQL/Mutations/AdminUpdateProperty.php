@@ -56,14 +56,14 @@ class AdminUpdateProperty
                 $array_property['review'] = $args['review'];
             }
             if(isset($args['is_delete'])){
-                $array_property['is_delete'] = $args['is_delete'];
+                $array_property['deleted_at'] = $args['is_delete'] ? Carbon::now() : null;
 
                 if($args['is_delete']){
                     $this->deletePropertyAllConnection($property_id);
                 }
             }
             if(isset($args['is_archive'])){
-                $array_property['is_archive'] = $args['is_archive'];
+                $array_property['archived_at'] = $args['is_archive'] ? Carbon::now() : null;
             }   
             if(!empty($args['property_key'])){
                 $array_property['property_key'] = $args['property_key'];
@@ -287,9 +287,9 @@ class AdminUpdateProperty
 
     public function checkSamePlace(Property $property){
         $count = Property::where('is_public_status','published')
-                         ->where('is_delete', false)
-                         ->where('is_archive', false)
-                         ->where('is_save', false)
+                         ->whereNull('deleted_at')
+                         ->whereNull('archived_at')
+                         ->whereNull('saved_at')
                          ->where('latitude', $property->latitude)
                          ->where('longitude', $property->longitude)
                          ->update(['same_place_group' => $property->latitude.','.$property->longitude]);

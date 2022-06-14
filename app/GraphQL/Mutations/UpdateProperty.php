@@ -20,6 +20,7 @@ use App\Exceptions\SendException;
 use App\Http\Traits\GetIdTrait;
 use Image;
 use App\Http\Services\PropertyService;
+use Carbon\Carbon;
 
 
 class UpdateProperty
@@ -47,7 +48,7 @@ class UpdateProperty
             }
             
             if(isset($args['is_archive'])){
-                $array_property['is_archive'] = $args['is_archive'];
+                $array_property['archived_at'] = $args['is_archive'] ? Carbon::now() : null;
                 if($args['is_archive'] == false){
                     $array_property['is_public_status'] = 'under_review';
                 }

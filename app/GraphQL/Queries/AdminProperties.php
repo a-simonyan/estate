@@ -35,10 +35,10 @@ class AdminProperties
             $propertyClass = $propertyClass->orderByRaw("is_public_status = '".$args['order_public_status']."' DESC");
         }
         /*search by property is_delete status*/
-        if(isset($args['is_delete'])) {
-            $propertyClass = $propertyClass->where('is_delete', $args['is_delete']);
-        } elseif(empty($args['property_id'])) {
-            $propertyClass = $propertyClass->where('is_delete', false);
+        if(isset($args['is_delete'])&&$args['is_delete']) {
+            $propertyClass = $propertyClass->whereNotNull('deleted_at');
+        } elseif(empty($args['property_id'])||(isset($args['is_delete'])&&!$args['is_delete'])) {
+            $propertyClass = $propertyClass->whereNull('deleted_at');
         }
         /*search by property user_is_delete status*/
         if(isset($args['user_is_delete'])) {
@@ -63,15 +63,19 @@ class AdminProperties
             });
         }
         /*search by property is_save status*/
-        if(isset($args['is_save'])){
-            $propertyClass = $propertyClass->where('is_save', $args['is_archive']);
+        if(isset($args['is_save'])&&$args['is_save']){
+            $propertyClass = $propertyClass->whereNotNull('saved_at');
         } else {
-            $propertyClass = $propertyClass->where('is_save', false);
+            $propertyClass = $propertyClass->whereNull('saved_at');
         }   
         /*search by property user_is_block status*/
-        if(isset($args['is_archive'])){
-            $propertyClass = $propertyClass->where('is_archive', $args['is_archive']);
-        }   
+        if(isset($args['is_archive'])) {
+            if ($args['is_archive']) {
+                $propertyClass = $propertyClass->whereNotNull('archived_at');
+            } else {
+                $propertyClass = $propertyClass->whereNull('archived_at');
+            }
+        }
         /*search by property public_status*/
         if(!empty($args['public_status'])) {
             $propertyClass = $propertyClass->where('is_public_status', $args['public_status']);
@@ -198,7 +202,7 @@ class AdminProperties
                 $page  = !empty($args['paginate']['page']) ? $args['paginate']['page'] : 1;
 
                 
-                $properties = $propertyClass->orderByRaw("CASE WHEN last_update IS NULL THEN 0 ELSE 1 END DESC")->orderBy('last_update', 'DESC')->paginate($first,['*'],'page', $page);
+                $properties = $propertyClass->orderByRaw("CASE WHEN last_update IS NULL THEN 0 ELSE 1 END DESC")->orderBy('updated_at', 'DESC')->paginate($first,['*'],'page', $page);
                 $total = $properties->total();
                 $lastPage = $properties->lastPage();
 
@@ -208,12 +212,12 @@ class AdminProperties
 
         if(!empty($args['place']) || empty($args['address'])){
             /* order by created date*/
-            $properties = $propertyClass->orderBy('is_top', 'DESC')->orderBy('last_update', 'DESC')->get();
+            $properties = $propertyClass->orderBy('is_top', 'DESC')->orderBy('updated_at', 'DESC')->get();
          }
 
          if(!empty($args['place']) || empty($args['address'])){
             /* order by created date*/
-            $properties = $propertyClass->orderBy('is_top', 'DESC')->orderBy('last_update', 'DESC')->get();
+            $properties = $propertyClass->orderBy('is_top', 'DESC')->orderBy('updated_at', 'DESC')->get();
          }
 
 
@@ -232,7 +236,7 @@ class AdminProperties
                            ) + sin( radians(".$place['latitude'].") ) *
                            sin( radians( latitude ) ) )
                        ) AS distance from properties) as properties"))
-                    ->groupBy(DB::raw('id, property_key,property_type_id, user_id, bulding_type_id, land_area_type_id, latitude, longitude, address, region, postal_code ,property_state, review, is_public_status, is_save, is_delete, created_at, updated_at, email, is_address_precise, view, update_count, last_update, next_update, is_archive, is_bids, distance, is_top, top_start, top_end, same_place_group'))
+                    ->groupBy(DB::raw('id, property_key,property_type_id, user_id, bulding_type_id, land_area_type_id, latitude, longitude, address, region, postal_code ,property_state, review, is_public_status, is_save, is_delete, created_at, updated_at, email, is_address_precise, view, update_count, last_update, next_update, is_archive, is_bids, distance, is_top, top_start, top_end, same_place_group, saved_at, archived_at, deleted_at'))
                     ->orderBy("distance")
                     ->get();
 
@@ -252,7 +256,7 @@ class AdminProperties
            $propertyClass = $propertyClass
             ->whereHas('translate_property_address',function($query) use ($address){
                $query->where('addresse','ilike', '%'.$address.'%');
-            })->orderBy('last_update', 'DESC')->get();
+            })->orderBy('updated_at', 'DESC')->get();
 
             $properties =  $propertyClass;
 
@@ -316,7 +320,7 @@ class AdminProperties
 
                 $joinProperties=$joinProperties->merge($propertiesFilters);
             }
-            $properties = $joinProperties->unique('id')->sortBy('last_update');
+            $properties = $joinProperties->unique('id')->sortBy('updated_at');
         }
 
 

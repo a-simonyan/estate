@@ -32,7 +32,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         SendMailSuggestsPrice::class => [
             SendMailSuggestsPriceListener::class
-        ]
+        ],
+        \SocialiteProviders\Manager\SocialiteWasCalled::class => [
+            'SocialiteProviders\\Apple\\AppleExtendSocialite@handle',
+        ],
     ];
 
     /**

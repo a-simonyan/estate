@@ -14,9 +14,9 @@ class ShareProperty
     public function __invoke($_, array $args)
     {
         $property = Property::where('id', $args['id'])
-            ->where('is_delete', false)
-            ->where('is_archive', false)
-            ->where('is_save', false)
+            ->whereNull('deleted_at')
+            ->whereNull('archived_at')
+            ->whereNull('saved_at')
             ->where('is_public_status','published')->exists();
 
         if($property) {

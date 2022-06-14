@@ -33,8 +33,8 @@ class UserArchiveProperties
         };
 
         $properties = Property::where('user_id',$user_id)
-                              ->where('is_delete', false)
-                              ->where('is_archive', true)
+                              ->whereNull('deleted_at')
+                              ->whereNotNull('archived_at')
                               ->orderBy($field, $order)
                               ->paginate($first,['*'],'page', $page);
         $total = $properties->total();

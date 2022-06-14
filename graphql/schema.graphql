@@ -134,8 +134,10 @@ type Query {
     adminProperty(id: ID @eq, currency_id:Int, language: String): Property @find @middleware(checks: ["auth:api","admin"])  @SetCurrency  @SetLanguage
     adminSupport(id: ID @eq,language: String): Support @find  @middleware(checks: ["auth:api","admin"])  @SetLanguage
     adminSupports(input: AdminSupportInput @spread) :[Support]  @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    adminRegisteredUserStatistics(start:Date, end:Date, paginate: PaginateInput):UsersPaginate
 
-     #test
+
+    #test
      test(language: String):String @SetLanguage
 
 
@@ -280,7 +282,6 @@ type Mutation {
     deleteLandAreaType(id:ID!): LandAreaType! @delete  @middleware(checks: ["auth:api","admin"])  @SetLanguage
 
     adminUpdatePrivacyPolicy(privacy_policy:[TranslateDescriptionInput!]):Status @middleware(checks: ["auth:api","admin"])  @SetLanguage
-
 
     #  test
     getimage:String
@@ -679,9 +680,6 @@ type Property{
     next_update:DateTime
     is_public_status: String
     is_address_precise: Boolean
-    is_save: Boolean
-    is_archive: Boolean
-    is_delete: Boolean
     email: String
     property_attach_phones: [PropertyAttachPhone]
     is_bids: Boolean
@@ -690,7 +688,10 @@ type Property{
     top_start:DateTime
     top_end:DateTime,
     same_place_group:String
-    spams:[Spam]
+    spams:[Spam],
+    saved_at:DateTime,
+    archived_at:DateTime,
+    deleted_at:DateTime
 }
 type Statistics {
     start: Date,
@@ -722,6 +723,12 @@ type TranslateSpamPoint{
     spamPoint: SpamPoint
     language: Language
     description:String
+}
+
+type UsersPaginate{
+    users: [User]
+    total: Int
+    lastPage: Int
 }
 
 type PropertiesPaginate{
