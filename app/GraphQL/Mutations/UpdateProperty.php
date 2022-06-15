@@ -43,13 +43,13 @@ class UpdateProperty
         if($property&&$property->user->id == $user_id){
             $array_property = [];
 
-            if($property->is_public_status=='canceled'){
+            if(!$property->archived_at&&($property->is_public_status=='canceled'||$property->is_public_status=='rejected')){
                 $array_property['is_public_status'] = 'under_review';
             }
             
             if(isset($args['is_archive'])){
                 $array_property['archived_at'] = $args['is_archive'] ? Carbon::now() : null;
-                if($args['is_archive'] == false){
+                if($args['is_archive'] == false && $property->is_public_status!=='canceled'&& $property->is_public_status!=='rejected'){
                     $array_property['is_public_status'] = 'under_review';
                 }
             }   
