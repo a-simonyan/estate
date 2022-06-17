@@ -43,7 +43,7 @@ class UpdateProperty
         if($property&&$property->user->id == $user_id){
             $array_property = [];
 
-            if(!$property->archived_at&&($property->is_public_status=='canceled'||$property->is_public_status=='rejected')){
+            if(!isset($args['is_archive'])&&!$property->archived_at&&($property->is_public_status=='canceled'||$property->is_public_status=='rejected')){
                 $array_property['is_public_status'] = 'under_review';
             }
             
