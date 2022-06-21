@@ -21,7 +21,7 @@ use App\Http\Traits\GetIdTrait;
 use Image;
 use App\Http\Services\PropertyService;
 use Carbon\Carbon;
-
+use App\Events\AdminPropertyNotification;
 
 class UpdateProperty
 {
@@ -36,21 +36,24 @@ class UpdateProperty
         $user_id     = $user_auth->id;
         $user_type   = $user_auth->user_type->name;
         $property_id = $args['id'];
+        $adminNotificationFlag = false;
 
 
-         $property = Property::Find($property_id);                            
+        $property = Property::Find($property_id);
 
         if($property&&$property->user->id == $user_id){
             $array_property = [];
 
             if(!isset($args['is_archive'])&&!$property->archived_at&&($property->is_public_status=='canceled'||$property->is_public_status=='rejected')){
                 $array_property['is_public_status'] = 'under_review';
+                $adminNotificationFlag = true;
             }
             
             if(isset($args['is_archive'])){
                 $array_property['archived_at'] = $args['is_archive'] ? Carbon::now() : null;
                 if($args['is_archive'] == false && $property->is_public_status!=='canceled'&& $property->is_public_status!=='rejected'){
                     $array_property['is_public_status'] = 'under_review';
+                    $adminNotificationFlag = true;
                 }
             }   
             if(!empty($args['property_key'])){
@@ -73,6 +76,8 @@ class UpdateProperty
             }
             if(!empty($args['address'])){
                 $array_property['address'] = $args['address'];
+                $array_property['is_public_status'] = 'under_review';
+                $adminNotificationFlag = true;
             }
             if(!empty($args['region'])){
                 $array_property['region'] = $args['region'];
@@ -101,9 +106,12 @@ class UpdateProperty
              if(!empty($args['property_deal_types'])){
                $this->savePropertyDealTypes($property_id, $args['property_deal_types']);
                $array_property['is_public_status'] = 'under_review';
+               $adminNotificationFlag = true;
              }
              if(!empty($args['property_images'])){
                $this->savePropertyImages($property_id,$args['property_images']);
+               $array_property['is_public_status'] = 'under_review';
+               $adminNotificationFlag = true;
              }
              if(!empty($args['phone'])){
                 PropertyAttachPhone::where('property_id',$property_id)->delete();
@@ -120,10 +128,15 @@ class UpdateProperty
              if(!empty($args['translate_descriptions'])){
                $this->saveTranslateDescription($property_id, $args['translate_descriptions']);
                $array_property['is_public_status'] = 'under_review';
+               $adminNotificationFlag = true;
              }
     
 
              $property->update($array_property);
+
+             if($adminNotificationFlag){
+                 event( new AdminPropertyNotification(['property'=>$property->fresh()]) );
+             }
 
             return  $property;
            

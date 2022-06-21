@@ -20,6 +20,7 @@ use Image;
 use Illuminate\Support\Facades\Http;
 use App\Http\Services\PropertyService;
 use Carbon\Carbon;
+use App\Events\AdminPropertyNotification;
 
 class CreateProperty
 {
@@ -36,7 +37,6 @@ class CreateProperty
         $user_auth   = Auth::user();
         $user_id     = $user_auth->id;
         $user_type   = $user_auth->user_type->name;
-        $test = $args['address'];
 
         if(empty($args['property_id'])){
 
@@ -150,7 +150,7 @@ class CreateProperty
             $property->update(['is_public_status' => 'published']);
         }
 
-
+        event( new AdminPropertyNotification(['property'=>$property->fresh()]) );
 
         return  $property;
     }

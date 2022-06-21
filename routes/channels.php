@@ -26,3 +26,11 @@ Broadcast::channel('user.{id}', function ($user, $id) {
 Broadcast::channel('propertyNotification.{id}', function ($user, $id) {
       return (int)$user->id === (int)$id;
 });
+
+Broadcast::channel('adminPropertyNotification', function ($user) {
+    if($user->is_admin){
+        return true;
+    } else {
+        return false;
+    }
+});
