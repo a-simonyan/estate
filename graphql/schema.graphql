@@ -205,6 +205,7 @@ type Mutation {
     deletePropertyImages(images_ids:[Int!]!,language: String): Boolean!  @middleware(checks: ["auth:api","status"]) @SetLanguage
     propertyImagePosition(images_ids:[Int!]!,language: String): Boolean!  @middleware(checks: ["auth:api","status"]) @SetLanguage
     saveProperty(input: SavePropertyInput @spread):Property! @UpdatePropertyValidation @middleware(checks: ["auth:api","status"]) @SetLanguage
+    copySaveProperty(id:ID!,language: String):Property @middleware(checks: ["auth:api","status"]) @SetLanguage
     addViewCount(id:ID!,language: String): Status @SetLanguage
     shareProperty(id:ID!): Status
     updateTimeProperty(id:ID!,language: String): Status @middleware(checks: ["auth:api","status"]) @SetLanguage
