@@ -38,6 +38,17 @@ class PropertiesPublishedFilters
             $query->where('is_block',false);
         });
 
+        if(!empty($args['place_rectangle'])){
+            $place_rectangle = $args['place_rectangle'];
+            $top_left_point = $place_rectangle['top_left_point'];
+            $bottom_right_point = $place_rectangle['bottom_right_point'];
+
+            $propertyClass->where('latitude', '<=', $top_left_point['latitude'])
+                          ->where('longitude', '>=', $top_left_point['longitude'])
+                          ->where('latitude', '>=', $bottom_right_point['latitude'])
+                          ->where('longitude', '<=', $bottom_right_point['longitude']);
+
+        }
 
 
         /*search by property type*/

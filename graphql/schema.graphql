@@ -427,6 +427,7 @@ input SavePropertyInput{
 input PropertiesPublishedFiltersInput{
       ids:[Int],
       place:[placeInput],
+      place_rectangle: placeRectangleInput,
       address: String,
       region: RegionEnum,
       property_type: [String],
@@ -456,6 +457,14 @@ input placeInput{
     latitude: Float,
     longitude: Float,
     radius: Int
+}
+input placeRectangleInput{
+    top_left_point: latitudeLongitudeInput!,
+    bottom_right_point: latitudeLongitudeInput!
+}
+input latitudeLongitudeInput{
+    latitude: Float!,
+    longitude: Float!,
 }
 input MinMax{
     min:Int,
