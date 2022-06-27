@@ -699,6 +699,7 @@ type Property{
     top_end:DateTime,
     same_place_group:String
     spams:[Spam],
+    copy_id:Int,
     saved_at:DateTime,
     archived_at:DateTime,
     deleted_at:DateTime

@@ -37,6 +37,7 @@ class CopySaveProperty
             $newProperty->created_at = Carbon::now();
             $newProperty->updated_at = Carbon::now();
             $newProperty->saved_at = Carbon::now();
+            $newProperty->copy_id = $property_id;
             $newProperty->save();
 
             $newProperty_id = $newProperty->id;

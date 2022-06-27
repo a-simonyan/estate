@@ -36,6 +36,7 @@ class Property extends Model
                            'top_start',
                            'top_end',
                            'same_place_group',
+                           'copy_id',
                            'saved_at',
                            'archived_at',
                            'deleted_at'
