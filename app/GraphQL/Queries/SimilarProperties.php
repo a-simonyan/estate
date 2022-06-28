@@ -39,6 +39,7 @@ class SimilarProperties
                 ) + sin( radians(".$property->latitude.") ) *
                 sin( radians( latitude ) ) )
             ) AS distance from properties) as properties"))
+            ->groupBy(DB::raw('id, property_key,property_type_id, user_id, bulding_type_id, land_area_type_id, latitude, longitude, address, region, postal_code ,property_state, review, is_public_status, is_save, is_delete, created_at, updated_at, email, is_address_precise, view, update_count, last_update, next_update, is_archive, is_bids, distance, is_top, top_start, top_end, same_place_group, saved_at, archived_at, deleted_at, copy_id'))
             ->having("distance", "<", $radius)
             ->orderBy("distance");
     
