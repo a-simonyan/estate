@@ -115,7 +115,7 @@ class AdminUpdateProperty
             }
             if(!empty($args['phone'])){
                 PropertyAttachPhone::where('property_id',$property_id)->delete();
-                $this->savePhone($$property->user,$property_id,$args['phone']);
+                $this->savePhone($property->user,$property_id,$args['phone']);
             }
 
             if(!empty($args['property_images_delete_ids'])){

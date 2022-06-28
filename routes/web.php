@@ -20,7 +20,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/mail', function () {
-    dd("group by fix");
+    dd("fix update property save phone");
     $date = Carbon::now()->subYear()->format('Y-m-d');
 //    $properties = Property::whereNull('deleted_at')
 //        ->whereNull('archived_at')
