@@ -38,6 +38,17 @@ class PropertiesPublishedFilters
             $query->where('is_block',false);
         });
 
+        if(!empty($args['place_rectangle'])){
+            $place_rectangle = $args['place_rectangle'];
+            $top_left_point = $place_rectangle['top_left_point'];
+            $bottom_right_point = $place_rectangle['bottom_right_point'];
+
+            $propertyClass->where('latitude', '<=', $top_left_point['latitude'])
+                          ->where('longitude', '>=', $top_left_point['longitude'])
+                          ->where('latitude', '>=', $bottom_right_point['latitude'])
+                          ->where('longitude', '<=', $bottom_right_point['longitude']);
+
+        }
 
 
         /*search by property type*/
@@ -188,7 +199,6 @@ class PropertiesPublishedFilters
                            ) + sin( radians(".$place['latitude'].") ) *
                            sin( radians( latitude ) ) )
                        ) AS distance from properties) as properties"))
-                       ->groupBy(DB::raw('id, property_key,property_type_id, user_id, bulding_type_id, land_area_type_id, latitude, longitude, address, region, postal_code ,property_state, review, is_public_status, is_save, is_delete, created_at, updated_at, email, is_address_precise, view, update_count, last_update, next_update, is_archive, is_bids, distance, is_top, top_start, top_end, same_place_group, saved_at, archived_at, deleted_at'))
                        ->orderBy("distance")
                        ->get();
                    
