@@ -133,10 +133,10 @@ class PropertiesPublishedFilters
             });
          }
         /*search by is_negotiable*/
-        if(!empty($args['is_negotiable'])){
+        if(isset($args['is_negotiable'])&&!$args['is_negotiable']){
             $propertyClass = $propertyClass->whereHas('property_deals' , function ($query){
                 $query->whereNull('price');
-            });
+            },0);
         }
 
 

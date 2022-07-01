@@ -134,6 +134,8 @@ type Query {
     adminProperty(id: ID @eq, currency_id:Int, language: String): Property @find @middleware(checks: ["auth:api","admin"])  @SetCurrency  @SetLanguage
     adminSupport(id: ID @eq,language: String): Support @find  @middleware(checks: ["auth:api","admin"])  @SetLanguage
     adminSupports(input: AdminSupportInput @spread) :[Support]  @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    adminSpam(id: ID @eq,language: String): Spam @find  @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    adminSpams( paginate: PaginateInput,  language: String): SpamsPaginate  @middleware(checks: ["auth:api","admin"])  @SetLanguage
     adminRegisteredUserStatistics(start:Date, end:Date, paginate: PaginateInput):UsersPaginate
 
 
@@ -264,7 +266,9 @@ type Mutation {
     adminUpdateSupport(id:Int!, is_support_status:String): Status @middleware(checks: ["auth:api","admin"])  @SetLanguage
 
     adminCreateSpamPoint(name:String!, translate_point:[TranslateDescriptionInput!]!):SpamPoint  @middleware(checks: ["auth:api","admin"])  @SetLanguage
-    deleteSpamPoint(id:ID!): SpamPoint! @delete @middleware(checks: ["auth:api","admin"])  @SetLanguage
+    deleteSpamPoint(id:ID!): SpamPoint! @delete @middleware(checks: ["auth:api","admin"])
+
+    adminDeleteSpam(id:ID!): Spam! @delete @middleware(checks: ["auth:api","admin"])
 
     createLanguage(name: String!,code:String!,flag_image:Upload!, language: String): Language!  @middleware(checks: ["auth:api","admin"])  @SetLanguage
     updateLanguage(id:ID!,name: String,code:String,flag_image:Upload, language: String): Language!  @middleware(checks: ["auth:api","admin"])  @SetLanguage
@@ -720,6 +724,7 @@ type Spam{
      user: User
      property: Property
      spam_points:[SpamPoint]
+     created_at : DateTime
     
 }
 
@@ -746,6 +751,13 @@ type PropertiesPaginate{
    properties: [Property]
    total: Int
    lastPage: Int
+}
+
+
+type SpamsPaginate{
+    spams: [Spam]
+    total: Int
+    lastPage: Int
 }
 
 type Status{
