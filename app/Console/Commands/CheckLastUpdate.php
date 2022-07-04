@@ -39,7 +39,7 @@ class CheckLastUpdate extends Command
      */
     public function handle()
     {
-        $date = Carbon::now()->subDays(90)->format('Y-m-d');
+        $date = Carbon::now()->subDays(120)->format('Y-m-d');
         Property::whereNull('deleted_at')
                 ->whereNotNull('last_update')
                 ->whereNull('archived_at')

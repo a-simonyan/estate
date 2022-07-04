@@ -35,7 +35,7 @@ Route::get('/changetype', function () {
     Property::where('is_delete', true)->update(['deleted_at'=>Carbon::now()]);
     Property::where('is_archive', true)->update(['archived_at'=>Carbon::now()]);
     Property::where('is_save', true)->update(['saved_at'=>Carbon::now()]);
-    dd('update deleted_at, archived_at,  saved_at');
+    dd('update deleted_at, archived_at,  saved_at, 120');
 });
 
 // Route::get('/test','TestController@test');
