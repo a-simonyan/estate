@@ -92,6 +92,8 @@ type Query {
 
     getPrivacyPolicy(language: String):[Translation]
 
+    getMediaLinks: MediaLinks
+
 #    propertyImages(orderBy: [OrderByClause!] @orderBy): [PropertyImage] @all
 #    propertyImagesPaginate(orderBy: [OrderByClause!] @orderBy): [PropertyImage] @paginate(defaultCount: 10)
 #    propertyImage(id: ID @eq): PropertyImage @find
@@ -138,6 +140,7 @@ type Query {
     adminSpams( paginate: PaginateInput,  language: String): SpamsPaginate  @middleware(checks: ["auth:api","admin"])  @SetLanguage
     adminRegisteredUserStatistics(start:Date, end:Date, paginate: PaginateInput):UsersPaginate
 
+    adminConfigs( paginate: PaginateInput,  language: String): ConfigPaginate @middleware(checks: ["auth:api","admin"])  @SetLanguage
 
     #test
      test(language: String):String @SetLanguage
@@ -269,6 +272,9 @@ type Mutation {
     deleteSpamPoint(id:ID!): SpamPoint! @delete @middleware(checks: ["auth:api","admin"])
 
     adminDeleteSpam(id:ID!): Spam! @delete @middleware(checks: ["auth:api","admin"])
+
+    adminSetConfig(configs: [ConfigInput!] ): Status @middleware(checks: ["auth:api","admin"])
+    adminDeleteConfig(id:ID!): Config!  @delete @middleware(checks: ["auth:api","admin"])
 
     createLanguage(name: String!,code:String!,flag_image:Upload!, language: String): Language!  @middleware(checks: ["auth:api","admin"])  @SetLanguage
     updateLanguage(id:ID!,name: String,code:String,flag_image:Upload, language: String): Language!  @middleware(checks: ["auth:api","admin"])  @SetLanguage
@@ -516,6 +522,11 @@ input RegisterPropertyInTopInput{
     return_url: String!
     page_view: PageViewEnum!
 }
+input ConfigInput{
+    key: String,
+    value: String
+}
+
 type PropertyPaginate{
     data: [Property]!
     paginatorInfo: PaginatorInfo
@@ -760,6 +771,12 @@ type SpamsPaginate{
     lastPage: Int
 }
 
+type ConfigPaginate{
+    configs : [Config]
+    total: Int
+    lastPage: Int
+}
+
 type Status{
     status: Boolean
 }
@@ -888,7 +905,17 @@ type  RegisterPropertyInTop{
       orderId: String,
       formUrl: String
 }
+type Config {
+    id:ID,
+    key:String,
+    value:String
+}
 
+type MediaLinks {
+    facebook_link: String,
+    instagram_link: String,
+    youtube_link: String
+}
 
 enum PropertyTypeEnum {
   apartment @enum(value: apartment)
