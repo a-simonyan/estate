@@ -30,7 +30,7 @@ class SaveUserFilters
         
         foreach($saveUserFilters as $saveUserFilter){
             $properties_filters = json_decode($saveUserFilter->properties_filters);
-            $properties_filters['id'] = $saveUserFilter->id;
+            $properties_filters->id = $saveUserFilter->id;
             $saveUserFilterJson[] =  $properties_filters;
         }
 
