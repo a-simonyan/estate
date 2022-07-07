@@ -20,7 +20,7 @@ class UpdateSaveUserFilter
 
         $input = collect($args)->except(['id'])->toArray();
 
-        if($saveUserFilter_user_id ==  $user_id ){
+        if($saveUserFilter_user_id ==  $user_id && count($input)){
 
             $json_properties_filters = json_encode($input);
 
