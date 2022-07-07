@@ -20,7 +20,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/mail', function () {
-    dd("admin config");
+    dd("admin filter id for test ");
     $date = Carbon::now()->subYear()->format('Y-m-d');
 //    $properties = Property::whereNull('deleted_at')
 //        ->whereNull('archived_at')
