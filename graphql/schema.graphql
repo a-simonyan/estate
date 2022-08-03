@@ -839,6 +839,7 @@ type UserFavoriteProperty{
 }
 
 type SaveUserFilterJson{
+    id:ID,
     ids:[ID],
     place:[placeType],
     address: String,
