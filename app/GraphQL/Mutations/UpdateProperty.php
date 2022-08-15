@@ -55,6 +55,9 @@ class UpdateProperty
                     $array_property['is_public_status'] = 'under_review';
                     $adminNotificationFlag = true;
                 }
+                if(!$array_property['archived_at']){
+                    $array_property['last_update'] = Carbon::now();
+                }
             }   
             if(!empty($args['property_key'])){
                 $array_property['property_key'] = $args['property_key'];
