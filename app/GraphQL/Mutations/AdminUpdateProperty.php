@@ -38,7 +38,7 @@ class AdminUpdateProperty
     {
         $property_id = $args['id'];
 
-        $property = Property::Find($property_id);
+        $property = Property::find($property_id);
 
         if($property){
             $array_property = [];

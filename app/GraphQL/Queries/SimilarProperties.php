@@ -14,7 +14,7 @@ class SimilarProperties
     public function __invoke($_, array $args)
     {
         $property_id = $args['id'];
-        $property = Property::Find($property_id); 
+        $property = Property::find($property_id); 
         $first = !empty($args['first']) ? $args['first'] : 10;
         $page  = !empty($args['page']) ? $args['page'] : 1;
 

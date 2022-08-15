@@ -17,7 +17,7 @@ class CanceledProperty
         $user_id     = $user_auth->id;
         $property_id = $args['id'];
 
-        $property = Property::Find($property_id);                            
+        $property = Property::find($property_id);                            
 
         if($property&&$property->user->id == $user_id&&$property->is_public_status=='under_review'){
 

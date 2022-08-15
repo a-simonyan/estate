@@ -39,7 +39,7 @@ class UpdateProperty
         $adminNotificationFlag = false;
 
 
-        $property = Property::Find($property_id);
+        $property = Property::find($property_id);
 
         if($property&&$property->user->id == $user_id){
             $array_property = [];

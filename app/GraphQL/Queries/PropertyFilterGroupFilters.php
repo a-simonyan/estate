@@ -16,7 +16,7 @@ class PropertyFilterGroupFilters
     public function __invoke($_, array $args)
     {
       if(!empty($args['property_id'])){
-            $property_type_id = Property::Find($args['property_id'])->property_type_id;
+            $property_type_id = Property::find($args['property_id'])->property_type_id;
             $property_id = $args['property_id'];
        
  
