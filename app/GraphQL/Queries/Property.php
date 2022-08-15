@@ -13,7 +13,7 @@ class Property
     public function __invoke($_, array $args)
     {
         $property_id = $args['id'];
-        $property = PropertyModel::Find($property_id);                            
+        $property = PropertyModel::find($property_id);                            
 
         if($property&&!$property->deleted_at&&$property->is_public_status == 'published'){
             return $property;

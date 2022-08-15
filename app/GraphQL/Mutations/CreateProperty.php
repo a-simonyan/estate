@@ -85,7 +85,7 @@ class CreateProperty
 
         } else {
 
-            $property = Property::Find($args['property_id']);
+            $property = Property::find($args['property_id']);
 
             if($property){
                 $property->update(
