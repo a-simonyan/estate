@@ -27,7 +27,19 @@ class PropertiesPublishedFilters
         $total = null;
         $lastPage = null;
 
+        $user = auth('api')->user();
+
         $propertyClass = Property::with('filters_values');
+
+        if($user){
+            $propertyClass->leftJoin('user_favorite_properties', function ($q){
+                $q->on('properties.id', '=', 'user_favorite_properties.property_id');
+                $q->on('properties.user_id', '=', 'user_favorite_properties.user_id');
+                })
+                ->groupBy('properties.id','user_favorite_properties.property_id')
+                ->select('properties.*', 'user_favorite_properties.property_id as is_favorite');
+        }
+
         $propertyClass = $propertyClass->whereNull('deleted_at')
                                        ->whereNull('archived_at')
                                        ->whereNull('saved_at')

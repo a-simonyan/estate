@@ -717,7 +717,8 @@ type Property{
     copy_id:Int,
     saved_at:DateTime,
     archived_at:DateTime,
-    deleted_at:DateTime
+    deleted_at:DateTime,
+    is_favorite: Boolean
 }
 type Statistics {
     start: Date,
