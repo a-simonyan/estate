@@ -718,7 +718,7 @@ type Property{
     saved_at:DateTime,
     archived_at:DateTime,
     deleted_at:DateTime,
-    is_favorite: Boolean
+    is_favorite: ID
 }
 type Statistics {
     start: Date,

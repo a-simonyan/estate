@@ -36,7 +36,7 @@ class PropertiesPublishedFilters
                 $q->on('properties.id', '=', 'user_favorite_properties.property_id');
                 $q->on('properties.user_id', '=', 'user_favorite_properties.user_id');
                 })
-                ->select('properties.*', 'user_favorite_properties.property_id as is_favorite')
+                ->select('properties.*', 'user_favorite_properties.id as is_favorite')
                 ->distinct();
         }
 
