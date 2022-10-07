@@ -109,5 +109,14 @@ class Property extends Model
      return $this->hasMany('App\Spam','property_id','id'); 
    }
 
+    public function scopeFavorite($query, $user_id)
+    {
+        return $query->leftJoin('user_favorite_properties', function ($q) use ($user_id){
+                 $q->on('properties.id', '=', 'user_favorite_properties.property_id');
+                 $q->where('user_favorite_properties.user_id', '=', $user_id);
+               })
+               ->select('properties.*', 'user_favorite_properties.id as is_favorite')
+               ->distinct();
+    }
 
 }

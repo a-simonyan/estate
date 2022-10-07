@@ -12,8 +12,16 @@ class Property
      */
     public function __invoke($_, array $args)
     {
+        $user = auth('api')->user();
+        $propertyClass = new PropertyModel;
+
+        if($user){
+            $user_id = $user->id;
+            $propertyClass = $propertyClass->favorite($user_id);
+        }
+
         $property_id = $args['id'];
-        $property = PropertyModel::find($property_id);                            
+        $property = $propertyClass->where('properties.id',$property_id)->first();
 
         if($property&&!$property->deleted_at&&$property->is_public_status == 'published'){
             return $property;

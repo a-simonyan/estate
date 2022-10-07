@@ -28,17 +28,12 @@ class PropertiesPublishedFilters
         $lastPage = null;
 
         $user = auth('api')->user();
-        $user_id = $user->id;
 
         $propertyClass = Property::with('filters_values');
 
         if($user){
-            $propertyClass->leftJoin('user_favorite_properties', function ($q) use ($user_id){
-                $q->on('properties.id', '=', 'user_favorite_properties.property_id');
-                $q->where('user_favorite_properties.user_id', '=', $user_id);
-                })
-                ->select('properties.*', 'user_favorite_properties.id as is_favorite')
-                ->distinct();
+            $user_id = $user->id;
+            $propertyClass->favorite($user_id);
         }
 
         $propertyClass = $propertyClass->whereNull('deleted_at')

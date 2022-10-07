@@ -17,7 +17,7 @@ class UserProperty
         $user_id     = $user_auth->id;
         $property_id = $args['id'];
 
-        $property = Property::find($property_id);                            
+        $property = Property::favorite($user_id)->where('properties.id',$property_id)->first();
 
         if($property&&$property->user->id == $user_id){
 
