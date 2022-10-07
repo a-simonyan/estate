@@ -34,8 +34,8 @@ class PropertiesPublishedFilters
         if($user){
             $propertyClass->leftJoin('user_favorite_properties', function ($q){
                 $q->on('properties.id', '=', 'user_favorite_properties.property_id');
-                $q->on('properties.user_id', '=', 'user_favorite_properties.user_id');
                 })
+                ->where('user_favorite_properties.user_id', '=', $user->id)
                 ->select('properties.*', 'user_favorite_properties.id as is_favorite')
                 ->distinct();
         }
