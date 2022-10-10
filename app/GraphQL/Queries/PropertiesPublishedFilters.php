@@ -27,7 +27,15 @@ class PropertiesPublishedFilters
         $total = null;
         $lastPage = null;
 
+        $user = auth('api')->user();
+
         $propertyClass = Property::with('filters_values');
+
+        if($user){
+            $user_id = $user->id;
+            $propertyClass->favorite($user_id);
+        }
+
         $propertyClass = $propertyClass->whereNull('deleted_at')
                                        ->whereNull('archived_at')
                                        ->whereNull('saved_at')
@@ -74,7 +82,7 @@ class PropertiesPublishedFilters
          }
         /*search by ids*/
         if(!empty($args['ids'])){
-         $propertyClass = $propertyClass->whereIn('id',$args['ids']);
+         $propertyClass = $propertyClass->whereIn('properties.id',$args['ids']);
          } 
         /*search by area*/
         if(!empty($args['area'])){

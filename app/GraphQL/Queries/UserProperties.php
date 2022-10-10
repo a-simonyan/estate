@@ -38,10 +38,12 @@ class UserProperties
             $order = $args['orderBy']['order'];
         };
 
-        $propertyClass = Property::where('user_id',$user_id)
+        $propertyClass = Property::where('properties.user_id',$user_id)
                                  ->whereNull('deleted_at')
                                  ->whereNull('archived_at')
                                  ->whereNull('saved_at');
+
+        $propertyClass = $propertyClass->favorite($user_id);
 
          /*search by property type*/
          if(!empty($args['property_type'])){
@@ -50,12 +52,12 @@ class UserProperties
                $property_type_id = $this->getKeyId(PropertyType::Class,'name',$property_type);
                array_push($typeArr,$property_type_id);
             }
-           
+
             $propertyClass = $propertyClass->whereIn('property_type_id',$typeArr);
           }
 
           $propertyClass = $propertyClass->whereIn('is_public_status', $is_public_status);
-            
+
           /*order by price  ASC and DESC*/
           if(!empty($args['price_order'])){
 
@@ -95,11 +97,11 @@ class UserProperties
 
             if( $price_order == 'DESC') {
                 $propertie_plus  = $propertie_plus->sortByDesc('price_order');
-                $propertie_minus = $propertie_minus->sortBy('price_order'); 
+                $propertie_minus = $propertie_minus->sortBy('price_order');
                 $properties = $propertie_plus->merge($propertie_minus);
             } else {
                $propertie_plus  = $propertie_plus->sortBy('price_order');
-               $propertie_minus = $propertie_minus->sortByDesc('price_order'); 
+               $propertie_minus = $propertie_minus->sortByDesc('price_order');
                $properties = $propertie_plus->merge($propertie_minus);
             }
             $properties = PropertyService::paginate($properties, $first, $page);
@@ -107,14 +109,14 @@ class UserProperties
             $lastPage = $properties->lastPage();
 
             return ['properties' => $properties, 'total' => $total, 'lastPage' => $lastPage];
-        
+
            } else {
 
 
             $properties = $propertyClass->orderBy($field, $order)
                                         ->paginate($first,['*'],'page', $page);
             $total = $properties->total();
-            $lastPage = $properties->lastPage();                            
+            $lastPage = $properties->lastPage();
 
            }
 
