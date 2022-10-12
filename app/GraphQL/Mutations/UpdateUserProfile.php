@@ -36,12 +36,17 @@ class UpdateUserProfile
 
         if(!empty($args['user_type'])){
             $update_arr['user_type_id'] = $this->getKeyId(UserType::Class,'name',$args['user_type']); 
-        }  
+        }
+
+        if(!empty($args['delete_image'])){
+            $user_picture  =  $user->getRawOriginal('picture');
+            $this->deleteImage($user_picture);
+            $update_arr['picture'] = null;
+        }
 
         if(!empty($args['image'])){
             $user_picture  =  $user->getRawOriginal('picture');
             $update_arr['picture'] = $this->savePicture($args['image'],$user_picture);
-           
         }
         if(!empty($args['old_password'])&&!empty($args['password'])){
             if (!Hash::check($args['old_password'], $user->password)) {
@@ -99,13 +104,8 @@ class UpdateUserProfile
                 $image->save(storage_path('app/public/users/min/'.$fileName_img));
 
 
-                if($user_picture&&file_exists(storage_path('app/public/users/'.$user_picture))){
-                    unlink(storage_path('app/public/users/'.$user_picture));
-                }
+                $this->deleteImage($user_picture);
 
-                if($user_picture&&file_exists(storage_path('app/public/users/min/'.$user_picture))){
-                    unlink(storage_path('app/public/users/min/'.$user_picture));
-                }  
 
                 return $fileName_img;
             } else {
@@ -115,6 +115,19 @@ class UpdateUserProfile
             return $user_picture;
         }
 
+    }
+
+    public function deleteImage($user_picture){
+
+        if($user_picture&&file_exists(storage_path('app/public/users/'.$user_picture))){
+            unlink(storage_path('app/public/users/'.$user_picture));
+        }
+
+        if($user_picture&&file_exists(storage_path('app/public/users/min/'.$user_picture))){
+            unlink(storage_path('app/public/users/min/'.$user_picture));
+        }
+
+        return true;
     }
 
     public function savePhone($phones, $user_id){

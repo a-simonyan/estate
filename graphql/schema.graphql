@@ -335,7 +335,8 @@ input updateUserProfileInput{
      password_confirmation: String
      phone: [NewPhone!]
      update_phone: [UpdatePhone!]
-     delete_phone: [Int!]
+     delete_phone: [Int!],
+     delete_image: Boolean,
      language: String
 
 }
