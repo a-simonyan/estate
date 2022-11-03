@@ -48,6 +48,7 @@ class SaveProperty
                                           'postal_code'        => !empty($args['postal_code'])? $args['postal_code']:null,
                                           'property_state'     => !empty($args['property_state'])? $args['property_state']:null,
                                           'email'              => ( $user_type == 'agency' && !empty($args['email']))?  $args['email'] : null,
+                                          'is_bids'            => ( $user_type == 'agency' && isset($args['is_bids'])) ? $args['is_bids'] : false,
                                           'is_address_precise' => ( $user_type == 'agency' && isset($args['is_address_precise'])) ?  $args['is_address_precise'] : true,
                                           'saved_at'           => Carbon::now()
                                          ]); 
@@ -94,6 +95,7 @@ class SaveProperty
                     'postal_code'        => !empty($args['postal_code'])? $args['postal_code']:null,
                     'property_state'     => !empty($args['property_state'])? $args['property_state']:null,
                     'email'              => ( $user_type == 'agency' && !empty($args['email']))?  $args['email'] : null,
+                    'is_bids'            => ( $user_type == 'agency' && isset($args['is_bids'])) ? $args['is_bids'] : false,
                     'is_address_precise' => ( $user_type == 'agency' && isset($args['is_address_precise'])) ?  $args['is_address_precise'] : true,
                     'saved_at'            => Carbon::now()
                 ]);
