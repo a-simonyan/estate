@@ -1,0 +1,1 @@
+<a href="{{ url('/login/facebook') }}" class="text-blue-500 mr-3">Facebppk</a>
